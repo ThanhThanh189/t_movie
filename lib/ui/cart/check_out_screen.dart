@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
@@ -20,8 +21,10 @@ class CheckOutScreen extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: AppColors.dartBackground1,
           appBar: AppBar(
             title: const Text('Checkout'),
+            backgroundColor: AppColors.dartBackground1,
           ),
           body: ListView.builder(
               itemCount: listFilmData.length,

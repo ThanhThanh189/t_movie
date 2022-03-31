@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_ticket/blocs/home/home_bloc.dart';
 import 'package:movie_ticket/blocs/home/home_event.dart';
 import 'package:movie_ticket/blocs/home/home_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, homeState) {},
         builder: (context, homeState) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
               body: SafeArea(
                   child: SingleChildScrollView(
             child: Column(
@@ -92,7 +93,7 @@ class HomeScreen extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(120),
-          color: ColorConstraints.dartBackground2),
+          color: AppColors.dartBackground2),
       child: GestureDetector(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(

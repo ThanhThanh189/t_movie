@@ -19,7 +19,36 @@ class AuthenticationScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthenticationBloc(userRepository: userRepository)
         ..add(AuthStartedEvent()),
-      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      child: 
+      // BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      //   listener: (context, state) {
+      //     if (state is AuthStateSuccess) {
+      //       Navigator.of(context).pushReplacement(
+      //         MaterialPageRoute(
+      //           builder: (context) => RouterScreen(
+      //             user: state.user,
+      //             userRepository: userRepository,
+      //             filmRepository: filmRepository,
+      //           ),
+      //         ),
+      //       );
+      //     }
+      //     if (state is AuthStateFailure) {
+      //       Navigator.of(context).pushReplacement(
+      //         MaterialPageRoute(
+      //           builder: (context) =>
+      //               SignInScreen(userRepository: userRepository),
+      //         ),
+      //       );
+      //     }
+      //   },
+      //   builder: (context, state) {
+      //     return const Center(
+      //       child: CircularProgressIndicator(),
+      //     );
+      //   },
+      // ),
+      BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, authState) {
           if (authState is AuthStateSuccess) {
             return RouterScreen(

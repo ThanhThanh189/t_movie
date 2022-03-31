@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/register/register_bloc.dart';
 import 'package:movie_ticket/blocs/register/register_event.dart';
 import 'package:movie_ticket/blocs/register/register_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -47,8 +47,10 @@ class SignUpScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
               title: const Text('Create New Your Account'),
+              backgroundColor: AppColors.dartBackground1,
               centerTitle: true,
             ),
             body: Container(
@@ -220,7 +222,7 @@ class SignUpScreen extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
         decoration: BoxDecoration(
-          gradient: ColorConstraints.mainGradient,
+          gradient: AppColors.mainGradient,
           borderRadius: BorderRadius.circular(20),
         ),
         child: TextButton(

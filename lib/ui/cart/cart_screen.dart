@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -42,7 +43,9 @@ class CartScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
+              backgroundColor: AppColors.dartBackground1,
               actions: [
                 Visibility(
                   visible: state.listFilmData.isNotEmpty,

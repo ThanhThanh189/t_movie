@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/search/search_bloc.dart';
 import 'package:movie_ticket/blocs/search/search_event.dart';
 import 'package:movie_ticket/blocs/search/search_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
@@ -27,6 +27,7 @@ class SearchScreen extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
+              backgroundColor: AppColors.dartBackground1,
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(85.0),
                 child: Row(
@@ -48,7 +49,7 @@ class SearchScreen extends StatelessWidget {
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: ColorConstraints.dartBackground2,
+                          color: AppColors.dartBackground2,
                         ),
                         child: TextField(
                           autofocus: true,

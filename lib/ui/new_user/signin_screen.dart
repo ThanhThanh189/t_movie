@@ -5,7 +5,7 @@ import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
 import 'package:movie_ticket/blocs/login/login_bloc.dart';
 import 'package:movie_ticket/blocs/login/login_event.dart';
 import 'package:movie_ticket/blocs/login/login_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/icon_constraints.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -49,6 +49,7 @@ class SignInScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             body: SafeArea(
               child: Container(
                 margin: const EdgeInsets.all(10),
@@ -196,9 +197,9 @@ class SignInScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: ColorConstraints.greyBackground1),
+            color: AppColors.mainColor),
         child: FlatButton(
-          color: ColorConstraints.greyBackground1,
+          color: AppColors.mainColor,
           onPressed: () {
             BlocProvider.of<LoginBloc>(context).add(
                 LoginWithEmailAndPasswordEvent(
@@ -238,7 +239,7 @@ class SignInScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-                color: ColorConstraints.greyBackground1,
+                color: AppColors.greyBackground1,
                 borderRadius: BorderRadius.circular(1000)),
             child: ClipOval(
               child: Image.asset(
@@ -254,7 +255,7 @@ class SignInScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(7),
             decoration: BoxDecoration(
-                color: ColorConstraints.greyBackground1,
+                color: AppColors.greyBackground1,
                 borderRadius: BorderRadius.circular(1000)),
             child: ClipOval(
               child: Image.asset(

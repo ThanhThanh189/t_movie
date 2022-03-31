@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_bloc.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_event.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
@@ -18,6 +19,7 @@ class ViewAllScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
       appBar: AppBar(
         title: const Text('View All'),
       ),

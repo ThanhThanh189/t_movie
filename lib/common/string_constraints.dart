@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 
 class StringConstraints {
   static const TextStyle h1 =
@@ -58,14 +58,14 @@ class StringConstraints {
   static const TextStyle h7 = TextStyle(
       fontSize: 12,
       fontFamily: 'montserrat',
-      color: ColorConstraints.greyBackground2);
+      color: AppColors.greyBackground2);
   static const TextStyle h8 = TextStyle(
       fontSize: 16,
       fontFamily: 'montserrat',
-      color: ColorConstraints.whiteBackground,);
+      color: AppColors.whiteBackground,);
   static const TextStyle h8Bold = TextStyle(
       fontSize: 16,
       fontFamily: 'montserrat',
-      color: ColorConstraints.whiteBackground,
+      color: AppColors.whiteBackground,
       fontWeight: FontWeight.bold);
 }

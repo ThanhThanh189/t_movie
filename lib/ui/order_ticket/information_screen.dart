@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/information/information_bloc.dart';
 import 'package:movie_ticket/blocs/information/information_event.dart';
 import 'package:movie_ticket/blocs/information/information_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -50,6 +51,7 @@ class InformationScreen extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
+              backgroundColor: AppColors.dartBackground1,
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

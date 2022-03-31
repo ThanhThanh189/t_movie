@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_event.dart';
 import 'package:movie_ticket/blocs/profile/profile_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
@@ -44,8 +44,10 @@ class EditProfileScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
               title: const Text('Edit Profile'),
+              backgroundColor: AppColors.dartBackground1,
               centerTitle: true,
             ),
             body: Container(
@@ -203,7 +205,7 @@ class EditProfileScreen extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
         decoration: BoxDecoration(
-          gradient: ColorConstraints.mainGradient,
+          gradient: AppColors.mainGradient,
           borderRadius: BorderRadius.circular(20),
         ),
         child: TextButton(

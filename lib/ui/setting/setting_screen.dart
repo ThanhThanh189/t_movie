@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
@@ -17,9 +17,10 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -218,7 +219,7 @@ class SettingScreen extends StatelessWidget {
         width: double.infinity,
         margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
         decoration: BoxDecoration(
-          gradient: ColorConstraints.mainGradient,
+          gradient: AppColors.mainGradient,
           borderRadius: BorderRadius.circular(20),
         ),
         child: TextButton(

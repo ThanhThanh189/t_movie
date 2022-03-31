@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/icon_constraints.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -7,6 +8,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
       body: SafeArea(
         child: Center(
           child: Container(

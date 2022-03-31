@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/router/router_bloc.dart';
 import 'package:movie_ticket/blocs/router/router_event.dart';
 import 'package:movie_ticket/blocs/router/router_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 import 'package:movie_ticket/ui/cart/cart_screen.dart';
@@ -55,23 +55,23 @@ class RouterScreen extends StatelessWidget {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home',
-                    backgroundColor: ColorConstraints.greyBackground1),
+                    backgroundColor: AppColors.dartBackground1),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.favorite),
                     label: 'My Favorite',
-                    backgroundColor: ColorConstraints.greyBackground1),
+                    backgroundColor: AppColors.dartBackground1),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.wallet_giftcard),
                     label: 'My Wallet',
-                    backgroundColor: ColorConstraints.greyBackground1),
+                    backgroundColor: AppColors.dartBackground1),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.settings),
                     label: 'My Profile',
-                    backgroundColor: ColorConstraints.greyBackground1),
+                    backgroundColor: AppColors.dartBackground1),
               ],
               currentIndex: state.index,
               selectedItemColor: Colors.blue,
-              unselectedItemColor: ColorConstraints.greyBackground2,
+              unselectedItemColor: AppColors.greyBackground2,
               onTap: (index) {
                 BlocProvider.of<RouterBloc>(context)
                     .add(SelectItemRouterEvent(index: index));

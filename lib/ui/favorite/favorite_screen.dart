@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -21,8 +22,10 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
       appBar: AppBar(
         title: const Text('Favorite'),
+        backgroundColor: AppColors.dartBackground1,
         centerTitle: true,
       ),
       body: BlocProvider<FavoriteBloc>(
