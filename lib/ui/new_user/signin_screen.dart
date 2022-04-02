@@ -78,16 +78,17 @@ class SignInScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: const EdgeInsets.all(23.6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.mainColor),
-            child: Image.asset(
-              AppIcons.iconFilm,
-              color: Colors.white,
-              width: 40.69,
-              height: 40.69,
-            )),
+          padding: const EdgeInsets.all(23.6),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.mainColor),
+          child: Image.asset(
+            AppIcons.iconFilm,
+            color: Colors.white,
+            width: 40.69,
+            height: 40.69,
+          ),
+        ),
         const SizedBox(
           height: 32,
         ),
@@ -171,8 +172,9 @@ class SignInScreen extends StatelessWidget {
       },
       visibility: state.showPassword,
       onChange: (value) {
-        BlocProvider.of<LoginBloc>(context)
-            .add(SetPasswordLoginEvent(password: value));
+        BlocProvider.of<LoginBloc>(context).add(
+          SetPasswordLoginEvent(password: value),
+        );
       },
     );
   }
@@ -194,13 +196,17 @@ class SignInScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60),
       child: BaseButton(
-          text: AppStrings.signinLogin,
-          onPressed: () {
-            BlocProvider.of<LoginBloc>(context).add(
-                LoginWithEmailAndPasswordEvent(
-                    email: _emailController.text,
-                    password: _passwordController.text));
-          }),
+        text: AppStrings.signinLogin,
+        isVisible: _emailController.text.isNotEmpty &&
+            _passwordController.text.isNotEmpty,
+        onPressed: () {
+          BlocProvider.of<LoginBloc>(context).add(
+            LoginWithEmailAndPasswordEvent(
+                email: _emailController.text,
+                password: _passwordController.text),
+          );
+        },
+      ),
     );
   }
 
@@ -214,16 +220,20 @@ class SignInScreen extends StatelessWidget {
         );
       },
       child: RichText(
-          text: TextSpan(children: [
-        TextSpan(
-          text: AppStrings.signinCreateNewAccount,
-          style: AppTextStyles.medium14.copyWith(color: AppColors.mainText),
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: AppStrings.signinCreateNewAccount,
+              style: AppTextStyles.medium14.copyWith(color: AppColors.mainText),
+            ),
+            TextSpan(
+              text: AppStrings.signinSignUp,
+              style:
+                  AppTextStyles.medium14.copyWith(color: AppColors.mainColor),
+            ),
+          ],
         ),
-        TextSpan(
-          text: AppStrings.signinSignUp,
-          style: AppTextStyles.medium14.copyWith(color: AppColors.mainColor),
-        ),
-      ])),
+      ),
     );
   }
 
@@ -234,8 +244,9 @@ class SignInScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-              color: AppColors.dartBackground2,
-              borderRadius: BorderRadius.circular(1000)),
+            color: AppColors.dartBackground2,
+            borderRadius: BorderRadius.circular(1000),
+          ),
           child: ClipOval(
             child: Image.asset(
               AppIcons.iconGoogle,
@@ -250,8 +261,9 @@ class SignInScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
-              color: AppColors.dartBackground2,
-              borderRadius: BorderRadius.circular(1000)),
+            color: AppColors.dartBackground2,
+            borderRadius: BorderRadius.circular(1000),
+          ),
           child: ClipOval(
             child: Image.asset(
               AppIcons.iconFacebook,
