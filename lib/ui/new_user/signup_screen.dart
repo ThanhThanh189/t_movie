@@ -5,7 +5,7 @@ import 'package:movie_ticket/blocs/register/register_event.dart';
 import 'package:movie_ticket/blocs/register/register_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
@@ -235,7 +235,7 @@ class SignUpScreen extends StatelessWidget {
           },
           child: const Text(
             'Sign Up',
-            style: StringConstraints.h2,
+            style: AppTextStyles.h2,
           ),
         ));
   }

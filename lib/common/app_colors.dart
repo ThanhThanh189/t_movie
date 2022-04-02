@@ -13,4 +13,5 @@ class AppColors {
   static const Color dartBackground2 = Color(0xFF151D3B);
   static const Color dartBackground1 = Color(0xFF0B0F2F);
   static const Color veryDartBackground = Color(0xFF051138);
+  static const Color mainText = Color(0xFFFFFFFF);
 }

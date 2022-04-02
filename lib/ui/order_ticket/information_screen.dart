@@ -7,7 +7,7 @@ import 'package:movie_ticket/blocs/information/information_event.dart';
 import 'package:movie_ticket/blocs/information/information_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
@@ -125,7 +125,7 @@ class InformationScreen extends StatelessWidget {
                 Text(
                   state.detail != null ? state.detail!.originalTitle : '',
                   maxLines: 2,
-                  style: StringConstraints.h2Bold,
+                  style: AppTextStyles.h2Bold,
                 ),
                 Row(
                   children: [
@@ -152,7 +152,7 @@ class InformationScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Text(
                     genres,
-                    style: StringConstraints.h7,
+                    style: AppTextStyles.h7,
                   ),
                 ),
                 Text(
@@ -160,7 +160,7 @@ class InformationScreen extends StatelessWidget {
                       ? DateFormat('dd-MM-yyyy')
                           .format(state.detail!.releaseDate)
                       : '',
-                  style: StringConstraints.h7,
+                  style: AppTextStyles.h7,
                 )
               ],
             ),
@@ -193,8 +193,8 @@ class InformationScreen extends StatelessWidget {
                   child: Text(
                     'About Movie',
                     style: state.isReview
-                        ? StringConstraints.h8
-                        : StringConstraints.h8Bold,
+                        ? AppTextStyles.h8
+                        : AppTextStyles.h8Bold,
                   ),
                 ),
               ),
@@ -211,8 +211,8 @@ class InformationScreen extends StatelessWidget {
                     },
                     child: Text('Review',
                         style: !state.isReview
-                            ? StringConstraints.h8
-                            : StringConstraints.h8Bold)),
+                            ? AppTextStyles.h8
+                            : AppTextStyles.h8Bold)),
               ),
             ],
           ),
@@ -231,7 +231,7 @@ class InformationScreen extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10, left: 10),
           child: const Text('Cast & Crew',
-              style: StringConstraints.h2Bold, textAlign: TextAlign.start),
+              style: AppTextStyles.h2Bold, textAlign: TextAlign.start),
         ),
         SizedBox(
           width: double.infinity,
@@ -274,7 +274,7 @@ class InformationScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(top: 10),
                           child: Text(
                             state.casts[index].originalName,
-                            style: StringConstraints.h7,
+                            style: AppTextStyles.h7,
                             textAlign: TextAlign.center,
                           ))
                     ]),
@@ -295,7 +295,7 @@ class InformationScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(bottom: 10, left: 10),
             child: const Text('Trailer and song',
-                style: StringConstraints.h2Bold, textAlign: TextAlign.start),
+                style: AppTextStyles.h2Bold, textAlign: TextAlign.start),
           ),
           GestureDetector(
             onTap: () {
@@ -409,7 +409,7 @@ class InformationScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               child: const Text(
                 'Synopsis',
-                style: StringConstraints.h2Bold,
+                style: AppTextStyles.h2Bold,
               )),
           Expanded(
             child: SizedBox(
@@ -420,7 +420,7 @@ class InformationScreen extends StatelessWidget {
                   children: [
                     Text(
                       overview,
-                      style: StringConstraints.h3,
+                      style: AppTextStyles.h3,
                     ),
                     state.detail != null
                         ? state.detail!.overview.length > maxLength
@@ -434,11 +434,11 @@ class InformationScreen extends StatelessWidget {
                                     state.isReadMore
                                         ? 'Show more'
                                         : 'Show less',
-                                    style: StringConstraints.h6BlueBold),
+                                    style: AppTextStyles.h6BlueBold),
                               )
                             : const Text('',
-                                style: StringConstraints.h6BlueBold)
-                        : const Text('', style: StringConstraints.h6BlueBold)
+                                style: AppTextStyles.h6BlueBold)
+                        : const Text('', style: AppTextStyles.h6BlueBold)
                   ],
                 ),
               ),
@@ -609,7 +609,7 @@ class InformationScreen extends StatelessWidget {
           },
           child: const Text(
             'Add to cart',
-            style: StringConstraints.h2Bold,
+            style: AppTextStyles.h2Bold,
           ),
         ),
       ),
@@ -631,7 +631,7 @@ class InformationScreen extends StatelessWidget {
               child: const Center(
                 child: Text(
                   'The skill are improving',
-                  style: StringConstraints.h2BoldDark,
+                  style: AppTextStyles.h2BoldDark,
                   textAlign: TextAlign.center,
                 ),
               ),

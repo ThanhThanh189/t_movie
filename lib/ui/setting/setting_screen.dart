@@ -4,7 +4,7 @@ import 'package:movie_ticket/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 import 'package:movie_ticket/ui/setting/edit_profile_screen.dart';
 
@@ -35,11 +35,11 @@ class SettingScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: 5),
                 child:
-                    const Text('Arya Wijaya', style: StringConstraints.h2Bold),
+                    const Text('Arya Wijaya', style: AppTextStyles.h2Bold),
               ),
               const Text(
                 'Awekadesign@gmail.com',
-                style: StringConstraints.h8,
+                style: AppTextStyles.h8,
               ),
               Container(
                 padding: const EdgeInsets.all(10),
@@ -58,7 +58,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text('Edit Profile', style: StringConstraints.h8)
+                      Text('Edit Profile', style: AppTextStyles.h8)
                     ],
                   ),
                 ),
@@ -83,7 +83,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text('My Wallet', style: StringConstraints.h8)
+                      Text('My Wallet', style: AppTextStyles.h8)
                     ],
                   ),
                 ),
@@ -108,7 +108,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text('Change Language', style: StringConstraints.h8)
+                      Text('Change Language', style: AppTextStyles.h8)
                     ],
                   ),
                 ),
@@ -133,7 +133,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text('Help Centre', style: StringConstraints.h8)
+                      Text('Help Centre', style: AppTextStyles.h8)
                     ],
                   ),
                 ),
@@ -158,7 +158,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text('Rate Flutix App', style: StringConstraints.h8)
+                      Text('Rate Flutix App', style: AppTextStyles.h8)
                     ],
                   ),
                 ),
@@ -191,7 +191,7 @@ class SettingScreen extends StatelessWidget {
               child: const Center(
                 child: Text(
                   'The skill are improving',
-                  style: StringConstraints.h2BoldDark,
+                  style: AppTextStyles.h2BoldDark,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -228,7 +228,7 @@ class SettingScreen extends StatelessWidget {
           },
           child: const Text(
             'Logout',
-            style: StringConstraints.h2,
+            style: AppTextStyles.h2,
           ),
         ));
   }

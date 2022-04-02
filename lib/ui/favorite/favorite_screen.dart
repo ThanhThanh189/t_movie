@@ -7,7 +7,7 @@ import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
@@ -180,7 +180,7 @@ class FavoriteScreen extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     'Are you sure you want to delete?',
-                    style: StringConstraints.h2BoldDark,
+                    style: AppTextStyles.h2BoldDark,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -203,7 +203,7 @@ class FavoriteScreen extends StatelessWidget {
                         },
                         child: const Text(
                           'OK',
-                          style: StringConstraints.h2BoldRed,
+                          style: AppTextStyles.h2BoldRed,
                           textAlign: TextAlign.center,
                         )),
                   ),
@@ -218,7 +218,7 @@ class FavoriteScreen extends StatelessWidget {
                             Navigator.of(context).pop({'confirm': false}),
                         child: const Text(
                           'Cancel',
-                          style: StringConstraints.h2BoldDark,
+                          style: AppTextStyles.h2BoldDark,
                           textAlign: TextAlign.center,
                         )),
                   ),

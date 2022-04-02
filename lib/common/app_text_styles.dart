@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 
-class StringConstraints {
-  static const TextStyle h1 =
-      TextStyle(fontSize: 24, fontFamily: 'montserrat', color: Colors.white);
+class AppTextStyles {
+  static const TextStyle medium24 = TextStyle(
+    fontSize: 24,
+    fontFamily: 'montserrat',
+    color: Colors.white,
+  );
+  static const TextStyle medium18 = TextStyle(
+      fontSize: 18, fontFamily: 'montserrat', fontWeight: FontWeight.w500);
   static const TextStyle h2 = TextStyle(
       fontSize: 18,
       fontFamily: 'montserrat',
@@ -24,6 +29,16 @@ class StringConstraints {
       fontFamily: 'montserrat',
       color: Colors.red,
       fontWeight: FontWeight.bold);
+  static const TextStyle medium14 = TextStyle(
+    fontSize: 14,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle regular14 = TextStyle(
+    fontSize: 14,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w400,
+  );
   static const TextStyle h3 = TextStyle(
       fontSize: 14,
       fontFamily: 'montserrat',
@@ -50,19 +65,21 @@ class StringConstraints {
       fontFamily: 'montserrat',
       color: Colors.blue,
       fontWeight: FontWeight.w300);
-   static const TextStyle h6BlueBold = TextStyle(
+  static const TextStyle h6BlueBold = TextStyle(
       fontSize: 14,
       fontFamily: 'montserrat',
       color: Colors.blue,
       fontWeight: FontWeight.bold);
   static const TextStyle h7 = TextStyle(
-      fontSize: 12,
-      fontFamily: 'montserrat',
-      color: AppColors.greyBackground2);
+    fontSize: 12,
+    fontFamily: 'montserrat',
+    color: AppColors.greyBackground2,
+  );
   static const TextStyle h8 = TextStyle(
-      fontSize: 16,
-      fontFamily: 'montserrat',
-      color: AppColors.whiteBackground,);
+    fontSize: 16,
+    fontFamily: 'montserrat',
+    color: AppColors.whiteBackground,
+  );
   static const TextStyle h8Bold = TextStyle(
       fontSize: 16,
       fontFamily: 'montserrat',

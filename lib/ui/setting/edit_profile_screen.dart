@@ -6,7 +6,7 @@ import 'package:movie_ticket/blocs/profile/profile_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_event.dart';
 import 'package:movie_ticket/blocs/profile/profile_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
@@ -218,7 +218,7 @@ class EditProfileScreen extends StatelessWidget {
           },
           child: const Text(
             'Update My Profile',
-            style: StringConstraints.h2,
+            style: AppTextStyles.h2,
           ),
         ));
   }

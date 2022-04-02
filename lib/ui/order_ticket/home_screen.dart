@@ -7,7 +7,7 @@ import 'package:movie_ticket/blocs/home/home_event.dart';
 import 'package:movie_ticket/blocs/home/home_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
               margin: const EdgeInsets.only(right: 100),
               child: const Text(
                 'Find Your Best Movie',
-                style: StringConstraints.h1,
+                style: AppTextStyles.medium24,
                 textAlign: TextAlign.start,
               ),
             ),
@@ -111,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Text(
                   'Search Movie',
-                  style: StringConstraints.h2,
+                  style: AppTextStyles.h2,
                 )
               ],
             ),
@@ -132,7 +132,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               Text(
                 isTopRated ? 'Top Rating' : 'Now Playing',
-                style: StringConstraints.h5,
+                style: AppTextStyles.h5,
               ),
               GestureDetector(
                 onTap: () {
@@ -146,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: const Text(
                   'View all',
-                  style: StringConstraints.h6Blue,
+                  style: AppTextStyles.h6Blue,
                 ),
               )
             ],
@@ -228,7 +228,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     filmData.originalTitle,
-                    style: StringConstraints.h2Bold,
+                    style: AppTextStyles.h2Bold,
                   ),
                   Row(
                     children: [
@@ -272,7 +272,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Text(
                 'Coming Soon',
-                style: StringConstraints.h5,
+                style: AppTextStyles.h5,
               ),
               GestureDetector(
                 onTap: () {
@@ -284,7 +284,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: const Text(
                   'View all',
-                  style: StringConstraints.h6Blue,
+                  style: AppTextStyles.h6Blue,
                 ),
               )
             ],

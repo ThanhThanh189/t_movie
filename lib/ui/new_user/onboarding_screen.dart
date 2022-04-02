@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/icon_constraints.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_icons.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class OnboardingScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(32),
                     color: Colors.blue),
                 child: Image.asset(
-                  IconContraints.iconFilm,
+                  AppIcons.iconFilm,
                   color: Colors.white,
                 )),
             const SizedBox(
@@ -29,7 +29,7 @@ class OnboardingScreen extends StatelessWidget {
             ),
             const Text(
               'New Experience',
-              style: StringConstraints.h1,
+              style: AppTextStyles.medium24,
             ),
             const SizedBox(
               height: 10,
@@ -38,7 +38,7 @@ class OnboardingScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 70),
               child: const Text(
                 'Watch a new movie much easier than any before',
-                style: StringConstraints.h2,
+                style: AppTextStyles.h2,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -54,7 +54,7 @@ class OnboardingScreen extends StatelessWidget {
                 onPressed: null,
                 child: Text(
                   'Get Started',
-                  style: StringConstraints.h2,
+                  style: AppTextStyles.h2,
                 ),
               ),
             )
