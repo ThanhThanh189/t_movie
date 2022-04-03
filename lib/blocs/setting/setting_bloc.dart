@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/setting/setting_event.dart';
 import 'package:movie_ticket/blocs/setting/setting_state.dart';

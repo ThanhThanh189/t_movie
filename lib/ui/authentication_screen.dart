@@ -6,19 +6,8 @@ import 'package:movie_ticket/blocs/authentication/authentication_state.dart';
 import 'package:movie_ticket/ui/new_user/signin_screen.dart';
 import 'package:movie_ticket/ui/router/router_screen.dart';
 
-class AuthenticationScreen extends StatefulWidget {
+class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
-
-  @override
-  State<AuthenticationScreen> createState() => _AuthenticationScreenState();
-}
-
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
-  @override
-  void dispose() {
-    super.dispose();
-    print('dispose');
-  }
 
   @override
   Widget build(BuildContext context) {

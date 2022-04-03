@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_ticket/blocs/authentication/authentication_bloc.dart';
-import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
 import 'package:movie_ticket/blocs/login/login_bloc.dart';
 import 'package:movie_ticket/blocs/login/login_event.dart';
 import 'package:movie_ticket/blocs/login/login_state.dart';
