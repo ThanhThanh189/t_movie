@@ -5,8 +5,8 @@ import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  FilmRepository filmRepository;
-  SearchBloc({required this.filmRepository}) : super(SearchState.initial()) {
+  FilmRepository filmRepository = FilmRepositoryImp();
+  SearchBloc() : super(SearchState.initial()) {
     on<SearchEvent>((event, emit) async {
       if (event is StartedSearchEvent) {
         // emit.call(state.update(viewState: ViewState.isLoading));

@@ -5,15 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_event.dart';
 import 'package:movie_ticket/blocs/profile/profile_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  final UserRepository userRepository;
-  EditProfileScreen({Key? key, 
-    required this.userRepository,
+  EditProfileScreen({
+    Key? key,
   }) : super(key: key);
 
   final TextEditingController _displayNameController = TextEditingController();
@@ -22,7 +20,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(
-      create: (context) => ProfileBloc(userRepository: userRepository)
+      create: (context) => ProfileBloc()
         ..add(StartedProfileEvent()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
@@ -44,8 +42,10 @@ class EditProfileScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
               title: const Text('Edit Profile'),
+              backgroundColor: AppColors.dartBackground1,
               centerTitle: true,
             ),
             body: Container(
@@ -123,8 +123,7 @@ class EditProfileScreen extends StatelessWidget {
             child: TextFormField(
               readOnly: true,
               decoration: InputDecoration(
-                  hintText:
-                      state.email ?? 'Email Address',
+                  hintText: state.email ?? 'Email Address',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10))),
               validator: (validator) {
@@ -203,7 +202,7 @@ class EditProfileScreen extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
         decoration: BoxDecoration(
-          gradient: ColorConstraints.mainGradient,
+          gradient: AppColors.mainGradient,
           borderRadius: BorderRadius.circular(20),
         ),
         child: TextButton(
@@ -216,7 +215,7 @@ class EditProfileScreen extends StatelessWidget {
           },
           child: const Text(
             'Update My Profile',
-            style: StringConstraints.h2,
+            style: AppTextStyles.h2,
           ),
         ));
   }

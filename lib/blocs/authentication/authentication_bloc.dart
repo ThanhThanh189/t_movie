@@ -5,15 +5,15 @@ import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  UserRepository? userRepository;
-  AuthenticationBloc({this.userRepository}) : super(AuthStateInitial()) {
+  UserRepository userRepository  = UserRepository(); 
+  AuthenticationBloc() : super(AuthStateInitial()) {
     on<AuthenticationEvent>((event, emit) async {
       if (event is AuthStartedEvent) {
         emit.call(AuthStateLoading());
         try {
-          var isLoggedIn = await userRepository!.isSignedIn();
+          var isLoggedIn = await userRepository.isSignedIn();
           if (isLoggedIn) {
-            var user = await userRepository!.getCurrentUser();
+            var user = await userRepository.getCurrentUser();
             if (user != null) {
               emit.call(AuthStateSuccess(user: user));
             }
@@ -25,7 +25,7 @@ class AuthenticationBloc
         }
       }
       if (event is LoggedInEvent) {
-        var user = await userRepository!.getCurrentUser();
+        var user = await userRepository.getCurrentUser();
         try {
           if (user != null) {
             emit.call(AuthStateSuccess(user: user));
@@ -38,7 +38,7 @@ class AuthenticationBloc
       }
 
       if (event is LoggedOutEvent) {
-        await userRepository!.logOut();
+        await userRepository.logOut();
         emit.call(AuthStateFailure());
       }
     });

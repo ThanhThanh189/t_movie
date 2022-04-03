@@ -6,25 +6,24 @@ import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  UserRepository userRepository;
+  UserRepository userRepository = UserRepository();
   final ImagePicker _picker = ImagePicker();
-  ProfileBloc({required this.userRepository}) : super(ProfileState.initial()) {
+  ProfileBloc() : super(ProfileState.initial()) {
     on<ProfileEvent>((event, emit) async {
       if (event is StartedProfileEvent) {
         emit.call(state.update(viewState: ViewState.isLoading));
-        try {
-          var currentUser = await userRepository.getCurrentUser();
-          String? fullName = currentUser!.displayName;
-          String? email = currentUser.email;
-          String? photoURL = currentUser.photoURL;
 
-          emit.call(state.update(
-              viewState: ViewState.isSuccess,
-              fullName: fullName,
-              email: email,
-              photoURL: photoURL));
-          emit.call(state.update(viewState: ViewState.isNormal));
-        } catch (e) {}
+        var currentUser = await userRepository.getCurrentUser();
+        String? fullName = currentUser!.displayName;
+        String? email = currentUser.email;
+        String? photoURL = currentUser.photoURL;
+
+        emit.call(state.update(
+            viewState: ViewState.isSuccess,
+            fullName: fullName,
+            email: email,
+            photoURL: photoURL));
+        emit.call(state.update(viewState: ViewState.isNormal));
       }
       if (event is EditPhotoURLProfileEvent) {
         emit.call(state.update(viewState: ViewState.isLoading));

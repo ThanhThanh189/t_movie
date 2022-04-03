@@ -6,8 +6,8 @@ import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 
 class ViewAllBloc extends Bloc<ViewAllEvent, ViewAllState> {
-  FilmRepository filmRepository;
-  ViewAllBloc({required this.filmRepository})
+  FilmRepository filmRepository = FilmRepositoryImp();
+  ViewAllBloc()
       : super(ViewAllState(
             listFilmData: [],
             viewState: ViewState.isNormal,

@@ -3,27 +3,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_bloc.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_event.dart';
 import 'package:movie_ticket/blocs/view_all/view_all_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class ViewAllScreen extends StatelessWidget {
-  final FilmRepository filmRepository;
   final String namePage;
-  const ViewAllScreen(
-      {Key? key, required this.filmRepository, required this.namePage})
-      : super(key: key);
+  const ViewAllScreen({Key? key, required this.namePage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
       appBar: AppBar(
         title: const Text('View All'),
       ),
       body: BlocProvider<ViewAllBloc>(
-        create: (context) => ViewAllBloc(filmRepository: filmRepository)
-          ..add(StartedViewAllEvent(namePage: namePage)),
+        create: (context) =>
+            ViewAllBloc()..add(StartedViewAllEvent(namePage: namePage)),
         child: BlocBuilder<ViewAllBloc, ViewAllState>(
           builder: (context, state) {
             return state.viewState == ViewState.isLoading
@@ -58,7 +56,6 @@ class ViewAllScreen extends StatelessWidget {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(builder: (context) {
                                       return InformationScreen(
-                                          filmRepository: filmRepository,
                                           filmData: state.listFilmData[index]);
                                     }));
                                   },

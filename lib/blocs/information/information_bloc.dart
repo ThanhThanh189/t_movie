@@ -9,9 +9,9 @@ import 'package:movie_ticket/data/models/review.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 
 class InformationBloc extends Bloc<InformationEvent, InformationState> {
-  FilmRepository filmRepository;
+  FilmRepository filmRepository = FilmRepositoryImp();
   FilmDatabase filmDatabase = FilmDatabase.instance;
-  InformationBloc({required this.filmRepository})
+  InformationBloc()
       : super(InformationState.initial()) {
     on<InformationEvent>((event, emit) async {
       if (event is StartedInforEvent) {

@@ -1,58 +1,57 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_ticket/blocs/home/home_bloc.dart';
 import 'package:movie_ticket/blocs/home/home_event.dart';
 import 'package:movie_ticket/blocs/home/home_state.dart';
-import 'package:movie_ticket/common/color_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 import 'package:movie_ticket/ui/order_ticket/search_screen.dart';
 import 'package:movie_ticket/ui/order_ticket/view_all_screen.dart';
+import 'package:movie_ticket/ui/widgets/images/profile.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User user;
-  final FilmRepository filmRepository;
-  const HomeScreen({Key? key, 
-    required this.user,
-    required this.filmRepository,
+  const HomeScreen({
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
-      create: (context) =>
-          HomeBloc(filmRepository: filmRepository)..add(StartedHomeEvent()),
+      create: (context) => HomeBloc()..add(StartedHomeEvent()),
       child: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, homeState) {},
         builder: (context, homeState) {
           return Scaffold(
-              body: SafeArea(
-                  child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                //Find your best movie
-                _buildAvatar(context),
-                // search movie
-                _buildSearchMovie(context),
-                //Now playing
-                _buildListNowPlaying(context, true, homeState),
-                _buildListNowPlaying(context, false, homeState),
-                //Coming soon
-                _buildListComingSoon(context, homeState),
-              ],
+            backgroundColor: AppColors.dartBackground1,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    //Find your best movie
+                    _buildAvatar(context, state: homeState),
+                    // search movie
+                    _buildSearchMovie(context),
+                    //Now playing
+                    _buildListNowPlaying(context, true, homeState),
+                    _buildListNowPlaying(context, false, homeState),
+                    //Coming soon
+                    _buildListComingSoon(context, homeState),
+                  ],
+                ),
+              ),
             ),
-          )));
+          );
         },
       ),
     );
   }
 
-  Widget _buildAvatar(BuildContext context) {
+  Widget _buildAvatar(BuildContext context, {required HomeState state}) {
     return Container(
       margin: const EdgeInsets.all(10),
       child: Row(
@@ -65,22 +64,20 @@ class HomeScreen extends StatelessWidget {
               margin: const EdgeInsets.only(right: 100),
               child: const Text(
                 'Find Your Best Movie',
-                style: StringConstraints.h1,
+                style: AppTextStyle.medium24,
                 textAlign: TextAlign.start,
               ),
             ),
           ),
           Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () {},
-                child: const CircleAvatar(
-                  radius: 20,
-                  child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(Global.urlAvatar)),
-                ),
-              ))
+            flex: 1,
+            child: Profile(
+              image: state.user?.photoURL,
+              sizeAvatar: 48,
+              isEdit: false,
+              onTap: () {},
+            ),
+          )
         ],
       ),
     );
@@ -92,13 +89,11 @@ class HomeScreen extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(120),
-          color: ColorConstraints.dartBackground2),
+          color: AppColors.dartBackground2),
       child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SearchScreen(
-                      filmRepository: filmRepository,
-                    )));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => SearchScreen()));
           },
           child: Container(
             margin: const EdgeInsets.all(10),
@@ -110,7 +105,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Text(
                   'Search Movie',
-                  style: StringConstraints.h2,
+                  style: AppTextStyles.h2,
                 )
               ],
             ),
@@ -131,13 +126,12 @@ class HomeScreen extends StatelessWidget {
             children: [
               Text(
                 isTopRated ? 'Top Rating' : 'Now Playing',
-                style: StringConstraints.h5,
+                style: AppTextStyles.h5,
               ),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ViewAllScreen(
-                            filmRepository: filmRepository,
                             namePage: isTopRated
                                 ? Global.listTopRated
                                 : Global.listNowPlaying,
@@ -145,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: const Text(
                   'View all',
-                  style: StringConstraints.h6Blue,
+                  style: AppTextStyles.h6Blue,
                 ),
               )
             ],
@@ -177,7 +171,6 @@ class HomeScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return InformationScreen(
-            filmRepository: filmRepository,
             filmData: filmData,
           );
         }));
@@ -227,13 +220,12 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     filmData.originalTitle,
-                    style: StringConstraints.h2Bold,
+                    style: AppTextStyles.h2Bold,
                   ),
                   Row(
                     children: [
                       RatingBar.builder(
-                          initialRating:
-                              filmData.voteAverage.toDouble() / 2.0,
+                          initialRating: filmData.voteAverage.toDouble() / 2.0,
                           minRating: 1,
                           itemCount: 5,
                           itemSize: 20,
@@ -243,8 +235,7 @@ class HomeScreen extends StatelessWidget {
                                 Icons.star,
                                 color: Colors.amber,
                               ),
-                          onRatingUpdate: (rating) {
-                          }),
+                          onRatingUpdate: (rating) {}),
                       Text(
                         '(${filmData.voteAverage / 2.0})',
                       )
@@ -271,19 +262,18 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Text(
                 'Coming Soon',
-                style: StringConstraints.h5,
+                style: AppTextStyles.h5,
               ),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ViewAllScreen(
-                            filmRepository: filmRepository,
+                      builder: (context) => const ViewAllScreen(
                             namePage: Global.listComingSoon,
                           )));
                 },
                 child: const Text(
                   'View all',
-                  style: StringConstraints.h6Blue,
+                  style: AppTextStyles.h6Blue,
                 ),
               )
             ],
@@ -313,12 +303,15 @@ class HomeScreen extends StatelessWidget {
   Widget _buildItemComingSoon(BuildContext context, FilmData filmData) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return InformationScreen(
-            filmRepository: filmRepository,
-            filmData: filmData,
-          );
-        }));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return InformationScreen(
+                filmData: filmData,
+              );
+            },
+          ),
+        );
       },
       child: Container(
         height: 100,

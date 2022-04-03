@@ -1,4 +1,4 @@
-class IconContraints {
+class AppIcons {
   static const String prePath = 'assets/images';
   static const String iconAdd = '$prePath/add.png';
   static const String iconBack = '$prePath/back.png';
@@ -18,4 +18,5 @@ class IconContraints {
   static const String iconTopUp = '$prePath/top_up.png';
   static const String iconFacebook = '$prePath/facebook.png';
   static const String iconGoogle = '$prePath/google.png';
+  static const String iconAuto = '$prePath/auto.jpg';
 }

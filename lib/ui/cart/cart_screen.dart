@@ -5,18 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
+import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/cart/check_out_screen.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class CartScreen extends StatelessWidget {
-  final FilmRepository filmRepository;
   const CartScreen({
     Key? key,
-    required this.filmRepository,
   }) : super(key: key);
 
   @override
@@ -42,7 +40,9 @@ class CartScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
+              backgroundColor: AppColors.dartBackground1,
               actions: [
                 Visibility(
                   visible: state.listFilmData.isNotEmpty,
@@ -70,7 +70,6 @@ class CartScreen extends StatelessWidget {
                           await Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => CheckOutScreen(
                                     listFilmData: state.listFilmDataSelected,
-                                    filmRepository: filmRepository,
                                   )));
 
                       if (result['payment']) {
@@ -111,7 +110,6 @@ class CartScreen extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => InformationScreen(
-                        filmRepository: filmRepository,
                         filmData: state.listFilmData[index])));
               },
               child: Container(
@@ -229,7 +227,7 @@ class CartScreen extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     'Are you sure you want to delete?',
-                    style: StringConstraints.h2BoldDark,
+                    style: AppTextStyles.h2BoldDark,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -252,7 +250,7 @@ class CartScreen extends StatelessWidget {
                         },
                         child: const Text(
                           'OK',
-                          style: StringConstraints.h2BoldRed,
+                          style: AppTextStyles.h2BoldRed,
                           textAlign: TextAlign.center,
                         )),
                   ),
@@ -267,7 +265,7 @@ class CartScreen extends StatelessWidget {
                             Navigator.of(context).pop({'confirm': false}),
                         child: const Text(
                           'Cancel',
-                          style: StringConstraints.h2BoldDark,
+                          style: AppTextStyles.h2BoldDark,
                           textAlign: TextAlign.center,
                         )),
                   ),

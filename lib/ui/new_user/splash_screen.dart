@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket/common/icon_constraints.dart';
+import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_icons.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -7,6 +8,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.dartBackground1,
       body: SafeArea(
         child: Center(
           child: Container(
@@ -14,7 +16,7 @@ class SplashScreen extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32), color: Colors.blue),
               child: Image.asset(
-                IconContraints.iconFilm,
+                AppIcons.iconFilm,
                 color: Colors.white,
               )),
         ),

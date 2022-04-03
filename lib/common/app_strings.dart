@@ -1,0 +1,33 @@
+class AppStrings {
+  //State
+  static String isLoading = 'Waiting a second...';
+
+  //Sign in
+  static String signinWelcomBack = 'Welcome Back, Movie Lover!';
+  static String signinEmailAddress = 'Email Address';
+  static String signinPassword = 'Password';
+  static String signinEmailNotEmpty = 'Email is not empty';
+  static String signinPasswordNotEmpty = 'Password is not empty';
+  static String signinForgotPassword = 'Forgot Password?';
+  static String signinLogin = 'Login';
+  static String signinCreateNewAccount = 'Create new account?';
+  static String signinSignUp = 'Sign Up';
+  static String signinIsLogin = 'Waiting a second...';
+  static String signinIsSuccess = 'Login success';
+  static String signinIsFailure = 'Login failure';
+  static String signinEmailAndPasswordError = 'Email or Password is not correct';
+
+  //Sign up
+  static String signupCreateNew = 'Create New Your Account';
+  static String signupFullName = 'Full name';
+  static String signupError = 'Please enter the value';
+  static String signupEmailAddress = 'Email Address';
+  static String signupPassword = 'Password';
+  static String signupConfirmPassword = 'Confirm Password';
+  static String signupSignUp = 'Sign Up';
+  static String signupIsLoading = 'Waiting a second...';
+  static String signupPasswordIsNotSame = 'Password is not same';
+  static String signupSignUpSuccess = 'Sign up success';
+  static String signupSignUpFailure = 'Sign up failure';
+  static String signupEmailIsSignedUp = 'Email is signed up';
+}

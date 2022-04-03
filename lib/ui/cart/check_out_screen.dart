@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/string_constraints.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class CheckOutScreen extends StatelessWidget {
   final List<FilmData> listFilmData;
-  final FilmRepository filmRepository;
-  const CheckOutScreen({Key? key, required this.listFilmData, required this.filmRepository}) : super(key: key);
+  const CheckOutScreen(
+      {Key? key, required this.listFilmData})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -20,8 +21,10 @@ class CheckOutScreen extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: AppColors.dartBackground1,
           appBar: AppBar(
             title: const Text('Checkout'),
+            backgroundColor: AppColors.dartBackground1,
           ),
           body: ListView.builder(
               itemCount: listFilmData.length,
@@ -51,8 +54,7 @@ class CheckOutScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => InformationScreen(
-                filmRepository: filmRepository, filmData: filmData)));
+            builder: (_) => InformationScreen(filmData: filmData)));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +79,7 @@ class CheckOutScreen extends StatelessWidget {
                 Text(
                   filmData.originalTitle,
                   maxLines: 2,
-                  style: StringConstraints.h2Bold,
+                  style: AppTextStyles.h2Bold,
                 ),
                 Row(
                   children: [
@@ -92,8 +94,7 @@ class CheckOutScreen extends StatelessWidget {
                               Icons.star,
                               color: Colors.amber,
                             ),
-                        onRatingUpdate: (rating) {
-                        }),
+                        onRatingUpdate: (rating) {}),
                     Text(
                       '(${filmData.voteAverage / 2.0})',
                     )
@@ -101,7 +102,7 @@ class CheckOutScreen extends StatelessWidget {
                 ),
                 Text(
                   DateFormat('dd-MM-yyyy').format(filmData.releaseDate),
-                  style: StringConstraints.h7,
+                  style: AppTextStyles.h7,
                 )
               ],
             ),
@@ -125,9 +126,9 @@ class CheckOutScreen extends StatelessWidget {
           children: [
             const Text(
               'ID Order',
-              style: StringConstraints.h8,
+              style: AppTextStyles.h8,
             ),
-            Text('${filmData.id}', style: StringConstraints.h8)
+            Text('${filmData.id}', style: AppTextStyles.h8)
           ],
         ),
         Row(
@@ -135,10 +136,10 @@ class CheckOutScreen extends StatelessWidget {
           children: [
             const Text(
               'Date & Time',
-              style: StringConstraints.h8,
+              style: AppTextStyles.h8,
             ),
             Text(DateFormat('dd-MM-yyyy').format(filmData.releaseDate),
-                style: StringConstraints.h8)
+                style: AppTextStyles.h8)
           ],
         ),
         Row(
@@ -146,9 +147,9 @@ class CheckOutScreen extends StatelessWidget {
           children: const [
             Text(
               'Price',
-              style: StringConstraints.h8,
+              style: AppTextStyles.h8,
             ),
-            Text('Rp 50.000 x 1', style: StringConstraints.h8)
+            Text('Rp 50.000 x 1', style: AppTextStyles.h8)
           ],
         ),
         Row(
@@ -156,9 +157,9 @@ class CheckOutScreen extends StatelessWidget {
           children: const [
             Text(
               'Total',
-              style: StringConstraints.h8,
+              style: AppTextStyles.h8,
             ),
-            Text('Rp 50.000', style: StringConstraints.h8Bold)
+            Text('Rp 50.000', style: AppTextStyles.h8Bold)
           ],
         ),
         Container(
