@@ -18,4 +18,5 @@ class AppIcons {
   static const String iconTopUp = '$prePath/top_up.png';
   static const String iconFacebook = '$prePath/facebook.png';
   static const String iconGoogle = '$prePath/google.png';
+  static const String iconAuto = '$prePath/auto.jpg';
 }

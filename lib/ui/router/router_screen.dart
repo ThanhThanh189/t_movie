@@ -5,8 +5,6 @@ import 'package:movie_ticket/blocs/router/router_bloc.dart';
 import 'package:movie_ticket/blocs/router/router_event.dart';
 import 'package:movie_ticket/blocs/router/router_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
-import 'package:movie_ticket/data/repositories/user_repository.dart';
 import 'package:movie_ticket/ui/cart/cart_screen.dart';
 import 'package:movie_ticket/ui/favorite/favorite_screen.dart';
 import 'package:movie_ticket/ui/order_ticket/home_screen.dart';
@@ -14,35 +12,23 @@ import 'package:movie_ticket/ui/setting/setting_screen.dart';
 
 class RouterScreen extends StatelessWidget {
   final User user;
-  final UserRepository userRepository;
-  final FilmRepository filmRepository;
 
-  const RouterScreen(
-      {Key? key,
-      required this.user,
-      required this.userRepository,
-      required this.filmRepository})
-      : super(key: key);
+  const RouterScreen({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   List<Widget> _widgetOptions() => <Widget>[
-        HomeScreen(
-          user: user,
-          filmRepository: filmRepository,
-        ),
-        FavoriteScreen(
-          filmRepository: filmRepository,
-        ),
-        CartScreen(
-          filmRepository: filmRepository,
-        ),
+        const HomeScreen(),
+        const FavoriteScreen(),
+        const CartScreen(),
         SettingScreen(
-          userRepository: userRepository,
+          user: user,
         ),
       ];
 
   @override
   Widget build(BuildContext context) {
-    // print('user: ${user}');
     final List<Widget> widgetOptions = _widgetOptions();
 
     return BlocProvider<RouterBloc>(

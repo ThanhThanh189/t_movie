@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_icons.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -29,7 +30,7 @@ class OnboardingScreen extends StatelessWidget {
             ),
             const Text(
               'New Experience',
-              style: AppTextStyles.medium24,
+              style: AppTextStyle.medium24,
             ),
             const SizedBox(
               height: 10,

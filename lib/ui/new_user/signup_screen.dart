@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_ticket/blocs/authentication/authentication_bloc.dart';
+import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
 import 'package:movie_ticket/blocs/register/register_bloc.dart';
 import 'package:movie_ticket/blocs/register/register_event.dart';
 import 'package:movie_ticket/blocs/register/register_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/app_strings.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/user_repository.dart';
+import 'package:movie_ticket/ui/router/router_screen.dart';
+import 'package:movie_ticket/ui/widgets/base_button/base_button.dart';
+import 'package:movie_ticket/ui/widgets/images/profile.dart';
+import 'package:movie_ticket/ui/widgets/input_text_field/input_text_field.dart';
+import 'package:movie_ticket/ui/widgets/snack_bar/custom_snack_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
-  final UserRepository userRepository;
   SignUpScreen({
     Key? key,
-    required this.userRepository,
   }) : super(key: key);
   final _fullName = TextEditingController();
   final _emailAddress = TextEditingController();
@@ -22,82 +26,117 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RegisterBloc>(
-      create: (context) => RegisterBloc(userRepository: userRepository),
+      create: (context) => RegisterBloc(),
       child: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isLoading) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('is loading'),
-              duration: Duration(milliseconds: 1000),
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+              ),
+            );
           }
           if (state.viewState == ViewState.isFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message.toString()),
-              duration: const Duration(milliseconds: 1000),
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+                isSuccess: false,
+              ),
+            );
           }
           if (state.viewState == ViewState.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.message.toString()),
-              duration: const Duration(milliseconds: 1000),
-            ));
-            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+                isSuccess: true,
+              ),
+            );
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => RouterScreen(
+                  user: state.user!,
+                ),
+              ),
+            );
           }
         },
         builder: (context, state) {
           return Scaffold(
             backgroundColor: AppColors.dartBackground1,
-            appBar: AppBar(
-              title: const Text('Create New Your Account'),
-              backgroundColor: AppColors.dartBackground1,
-              centerTitle: true,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        _buildBackButton(context),
+                        _buildTitle(context),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        _buildAvatar(context, state: state),
+                        const SizedBox(
+                          height: 37,
+                        ),
+                        _buildFormRegister(context, state)
+                      ],
+                    )),
+              ),
             ),
-            body: Container(
-                margin: const EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    // _buildTitle(context),
-                    _buildAvatar(context, state),
-                    _buildFormRegister(context, state)
-                  ],
-                )),
           );
         },
       ),
     );
   }
 
-  // Widget _buildTitle(BuildContext context) {
-  //   return Center(
-  //     child: Container(
-  //       margin: EdgeInsets.symmetric(horizontal: 88.0),
-  //       child: Text(
-  //         'Create New Your Account',
-  //         style: StringConstraints.h1,
-  //         textAlign: TextAlign.center,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Widget _buildAvatar(BuildContext context, RegisterState state) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20, bottom: 20),
-      child: const CircleAvatar(
-          radius: 40,
-          child: CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(Global.urlAvatar),
-          )
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(100),
-          //   child: Image.asset(
-          //     'assets/images/auto.jpg',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
+  Widget _buildBackButton(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            size: 30,
           ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 88.0),
+        child: Text(
+          AppStrings.signupCreateNew,
+          style: AppTextStyle.semiBold24,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context, {required RegisterState state}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Profile(
+          sizeAvatar: 92.0,
+          image: state.imageAvatar,
+          isEdit: true,
+          onTap: () {
+            BlocProvider.of<RegisterBloc>(context).add(
+              GetAvatarRegisterEvent(
+                  isExists: state.imageAvatar != null ? true : false),
+            );
+          },
+        )
+      ],
     );
   }
 
@@ -105,138 +144,138 @@ class SignUpScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Form(
-          child: Column(
-        children: [
-          TextFormField(
-            controller: _fullName,
-            decoration: InputDecoration(
-                labelText: 'Full Name',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10))),
-            validator: (validator) {
-              if (validator == null || validator.isEmpty) {
-                return 'Please';
-              }
-              return null;
-            },
-            onChanged: (value) {},
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              controller: _emailAddress,
-              decoration: InputDecoration(
-                  errorText:
-                      state.isValidateEmail ? null : 'Please enter the value',
-                  labelText: 'Email Address',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                BlocProvider.of<RegisterBloc>(context)
-                    .add(SetEmailRegisterEvent(email: value));
-              },
+        child: Column(
+          children: [
+            _buildFullNameForm(context, state: state),
+            const SizedBox(
+              height: 42,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              obscureText: !state.showPassword,
-              controller: _passWord,
-              decoration: InputDecoration(
-                  errorText: state.isValidatePassword
-                      ? null
-                      : 'Please enter the value',
-                  labelText: 'Password',
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<RegisterBloc>(context).add(
-                          ShowPasswordRegisterEvent(
-                              showPassword: !state.showPassword));
-                    },
-                    child: !state.showPassword
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                BlocProvider.of<RegisterBloc>(context)
-                    .add(SetPasswordRegisterEvent(password: value));
-              },
+            //Email
+            _buildEmailAddressForm(context, state: state),
+            const SizedBox(
+              height: 42,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              obscureText: !state.showConfirmPassword,
-              controller: _confirmPassword,
-              decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<RegisterBloc>(context).add(
-                          ShowConfirmPasswordRegisterEvent(
-                              showConfirmPassword: !state.showConfirmPassword));
-                    },
-                    child: !state.showConfirmPassword
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
-                  ),
-                  errorText: state.isValidateConfirmPassword
-                      ? null
-                      : 'Please enter the value',
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                BlocProvider.of<RegisterBloc>(context)
-                    .add(SetConfirmPasswordRegisterEvent(password: value));
-              },
+            //Password
+            _buildPasswordForm(context, state: state),
+            const SizedBox(
+              height: 42,
             ),
-          ),
-          _buildButtonRegister(context, state),
-        ],
-      )),
+            //Confirm password
+            _buildConfirmPasswordForm(context, state: state),
+            const SizedBox(
+              height: 44,
+            ),
+            _buildButtonRegister(context, state),
+            const SizedBox(
+              height: 67,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullNameForm(
+    BuildContext context, {
+    required RegisterState state,
+  }) {
+    return InputTextField(
+        controller: _fullName,
+        errorText: state.isValidateFullName ? null : AppStrings.signupError,
+        onChange: (value) {
+          BlocProvider.of<RegisterBloc>(context).add(
+            SetFullNameRegisterEvent(fullName: value),
+          );
+        },
+        isPassword: false,
+        labelText: AppStrings.signupFullName);
+  }
+
+  Widget _buildEmailAddressForm(
+    BuildContext context, {
+    required RegisterState state,
+  }) {
+    return InputTextField(
+        controller: _emailAddress,
+        errorText: state.isValidateEmail ? null : AppStrings.signupError,
+        onChange: (value) {
+          BlocProvider.of<RegisterBloc>(context).add(
+            SetEmailRegisterEvent(email: value),
+          );
+        },
+        isPassword: false,
+        labelText: AppStrings.signupEmailAddress);
+  }
+
+  Widget _buildPasswordForm(
+    BuildContext context, {
+    required RegisterState state,
+  }) {
+    return InputTextField(
+      controller: _passWord,
+      obscureText: !state.showPassword,
+      onTapEyes: () {
+        BlocProvider.of<RegisterBloc>(context).add(
+          ShowPasswordRegisterEvent(showPassword: !state.showPassword),
+        );
+      },
+      visibility: state.showPassword,
+      errorText: state.isValidatePassword ? null : AppStrings.signupError,
+      onChange: (value) {
+        BlocProvider.of<RegisterBloc>(context).add(
+          SetPasswordRegisterEvent(password: value),
+        );
+      },
+      isPassword: true,
+      labelText: AppStrings.signupPassword,
+    );
+  }
+
+  Widget _buildConfirmPasswordForm(
+    BuildContext context, {
+    required RegisterState state,
+  }) {
+    return InputTextField(
+      controller: _confirmPassword,
+      obscureText: !state.showConfirmPassword,
+      onTapEyes: () {
+        BlocProvider.of<RegisterBloc>(context).add(
+          ShowConfirmPasswordRegisterEvent(
+              showConfirmPassword: !state.showConfirmPassword),
+        );
+      },
+      visibility: state.showConfirmPassword,
+      errorText:
+          state.isValidateConfirmPassword ? null : AppStrings.signupError,
+      onChange: (value) {
+        BlocProvider.of<RegisterBloc>(context).add(
+          SetConfirmPasswordRegisterEvent(password: value),
+        );
+      },
+      isPassword: true,
+      labelText: AppStrings.signupConfirmPassword,
     );
   }
 
   Widget _buildButtonRegister(BuildContext context, RegisterState state) {
     return Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
-        decoration: BoxDecoration(
-          gradient: AppColors.mainGradient,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: TextButton(
+      margin: const EdgeInsets.symmetric(horizontal: 60),
+      child: BaseButton(
+          text: AppStrings.signupSignUp,
           onPressed: () {
             BlocProvider.of<RegisterBloc>(context).add(
-                RegisterWithEmailPasswordRegisterEvent(
-                    email: _emailAddress.text,
-                    password: _passWord.text,
-                    confirmPassword: _confirmPassword.text));
+              RegisterWithEmailPasswordRegisterEvent(
+                  email: _emailAddress.text,
+                  password: _passWord.text,
+                  confirmPassword: _confirmPassword.text,
+                  displayName: _fullName.text),
+            );
           },
-          child: const Text(
-            'Sign Up',
-            style: AppTextStyles.h2,
-          ),
-        ));
+          isVisible: _fullName.text.isNotEmpty &&
+              _emailAddress.text.isNotEmpty &&
+              _passWord.text.isNotEmpty &&
+              _confirmPassword.text.isNotEmpty &&
+              state.viewState != ViewState.isLoading),
+    );
   }
 }

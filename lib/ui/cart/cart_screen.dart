@@ -6,18 +6,15 @@ import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/cart/check_out_screen.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class CartScreen extends StatelessWidget {
-  final FilmRepository filmRepository;
   const CartScreen({
     Key? key,
-    required this.filmRepository,
   }) : super(key: key);
 
   @override
@@ -73,7 +70,6 @@ class CartScreen extends StatelessWidget {
                           await Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => CheckOutScreen(
                                     listFilmData: state.listFilmDataSelected,
-                                    filmRepository: filmRepository,
                                   )));
 
                       if (result['payment']) {
@@ -114,7 +110,6 @@ class CartScreen extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => InformationScreen(
-                        filmRepository: filmRepository,
                         filmData: state.listFilmData[index])));
               },
               child: Container(

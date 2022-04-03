@@ -8,12 +8,10 @@ import 'package:movie_ticket/blocs/profile/profile_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  final UserRepository userRepository;
-  EditProfileScreen({Key? key, 
-    required this.userRepository,
+  EditProfileScreen({
+    Key? key,
   }) : super(key: key);
 
   final TextEditingController _displayNameController = TextEditingController();
@@ -22,7 +20,7 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(
-      create: (context) => ProfileBloc(userRepository: userRepository)
+      create: (context) => ProfileBloc()
         ..add(StartedProfileEvent()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
@@ -125,8 +123,7 @@ class EditProfileScreen extends StatelessWidget {
             child: TextFormField(
               readOnly: true,
               decoration: InputDecoration(
-                  hintText:
-                      state.email ?? 'Email Address',
+                  hintText: state.email ?? 'Email Address',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10))),
               validator: (validator) {

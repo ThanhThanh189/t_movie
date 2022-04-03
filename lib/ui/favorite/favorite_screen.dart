@@ -6,17 +6,14 @@ import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class FavoriteScreen extends StatelessWidget {
-  final FilmRepository filmRepository;
   const FavoriteScreen({
     Key? key,
-    required this.filmRepository,
   }) : super(key: key);
 
   @override
@@ -74,7 +71,6 @@ class FavoriteScreen extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => InformationScreen(
-                        filmRepository: filmRepository,
                         filmData: state.listFilmData[index])));
               },
               child: Container(

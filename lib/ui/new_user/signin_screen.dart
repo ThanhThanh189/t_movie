@@ -8,19 +8,18 @@ import 'package:movie_ticket/blocs/login/login_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_icons.dart';
 import 'package:movie_ticket/common/app_strings.dart';
-import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/repositories/user_repository.dart';
 import 'package:movie_ticket/ui/new_user/signup_screen.dart';
+import 'package:movie_ticket/ui/router/router_screen.dart';
 import 'package:movie_ticket/ui/widgets/base_button/base_button.dart';
 import 'package:movie_ticket/ui/widgets/input_text_field/input_text_field.dart';
+import 'package:movie_ticket/ui/widgets/snack_bar/custom_snack_bar.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({
     Key? key,
-    required this.userRepository,
   }) : super(key: key);
-  final UserRepository userRepository;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -28,25 +27,41 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(userRepository: userRepository),
+      create: (context) => LoginBloc(),
       child: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isLoading) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('is loading'),
-              duration: Duration(milliseconds: 1000),
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+              ),
+            );
           }
           if (state.viewState == ViewState.isFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(state.message.toString()),
-                duration: const Duration(milliseconds: 1000)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                isSuccess: false,
+                milliseconds: 1000,
+              ),
+            );
           }
           if (state.viewState == ViewState.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('login success'),
-                duration: Duration(milliseconds: 1000)));
-            BlocProvider.of<AuthenticationBloc>(context).add(LoggedInEvent());
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                isSuccess: true,
+                milliseconds: 1000,
+              ),
+            );
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) {
+                  return RouterScreen(user: state.user!);
+                },
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -96,7 +111,7 @@ class SignInScreen extends StatelessWidget {
           margin: const EdgeInsets.only(right: 150),
           child: Text(
             AppStrings.signinWelcomBack,
-            style: AppTextStyles.medium24,
+            style: AppTextStyle.medium24,
           ),
         ),
       ],
@@ -123,7 +138,10 @@ class SignInScreen extends StatelessWidget {
           const SizedBox(
             height: 28,
           ),
-          _buildButtonLogin(context),
+          _buildButtonLogin(
+            context,
+            state,
+          ),
           const SizedBox(
             height: 21,
           ),
@@ -186,26 +204,29 @@ class SignInScreen extends StatelessWidget {
         Text(
           AppStrings.signinForgotPassword,
           textAlign: TextAlign.end,
-          style: AppTextStyles.regular14.copyWith(color: AppColors.mainText),
+          style: AppTextStyle.regular14.copyWith(color: AppColors.mainText),
         )
       ],
     );
   }
 
-  Widget _buildButtonLogin(BuildContext context) {
+  Widget _buildButtonLogin(BuildContext context, LoginState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60),
       child: BaseButton(
         text: AppStrings.signinLogin,
         isVisible: _emailController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty,
-        onPressed: () {
-          BlocProvider.of<LoginBloc>(context).add(
-            LoginWithEmailAndPasswordEvent(
-                email: _emailController.text,
-                password: _passwordController.text),
-          );
-        },
+            _passwordController.text.isNotEmpty &&
+            state.viewState != ViewState.isLoading,
+        onPressed: state.viewState == ViewState.isLoading
+            ? null
+            : () {
+                BlocProvider.of<LoginBloc>(context).add(
+                  LoginWithEmailAndPasswordEvent(
+                      email: _emailController.text,
+                      password: _passwordController.text),
+                );
+              },
       ),
     );
   }
@@ -215,7 +236,7 @@ class SignInScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => SignUpScreen(userRepository: userRepository),
+            builder: (_) => SignUpScreen(),
           ),
         );
       },
@@ -224,12 +245,11 @@ class SignInScreen extends StatelessWidget {
           children: [
             TextSpan(
               text: AppStrings.signinCreateNewAccount,
-              style: AppTextStyles.medium14.copyWith(color: AppColors.mainText),
+              style: AppTextStyle.medium14.copyWith(color: AppColors.mainText),
             ),
             TextSpan(
               text: AppStrings.signinSignUp,
-              style:
-                  AppTextStyles.medium14.copyWith(color: AppColors.mainColor),
+              style: AppTextStyle.medium14.copyWith(color: AppColors.mainColor),
             ),
           ],
         ),

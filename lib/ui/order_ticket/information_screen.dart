@@ -6,12 +6,11 @@ import 'package:movie_ticket/blocs/information/information_bloc.dart';
 import 'package:movie_ticket/blocs/information/information_event.dart';
 import 'package:movie_ticket/blocs/information/information_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 
 // details: https://api.themoviedb.org/3/movie/634649?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US
 // reviews: https://api.themoviedb.org/3/movie/634649/reviews?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US&page=1
@@ -19,16 +18,15 @@ import 'package:movie_ticket/data/repositories/film_repository.dart';
 // similar: https://api.themoviedb.org/3/movie/634649/similar?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US&page=1
 
 class InformationScreen extends StatelessWidget {
-  final FilmRepository filmRepository;
   final FilmData filmData;
   const InformationScreen(
-      {Key? key, required this.filmRepository, required this.filmData})
+      {Key? key, required this.filmData})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InformationBloc>(
-      create: (context) => InformationBloc(filmRepository: filmRepository)
+      create: (context) => InformationBloc()
         ..add(StartedInforEvent(id: filmData.id)),
       child: BlocConsumer<InformationBloc, InformationState>(
         listener: (context, state) {

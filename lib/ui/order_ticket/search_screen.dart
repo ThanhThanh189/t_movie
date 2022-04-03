@@ -7,22 +7,19 @@ import 'package:movie_ticket/blocs/search/search_event.dart';
 import 'package:movie_ticket/blocs/search/search_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({
     Key? key,
-    required this.filmRepository,
   }) : super(key: key);
 
-  final FilmRepository filmRepository;
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchBloc>(
-      create: (context) => SearchBloc(filmRepository: filmRepository),
+      create: (context) => SearchBloc(),
       child: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           return SafeArea(
@@ -72,8 +69,8 @@ class SearchScreen extends StatelessWidget {
                                     },
                                     icon: const Icon(Icons.cancel))
                                 : null,
-                            border:
-                                const OutlineInputBorder(borderSide: BorderSide.none),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide.none),
                           ),
                         ),
                       ),
@@ -98,9 +95,8 @@ class SearchScreen extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => InformationScreen(
-                      filmRepository: filmRepository,
-                      filmData: state.listFilmData[index])));
+                  builder: (_) =>
+                      InformationScreen(filmData: state.listFilmData[index])));
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
@@ -113,15 +109,13 @@ class SearchScreen extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child:
-                            state.listFilmData[index].backdropPath != null
-                                ? _buildLoadImage(
-                                    url: Global.imageURL +
-                                        state.listFilmData[index]
-                                            .backdropPath!)
-                                : Image.asset(
-                                    'assets/images/loading_dark.gif',
-                                  ),
+                        child: state.listFilmData[index].backdropPath != null
+                            ? _buildLoadImage(
+                                url: Global.imageURL +
+                                    state.listFilmData[index].backdropPath!)
+                            : Image.asset(
+                                'assets/images/loading_dark.gif',
+                              ),
                       )
                     ],
                   ),
@@ -139,9 +133,8 @@ class SearchScreen extends StatelessWidget {
                           Row(
                             children: [
                               RatingBar.builder(
-                                  initialRating: state.listFilmData[index]
-                                          .voteAverage /
-                                      2,
+                                  initialRating:
+                                      state.listFilmData[index].voteAverage / 2,
                                   minRating: 1,
                                   itemCount: 5,
                                   itemSize: 20,
@@ -151,15 +144,14 @@ class SearchScreen extends StatelessWidget {
                                         Icons.star,
                                         color: Colors.amber,
                                       ),
-                                  onRatingUpdate: (rating) {
-                                  }),
+                                  onRatingUpdate: (rating) {}),
                               Text(
                                 '(${state.listFilmData[index].voteAverage / 2})',
                               )
                             ],
                           ),
-                          Text(
-                              DateFormat('dd-MM-yyyy').format(state.listFilmData[index].releaseDate)),
+                          Text(DateFormat('dd-MM-yyyy')
+                              .format(state.listFilmData[index].releaseDate)),
                         ]),
                   ),
                   const Icon(Icons.arrow_circle_up_outlined, size: 30),

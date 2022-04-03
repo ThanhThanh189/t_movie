@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
 
 class CheckOutScreen extends StatelessWidget {
   final List<FilmData> listFilmData;
-  final FilmRepository filmRepository;
-  const CheckOutScreen({Key? key, required this.listFilmData, required this.filmRepository}) : super(key: key);
+  const CheckOutScreen(
+      {Key? key, required this.listFilmData})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -54,8 +54,7 @@ class CheckOutScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => InformationScreen(
-                filmRepository: filmRepository, filmData: filmData)));
+            builder: (_) => InformationScreen(filmData: filmData)));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,8 +94,7 @@ class CheckOutScreen extends StatelessWidget {
                               Icons.star,
                               color: Colors.amber,
                             ),
-                        onRatingUpdate: (rating) {
-                        }),
+                        onRatingUpdate: (rating) {}),
                     Text(
                       '(${filmData.voteAverage / 2.0})',
                     )

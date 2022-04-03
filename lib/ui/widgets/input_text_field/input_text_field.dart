@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 
 class InputTextField extends StatelessWidget {
   const InputTextField({
@@ -29,12 +29,12 @@ class InputTextField extends StatelessWidget {
       width: double.infinity,
       child: TextFormField(
         controller: controller,
-        style: AppTextStyles.regular14.copyWith(
+        style: AppTextStyle.regular14.copyWith(
           color: AppColors.mainText,
         ),
         obscureText: obscureText ?? false,
         decoration: InputDecoration(
-          labelStyle: AppTextStyles.regular14.copyWith(
+          labelStyle: AppTextStyle.regular14.copyWith(
             color: AppColors.mainText,
           ),
           errorText: errorText,

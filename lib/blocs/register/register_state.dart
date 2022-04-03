@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movie_ticket/common/view_state.dart';
 
 class RegisterState {
+  bool isValidateFullName;
   bool isValidateEmail;
   bool isValidatePassword;
   bool isValidateConfirmPassword;
+  String? imageAvatar;
   ViewState viewState;
   bool showPassword;
   bool showConfirmPassword;
@@ -12,9 +14,11 @@ class RegisterState {
   String? message;
 
   RegisterState({
+    required this.isValidateFullName,
     required this.isValidateEmail,
     required this.isValidatePassword,
     required this.isValidateConfirmPassword,
+    this.imageAvatar,
     required this.viewState,
     required this.showPassword,
     required this.showConfirmPassword,
@@ -23,6 +27,7 @@ class RegisterState {
   });
 
   factory RegisterState.initial() => RegisterState(
+      isValidateFullName: true,
       isValidateEmail: true,
       isValidatePassword: true,
       isValidateConfirmPassword: true,
@@ -31,55 +36,31 @@ class RegisterState {
       showConfirmPassword: false,
       message: null);
 
-  factory RegisterState.isLoading({String? message}) => RegisterState(
-      isValidateEmail: true,
-      isValidatePassword: true,
-      isValidateConfirmPassword: true,
-      viewState: ViewState.isLoading,
-      showPassword: false,
-      showConfirmPassword: false,
-      message: message);
-
-  factory RegisterState.isFailure({String? message}) => RegisterState(
-      isValidateEmail: true,
-      isValidatePassword: true,
-      isValidateConfirmPassword: true,
-      viewState: ViewState.isFailure,
-      showPassword: false,
-      showConfirmPassword: false,
-      message: message);
-
-  factory RegisterState.isSuccess({User? user, String? message}) =>
-      RegisterState(
-          isValidateEmail: true,
-          isValidatePassword: true,
-          isValidateConfirmPassword: true,
-          viewState: ViewState.isSuccess,
-          showPassword: false,
-          showConfirmPassword: false,
-          user: user,
-          message: message);
-
   RegisterState update({
+    bool? isValidateFullName,
     bool? isValidateEmail,
     bool? isValidatePassword,
     bool? isValidateConfirmPassword,
+    String? imageAvatar,
     ViewState? viewState,
     bool? showPassword,
     bool? showConfirmPassword,
+    bool? isRemoveImage,
     User? user,
     String? message,
   }) {
     return RegisterState(
+      isValidateFullName: isValidateFullName ?? this.isValidateFullName,
       isValidateEmail: isValidateEmail ?? this.isValidateEmail,
       isValidatePassword: isValidatePassword ?? this.isValidatePassword,
       isValidateConfirmPassword:
           isValidateConfirmPassword ?? this.isValidateConfirmPassword,
+      imageAvatar: isRemoveImage == true ? null : imageAvatar ?? this.imageAvatar,
       viewState: viewState ?? this.viewState,
       showPassword: showPassword ?? this.showPassword,
       showConfirmPassword: showConfirmPassword ?? this.showConfirmPassword,
       user: user ?? this.user,
-      message: message ?? this.message,
+      message: message,
     );
   }
 }

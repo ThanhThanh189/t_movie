@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 
 class AppTextStyles {
-  static const TextStyle medium24 = TextStyle(
-    fontSize: 24,
-    fontFamily: 'montserrat',
-    color: Colors.white,
-  );
-  static const TextStyle medium18 = TextStyle(
-      fontSize: 18, fontFamily: 'montserrat', fontWeight: FontWeight.w500);
   static const TextStyle h2 = TextStyle(
       fontSize: 18,
       fontFamily: 'montserrat',
@@ -29,16 +22,6 @@ class AppTextStyles {
       fontFamily: 'montserrat',
       color: Colors.red,
       fontWeight: FontWeight.bold);
-  static const TextStyle medium14 = TextStyle(
-    fontSize: 14,
-    fontFamily: 'montserrat',
-    fontWeight: FontWeight.w500,
-  );
-  static const TextStyle regular14 = TextStyle(
-    fontSize: 14,
-    fontFamily: 'montserrat',
-    fontWeight: FontWeight.w400,
-  );
   static const TextStyle h3 = TextStyle(
       fontSize: 14,
       fontFamily: 'montserrat',
@@ -85,4 +68,5 @@ class AppTextStyles {
       fontFamily: 'montserrat',
       color: AppColors.whiteBackground,
       fontWeight: FontWeight.bold);
+  
 }

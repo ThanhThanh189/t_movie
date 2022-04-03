@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:movie_ticket/common/app_strings.dart';
 
 import 'package:movie_ticket/common/view_state.dart';
 
@@ -30,21 +31,26 @@ class LoginState {
       isValidateEmail: true,
       isValidatePassword: true,
       viewState: ViewState.isLoading,
-      showPassword: false);
+      showPassword: false,
+      message: AppStrings.signinIsLogin
+      );
 
   factory LoginState.failure(String? message) => LoginState(
       isValidateEmail: true,
       isValidatePassword: true,
       viewState: ViewState.isFailure,
-      message: message ?? '',
-      showPassword: false);
+      message: message ?? AppStrings.signinIsFailure,
+      showPassword: false
+      );
 
   factory LoginState.success({required User user}) => LoginState(
       isValidateEmail: true,
       isValidatePassword: true,
       viewState: ViewState.isSuccess,
       user: user,
-      showPassword: false);
+      showPassword: false,
+      message: AppStrings.signinIsSuccess
+      );
 
   LoginState update({
     bool? isValidateEmail,

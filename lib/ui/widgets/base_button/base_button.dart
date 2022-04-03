@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 
 class BaseButton extends StatelessWidget {
   const BaseButton({
     Key? key,
     required this.text,
-    required this.onPressed,
+     this.onPressed,
     required this.isVisible,
   }) : super(key: key);
 
   final String text;
-  final Function() onPressed;
+  final Function()? onPressed;
   final bool isVisible;
 
   @override
@@ -24,10 +24,10 @@ class BaseButton extends StatelessWidget {
         color: isVisible ? AppColors.mainColor : AppColors.dartBackground2,
       ),
       child: TextButton(
-        onPressed: onPressed,
+        onPressed:isVisible ? onPressed : null,
         child: Text(
           text,
-          style: AppTextStyles.medium18.copyWith(
+          style: AppTextStyle.medium18.copyWith(
             color: AppColors.mainText,
           ),
         ),
