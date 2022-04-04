@@ -9,8 +9,8 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/ui/cart/check_out_screen.dart';
-import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/cart/check_out_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({

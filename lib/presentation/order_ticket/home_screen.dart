@@ -9,10 +9,10 @@ import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
-import 'package:movie_ticket/ui/order_ticket/search_screen.dart';
-import 'package:movie_ticket/ui/order_ticket/view_all_screen.dart';
-import 'package:movie_ticket/ui/widgets/images/profile.dart';
+import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/search_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/view_all_screen.dart';
+import 'package:movie_ticket/presentation/widgets/images/profile.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

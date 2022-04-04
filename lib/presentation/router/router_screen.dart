@@ -5,10 +5,10 @@ import 'package:movie_ticket/blocs/router/router_bloc.dart';
 import 'package:movie_ticket/blocs/router/router_event.dart';
 import 'package:movie_ticket/blocs/router/router_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/ui/cart/cart_screen.dart';
-import 'package:movie_ticket/ui/favorite/favorite_screen.dart';
-import 'package:movie_ticket/ui/order_ticket/home_screen.dart';
-import 'package:movie_ticket/ui/setting/setting_screen.dart';
+import 'package:movie_ticket/presentation/cart/cart_screen.dart';
+import 'package:movie_ticket/presentation/favorite/favorite_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/home_screen.dart';
+import 'package:movie_ticket/presentation/setting/setting_screen.dart';
 
 class RouterScreen extends StatelessWidget {
   final User user;
@@ -32,8 +32,9 @@ class RouterScreen extends StatelessWidget {
     final List<Widget> widgetOptions = _widgetOptions();
 
     return BlocProvider<RouterBloc>(
-        create: (context) => RouterBloc(),
-        child: BlocBuilder<RouterBloc, RouterState>(builder: (context, state) {
+      create: (context) => RouterBloc(),
+      child: BlocBuilder<RouterBloc, RouterState>(
+        builder: (context, state) {
           return Scaffold(
             body: widgetOptions[state.index],
             bottomNavigationBar: BottomNavigationBar(
@@ -64,6 +65,8 @@ class RouterScreen extends StatelessWidget {
               },
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }

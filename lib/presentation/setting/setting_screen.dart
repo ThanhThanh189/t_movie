@@ -6,9 +6,9 @@ import 'package:movie_ticket/blocs/setting/setting_event.dart';
 import 'package:movie_ticket/blocs/setting/setting_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
-import 'package:movie_ticket/ui/new_user/signin_screen.dart';
-import 'package:movie_ticket/ui/setting/edit_profile_screen.dart';
-import 'package:movie_ticket/ui/widgets/images/profile.dart';
+import 'package:movie_ticket/presentation/new_user/signin_screen.dart';
+import 'package:movie_ticket/presentation/setting/edit_profile_screen.dart';
+import 'package:movie_ticket/presentation/widgets/images/profile.dart';
 
 class SettingScreen extends StatelessWidget {
   final User user;

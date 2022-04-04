@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_event.dart';
 import 'package:movie_ticket/blocs/authentication/authentication_state.dart';
-import 'package:movie_ticket/ui/new_user/signin_screen.dart';
-import 'package:movie_ticket/ui/router/router_screen.dart';
+import 'package:movie_ticket/presentation/new_user/signin_screen.dart';
+import 'package:movie_ticket/presentation/router/router_screen.dart';
 
 class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
