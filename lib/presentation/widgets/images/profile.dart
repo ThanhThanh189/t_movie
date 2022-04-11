@@ -37,12 +37,30 @@ class Profile extends StatelessWidget {
                         width: sizeAvatar,
                         height: sizeAvatar,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          if (stackTrace != null) {
+                            return const Center(
+                              child: Icon(Icons.error),
+                            );
+                          }
+                          return const Center(child: Icon(Icons.error));
+                        },
                       )
                     : Image.file(
                         File(image!),
                         width: sizeAvatar,
                         height: sizeAvatar,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          if (stackTrace != null) {
+                            return const Center(
+                              child: Icon(Icons.error),
+                            );
+                          }
+                          return const Center(
+                            child: Icon(Icons.error),
+                          );
+                        },
                       ),
               ),
             ),
