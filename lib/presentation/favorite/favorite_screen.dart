@@ -9,7 +9,7 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({

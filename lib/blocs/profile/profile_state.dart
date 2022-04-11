@@ -1,38 +1,48 @@
 import 'package:movie_ticket/common/view_state.dart';
 
 class ProfileState {
-  String? photoURL;
-  String? fullName;
+  String? photoURLOld;
+  String? photoURLNew;
+  String? fullNameOld;
+  bool isValidateFullName;
+  bool isValidatePassword;
+  bool isValidateConfirmPassword;
   String? email;
   ViewState viewState;
   String? message;
   bool isValidatePasswordOld;
-  bool isShowPasswordOld;
-  bool isShowPasswordNew;
   ProfileState({
-    this.photoURL,
-    this.fullName,
+    this.photoURLOld,
+    this.photoURLNew,
+    this.fullNameOld,
+    required this.isValidateFullName,
+    required this.isValidatePassword,
+    required this.isValidateConfirmPassword,
     this.email,
     required this.viewState,
     required this.isValidatePasswordOld,
-    required this.isShowPasswordOld,
-    required this.isShowPasswordNew,
     this.message,
   });
 
   factory ProfileState.initial() => ProfileState(
-      photoURL: null,
-      fullName: null,
+      photoURLOld: null,
+      photoURLNew: null,
+      fullNameOld: null,
+      isValidateFullName: false,
+      isValidatePassword: false,
+      isValidateConfirmPassword: false,
       email: null,
       viewState: ViewState.isNormal,
       isValidatePasswordOld: true,
-      isShowPasswordOld: false,
-      isShowPasswordNew: false,
       message: null);
 
   ProfileState update({
-    String? photoURL,
-    String? fullName,
+    String? photoURLOld,
+    String? photoURLNew,
+    String? fullNameOld,
+    bool? isValidateFullName,
+    bool? isValidatePassword,
+    bool? isValidateConfirmPassword,
     String? email,
     ViewState? viewState,
     bool? isValidatePasswordOld,
@@ -41,32 +51,18 @@ class ProfileState {
     String? message,
   }) {
     return ProfileState(
-      photoURL: photoURL ?? this.photoURL,
-      fullName: fullName ?? this.fullName,
+      photoURLOld: photoURLOld ?? this.photoURLOld,
+      photoURLNew: photoURLNew ?? this.photoURLNew,
+      fullNameOld: fullNameOld ?? this.fullNameOld,
+      isValidateFullName: isValidateFullName ?? this.isValidateFullName,
+      isValidatePassword: isValidatePassword ?? this.isValidatePassword,
+      isValidateConfirmPassword:
+          isValidateConfirmPassword ?? this.isValidateConfirmPassword,
       email: email ?? this.email,
       viewState: viewState ?? this.viewState,
       isValidatePasswordOld:
           isValidatePasswordOld ?? this.isValidatePasswordOld,
-      isShowPasswordOld: isShowPasswordOld ?? this.isShowPasswordOld,
-      isShowPasswordNew: isShowPasswordNew ?? this.isShowPasswordNew,
       message: message ?? this.message,
     );
   }
 }
-
-// class ProfileState {
-//   File photoURL;
-//   ViewState viewState;
-//   String? message;
-//   ProfileState({required this.photoURL, required this.viewState, this.message});
-
-//   factory ProfileState.initial() => ProfileState(
-//       photoURL: File(''), viewState: ViewState.isNormal, message: null);
-//   ProfileState update(
-//       {File? photoURL, ViewState? viewState, String? message}) {
-//     return ProfileState(
-//         photoURL: photoURL ?? this.photoURL,
-//         viewState: viewState ?? this.viewState,
-//         message: message ?? this.message);
-//   }
-// }

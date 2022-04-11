@@ -37,7 +37,7 @@ class ViewAllBloc extends Bloc<ViewAllEvent, ViewAllState> {
       if (event is LoadMoreViewAllEvent) {
         emit.call(state.update(isSelectLoadMore: true));
         try {
-          if (event.numberPage <= 500) {
+          if (event.numberPage <= 5) {
             var listFilmDataNew = await filmRepository.getListFilm(
                 event.namePage, event.numberPage);
             List<FilmData> listFilmData = state.listFilmData;

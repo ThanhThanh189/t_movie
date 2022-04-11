@@ -6,9 +6,10 @@ import 'package:movie_ticket/blocs/setting/setting_event.dart';
 import 'package:movie_ticket/blocs/setting/setting_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
-import 'package:movie_ticket/ui/new_user/signin_screen.dart';
-import 'package:movie_ticket/ui/setting/edit_profile_screen.dart';
-import 'package:movie_ticket/ui/widgets/images/profile.dart';
+import 'package:movie_ticket/presentation/new_user/signin_screen.dart';
+import 'package:movie_ticket/presentation/setting/edit_profile_screen.dart';
+import 'package:movie_ticket/presentation/widgets/dialog/dialog_improving.dart';
+import 'package:movie_ticket/presentation/widgets/images/profile.dart';
 
 class SettingScreen extends StatelessWidget {
   final User user;
@@ -84,7 +85,7 @@ class SettingScreen extends StatelessWidget {
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (_) => _builDialog(context));
+                              builder: (_) => const DialogImproving());
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,7 +112,7 @@ class SettingScreen extends StatelessWidget {
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (_) => _builDialog(context));
+                              builder: (_) => const DialogImproving());
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,7 +139,7 @@ class SettingScreen extends StatelessWidget {
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (_) => _builDialog(context));
+                              builder: (_) => const DialogImproving());
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,8 +165,9 @@ class SettingScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           showDialog(
-                              context: context,
-                              builder: (_) => _builDialog(context));
+                            context: context,
+                            builder: (_) => const DialogImproving(),
+                          );
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -191,44 +193,6 @@ class SettingScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _builDialog(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(15.0),
-              child: const Center(
-                child: Text(
-                  'The skill are improving',
-                  style: AppTextStyles.h2BoldDark,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Positioned(
-                top: 10,
-                right: 0,
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                      size: 30,
-                    )))
-          ],
-        ),
       ),
     );
   }

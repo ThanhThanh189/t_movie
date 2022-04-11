@@ -7,7 +7,7 @@ import 'package:movie_ticket/blocs/search/search_event.dart';
 import 'package:movie_ticket/blocs/search/search_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
-import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({

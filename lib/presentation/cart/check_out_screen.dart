@@ -5,7 +5,7 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/ui/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 
 class CheckOutScreen extends StatelessWidget {
   final List<FilmData> listFilmData;

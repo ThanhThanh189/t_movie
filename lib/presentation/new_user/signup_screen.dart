@@ -7,11 +7,11 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_strings.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/ui/router/router_screen.dart';
-import 'package:movie_ticket/ui/widgets/base_button/base_button.dart';
-import 'package:movie_ticket/ui/widgets/images/profile.dart';
-import 'package:movie_ticket/ui/widgets/input_text_field/input_text_field.dart';
-import 'package:movie_ticket/ui/widgets/snack_bar/custom_snack_bar.dart';
+import 'package:movie_ticket/presentation/router/router_screen.dart';
+import 'package:movie_ticket/presentation/widgets/base_button/base_button.dart';
+import 'package:movie_ticket/presentation/widgets/images/profile.dart';
+import 'package:movie_ticket/presentation/widgets/input_text_field/input_text_field.dart';
+import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({
