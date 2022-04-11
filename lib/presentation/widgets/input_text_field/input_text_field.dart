@@ -7,12 +7,14 @@ class InputTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.obscureText,
-    required this.errorText,
+    this.errorText,
     this.onTapEyes,
     this.visibility,
     required this.onChange,
     required this.isPassword,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
+    this.readOnly,
   }) : super(key: key);
   final TextEditingController controller;
   final bool? obscureText;
@@ -20,7 +22,9 @@ class InputTextField extends StatelessWidget {
   final VoidCallback? onTapEyes;
   final bool isPassword;
   final bool? visibility;
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
+  final bool? readOnly;
   final Function(String) onChange;
 
   @override
@@ -32,6 +36,7 @@ class InputTextField extends StatelessWidget {
         style: AppTextStyle.regular14.copyWith(
           color: AppColors.mainText,
         ),
+        readOnly: readOnly ?? false,
         obscureText: obscureText ?? false,
         decoration: InputDecoration(
           labelStyle: AppTextStyle.regular14.copyWith(
@@ -47,6 +52,10 @@ class InputTextField extends StatelessWidget {
                 )
               : null,
           labelText: labelText,
+          hintText: hintText,
+          hintStyle: AppTextStyle.regular14.copyWith(
+            color: AppColors.mainText,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

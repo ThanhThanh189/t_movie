@@ -7,36 +7,46 @@ class StartedProfileEvent extends ProfileEvent {
   List<Object?> get props => [];
 }
 
+class SetFullNameProfileEvent extends ProfileEvent {
+  final String fullName;
+
+  SetFullNameProfileEvent({required this.fullName});
+  @override
+  List<Object?> get props => [fullName];
+}
+
+class SetPasswordProfileEvent extends ProfileEvent {
+  final String password;
+
+  SetPasswordProfileEvent({required this.password});
+  @override
+  List<Object?> get props => [password];
+}
+
+class SetConfirmPasswordProfileEvent extends ProfileEvent {
+  final String confirmPassword;
+
+  SetConfirmPasswordProfileEvent({required this.confirmPassword});
+  @override
+  List<Object?> get props => [confirmPassword];
+}
+
 class EditUserProfileEvent extends ProfileEvent {
   final String? photoURL;
-  final String? displayName;
-  final String? passwordOld;
-  final String? passwordNew;
+  final String displayName;
+  final String newPassword;
+  final String confirmPassword;
   EditUserProfileEvent(
-      {this.photoURL, this.displayName, this.passwordOld, this.passwordNew});
+      {this.photoURL,
+      required this.displayName,
+      required this.newPassword,
+      required this.confirmPassword});
   @override
-  List<Object?> get props => [photoURL, displayName, passwordOld, passwordNew];
+  List<Object?> get props =>
+      [photoURL, displayName, newPassword, confirmPassword];
 }
 
 class EditPhotoURLProfileEvent extends ProfileEvent {
   @override
   List<Object?> get props => [];
-}
-
-class ShowPasswordOldProfileEvent extends ProfileEvent {
-  final bool isShowPassword;
-  ShowPasswordOldProfileEvent({
-    required this.isShowPassword,
-  });
-  @override
-  List<Object?> get props => [isShowPassword];
-}
-
-class ShowPasswordNewProfileEvent extends ProfileEvent {
-  final bool isShowPassword;
-  ShowPasswordNewProfileEvent({
-    required this.isShowPassword,
-  });
-  @override
-  List<Object?> get props => [isShowPassword];
 }

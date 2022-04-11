@@ -22,8 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             List<FilmData>? listNowPlaying =
                 await filmRepository.getListFilm(Global.listNowPlaying, 1);
             List<FilmData>? listComingSoon =
-                await filmRepository.getListFilm(Global.listComingSoon, 1);
-
+                await filmRepository.getListFilm(Global.listComingSoon, 2);
             emit.call(
               state.update(
                 viewState: ViewState.isSuccess,

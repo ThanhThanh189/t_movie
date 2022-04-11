@@ -64,4 +64,14 @@ class UserRepository {
       await user!.updatePhotoURL(photoURL);
     }
   }
+
+  Future<bool> updatePassword({required String password}) async {
+    var user = firebaseAuth?.currentUser;
+    try {
+      user?.updatePassword(password);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 }

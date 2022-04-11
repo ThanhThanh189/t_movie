@@ -17,6 +17,7 @@ class ViewAllScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.dartBackground1,
       appBar: AppBar(
+        backgroundColor: AppColors.dartBackground1,
         title: const Text('View All'),
       ),
       body: BlocProvider<ViewAllBloc>(

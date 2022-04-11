@@ -1,99 +1,125 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_bloc.dart';
 import 'package:movie_ticket/blocs/profile/profile_event.dart';
 import 'package:movie_ticket/blocs/profile/profile_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/app_strings.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/view_state.dart';
+import 'package:movie_ticket/presentation/widgets/base_button/base_button.dart';
+import 'package:movie_ticket/presentation/widgets/dialog/dialog_confirm.dart';
+import 'package:movie_ticket/presentation/widgets/images/profile.dart';
+import 'package:movie_ticket/presentation/widgets/input_text_field/input_text_field.dart';
+import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _passwordOldController = TextEditingController();
-  final TextEditingController _passwordNewController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailAddressController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(
-      create: (context) => ProfileBloc()
-        ..add(StartedProfileEvent()),
+      create: (context) => ProfileBloc()..add(StartedProfileEvent()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
+          if (state.viewState == ViewState.isLoading) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+              ),
+            );
+          }
           if (state.viewState == ViewState.isFailure) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000),
-                  ))
-                : null;
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+                isSuccess: false,
+              ),
+            );
           }
           if (state.viewState == ViewState.isSuccess) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000)))
-                : null;
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar(
+                message: state.message.toString(),
+                milliseconds: 1000,
+                isSuccess: true,
+              ),
+            );
           }
         },
         builder: (context, state) {
           return Scaffold(
             backgroundColor: AppColors.dartBackground1,
-            appBar: AppBar(
-              title: const Text('Edit Profile'),
-              backgroundColor: AppColors.dartBackground1,
-              centerTitle: true,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        _buildBackButton(context),
+                        _buildTitle(context),
+                        const SizedBox(height: 40),
+                        _buildAvatar(context, state),
+                        const SizedBox(height: 24),
+                        _buildFormRegister(context, state)
+                      ],
+                    )),
+              ),
             ),
-            body: Container(
-                margin: const EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    _buildAvatar(context, state),
-                    _buildFormRegister(context, state)
-                  ],
-                )),
           );
         },
       ),
     );
   }
 
-  Widget _buildAvatar(BuildContext context, ProfileState state) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20, bottom: 20),
-      child: GestureDetector(
-        onTap: () {
-          BlocProvider.of<ProfileBloc>(context).add(EditPhotoURLProfileEvent());
-        },
-        child: Center(
-          child: Stack(children: [
-            CircleAvatar(
-                radius: 40,
-                child: state.photoURL != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.file(
-                          File(state.photoURL!),
-                          fit: BoxFit.cover,
-                        ))
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset("assets/images/auto2.jpg"))),
-            const Positioned.fill(
-                child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Icon(
-                Icons.add_circle_outlined,
-                color: Colors.blue,
-              ),
-            ))
-          ]),
+  Widget _buildBackButton(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            size: 30,
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 104.0),
+        child: Text(
+          AppStrings.editProfileTitle,
+          style: AppTextStyle.semiBold24,
+          textAlign: TextAlign.center,
         ),
       ),
+    );
+  }
+
+  Widget _buildAvatar(BuildContext context, ProfileState state) {
+    return Profile(
+      image: state.photoURLNew ?? state.photoURLOld,
+      sizeAvatar: 92,
+      isEdit: true,
+      onTap: () {
+        BlocProvider.of<ProfileBloc>(context).add(
+          EditPhotoURLProfileEvent(),
+        );
+      },
     );
   }
 
@@ -101,122 +127,142 @@ class EditProfileScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Form(
-          child: Column(
-        children: [
-          TextFormField(
-            controller: _displayNameController,
-            decoration: InputDecoration(
-                hintText:
-                    '${state.fullName != '' ? state.fullName : 'Full Name'}',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10))),
-            validator: (validator) {
-              if (validator == null || validator.isEmpty) {
-                return 'Please';
-              }
-              return null;
-            },
-            onChanged: (value) {},
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildFormInput(
+              context,
+              labelText: AppStrings.editProfileFullName,
+              controller: _fullNameController,
+              hintText: state.fullNameOld,
+              onChange: (value) {
+                BlocProvider.of<ProfileBloc>(context).add(
+                  SetFullNameProfileEvent(fullName: value),
+                );
+              },
+            ),
+            //Email address
+            const SizedBox(height: 24),
+            _buildFormInput(
+              context,
+              labelText: AppStrings.editProfileEmailAddress,
+              controller: _emailAddressController,
               readOnly: true,
-              decoration: InputDecoration(
-                  hintText: state.email ?? 'Email Address',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
-              },
-              onChanged: (value) {},
+              hintText: state.email,
+              onChange: (value) {},
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              obscureText: !state.isShowPasswordOld,
-              controller: _passwordOldController,
-              decoration: InputDecoration(
-                  labelText: 'Password Old',
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<ProfileBloc>(context).add(
-                          ShowPasswordOldProfileEvent(
-                              isShowPassword: !state.isShowPasswordOld));
-                    },
-                    child: !state.isShowPasswordOld
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
+            //Password old
+            const SizedBox(height: 24),
+            _buildFormInput(
+              context,
+              labelText: AppStrings.editProfilePassword,
+              obscureText: true,
+              controller: _passwordController,
+              onChange: (value) {
+                BlocProvider.of<ProfileBloc>(context).add(
+                  SetPasswordProfileEvent(password: value),
+                );
               },
-              onChanged: (value) {},
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: TextFormField(
-              obscureText: !state.isShowPasswordNew,
-              controller: _passwordNewController,
-              decoration: InputDecoration(
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<ProfileBloc>(context).add(
-                          ShowPasswordNewProfileEvent(
-                              isShowPassword: !state.isShowPasswordNew));
-                    },
-                    child: !state.isShowPasswordNew
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
-                  ),
-                  labelText: 'Password New',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              validator: (validator) {
-                if (validator == null || validator.isEmpty) {
-                  return 'Please';
-                }
-                return null;
+
+            //Confirm password
+            const SizedBox(height: 24),
+            _buildFormInput(
+              context,
+              labelText: AppStrings.editProfileConfirmPassword,
+              obscureText: true,
+              controller: _confirmPasswordController,
+              onChange: (value) {
+                BlocProvider.of<ProfileBloc>(context).add(
+                  SetConfirmPasswordProfileEvent(confirmPassword: value),
+                );
               },
-              onChanged: (value) {},
             ),
+
+            //Button Register
+            const SizedBox(height: 24),
+            _buildButtonRegister(context, state),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFormInput(
+    BuildContext context, {
+    required String labelText,
+    String? hintText,
+    String? errorText,
+    bool? readOnly,
+    bool? obscureText,
+    required dynamic Function(String) onChange,
+    required TextEditingController controller,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText,
+          style: AppTextStyle.medium12.copyWith(
+            color: AppColors.mainText,
           ),
-          _buildButtonRegister(context, state),
-        ],
-      )),
+        ),
+        const SizedBox(height: 8),
+        InputTextField(
+          controller: controller,
+          onChange: onChange,
+          errorText: errorText,
+          obscureText: obscureText,
+          isPassword: false,
+          readOnly: readOnly,
+          hintText: hintText,
+        ),
+      ],
     );
   }
 
   Widget _buildButtonRegister(BuildContext context, ProfileState state) {
-    return Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 2),
-        decoration: BoxDecoration(
-          gradient: AppColors.mainGradient,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: TextButton(
-          onPressed: () {
-            BlocProvider.of<ProfileBloc>(context).add(EditUserProfileEvent(
-                photoURL: state.photoURL,
-                displayName: _displayNameController.text,
-                passwordOld: _passwordOldController.text,
-                passwordNew: _passwordNewController.text));
-          },
-          child: const Text(
-            'Update My Profile',
-            style: AppTextStyles.h2,
-          ),
-        ));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60),
+      child: BaseButton(
+        text: AppStrings.editProfileButton,
+        isVisible:
+            ((state.isValidatePassword && state.isValidateConfirmPassword) ||
+                        state.isValidateFullName ||
+                        state.photoURLNew != null) &&
+                    state.viewState != ViewState.isLoading
+                ? true
+                : false,
+        onPressed: ((state.isValidatePassword &&
+                        state.isValidateConfirmPassword) ||
+                    state.isValidateFullName ||
+
+                    state.photoURLNew != null) &&
+                state.viewState != ViewState.isLoading
+            ? () {
+                showDialog(
+                  context: context,
+                  builder: (_) => DialogConfirm(
+                    title: AppStrings.editProfileDialog,
+                    onTap: (value) {
+                      value == true
+                          ? BlocProvider.of<ProfileBloc>(context).add(
+                              EditUserProfileEvent(
+                                  photoURL: state.photoURLNew,
+                                  displayName:
+                                      _fullNameController.text,
+                                  newPassword:
+                                      _passwordController.text,
+                                  confirmPassword:
+                                      _confirmPasswordController.text),
+                            )
+                          : null;
+                    },
+                  ),
+                );
+              }
+            : null,
+      ),
+    );
   }
 }
