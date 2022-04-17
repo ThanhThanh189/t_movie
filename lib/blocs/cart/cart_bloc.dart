@@ -2,11 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/database/film_database.dart';
+import 'package:movie_ticket/data/database/film_databases.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  FilmDatabase filmDatabase = FilmDatabase.instance;
+  FilmDatabases filmDatabase = FilmDatabases.instance;
   CartBloc() : super(CartState.initial()) {
     on<CartEvent>((event, emit) async {
       if (event is StartedCartEvent) {

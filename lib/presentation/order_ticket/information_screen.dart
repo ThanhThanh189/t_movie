@@ -11,23 +11,17 @@ import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
-
-// details: https://api.themoviedb.org/3/movie/634649?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US
-// reviews: https://api.themoviedb.org/3/movie/634649/reviews?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US&page=1
-// actor: https://api.themoviedb.org/3/movie/634649/credits?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US
-// similar: https://api.themoviedb.org/3/movie/634649/similar?api_key=0cae59a37fef24193f04010b16b61e8e&language=en-US&page=1
+import 'package:movie_ticket/presentation/order_ticket/trailer_screen.dart';
 
 class InformationScreen extends StatelessWidget {
   final FilmData filmData;
-  const InformationScreen(
-      {Key? key, required this.filmData})
-      : super(key: key);
+  const InformationScreen({Key? key, required this.filmData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InformationBloc>(
-      create: (context) => InformationBloc()
-        ..add(StartedInforEvent(id: filmData.id)),
+      create: (context) =>
+          InformationBloc()..add(StartedInforEvent(id: filmData.id)),
       child: BlocConsumer<InformationBloc, InformationState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isFailure) {
@@ -44,6 +38,15 @@ class InformationScreen extends StatelessWidget {
                     content: Text(state.message.toString()),
                     duration: const Duration(milliseconds: 1000)))
                 : null;
+          }
+          if (state.trailerVideo != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => TrailerScreen(
+                  url: state.trailerVideo!,
+                ),
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -76,26 +79,33 @@ class InformationScreen extends StatelessWidget {
         genres += '${item.name}, ';
       }
     }
-    return SizedBox(
+    return Container(
       height: MediaQuery.of(context).size.height * 0.3,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.dartBackground2,
+      ),
       child: Stack(
         children: [
           ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              child: state.detail != null
-                  ? _buildLoadImage(
-                      url: Global.imageURL + state.detail!.backdropPath)
-                  : _buildImageDefault(url: 'assets/images/loading_dark.gif')),
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
+            child: state.detail != null
+                ? _buildLoadImage(
+                    url: Global.imageURL + state.detail!.backdropPath)
+                : _buildImageDefault(url: 'assets/images/loading_dark.gif'),
+          ),
           Positioned(
-              top: 10,
-              left: 10,
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios, size: 30))),
+            top: 10,
+            left: 10,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.arrow_back_ios, size: 30),
+            ),
+          ),
           Positioned(
             right: 10,
             top: 10,
@@ -114,55 +124,97 @@ class InformationScreen extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            bottom: 10,
-            left: 10,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  state.detail != null ? state.detail!.originalTitle : '',
-                  maxLines: 2,
-                  style: AppTextStyles.h2Bold,
-                ),
-                Row(
-                  children: [
-                    RatingBar.builder(
-                        initialRating: state.detail != null
-                            ? state.detail!.voteAverage / 2.0
-                            : 5,
-                        minRating: 1,
-                        itemCount: 5,
-                        itemSize: 15,
-                        tapOnlyMode: true,
-                        allowHalfRating: true,
-                        itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                        onRatingUpdate: (rating) {}),
-                    Text(
-                      '(${state.detail != null ? state.detail!.voteAverage / 2.0 : 5})',
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: Text(
-                    genres,
-                    style: AppTextStyles.h7,
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(
+                          state.detail != null
+                              ? state.detail!.originalTitle
+                              : '',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: AppTextStyles.h2Bold,
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          RatingBar.builder(
+                              initialRating: state.detail != null
+                                  ? state.detail!.voteAverage / 2.0
+                                  : 0,
+                              minRating: 1,
+                              itemCount: 5,
+                              itemSize: 15,
+                              tapOnlyMode: true,
+                              allowHalfRating: true,
+                              itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                              onRatingUpdate: (rating) {}),
+                          Text(
+                            '(${state.detail != null ? state.detail!.voteAverage / 2.0 : 5})',
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(
+                          genres,
+                          style: AppTextStyles.h7,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        state.detail != null
+                            ? DateFormat('dd-MM-yyyy')
+                                .format(state.detail!.releaseDate)
+                            : '',
+                        style: AppTextStyles.h7,
+                      )
+                    ],
                   ),
                 ),
-                Text(
-                  state.detail != null
-                      ? DateFormat('dd-MM-yyyy')
-                          .format(state.detail!.releaseDate)
-                      : '',
-                  style: AppTextStyles.h7,
-                )
               ],
             ),
           ),
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TrailerScreen(
+                          url: state.infoVideo!,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.play_arrow,
+                    size: 50,
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -241,41 +293,44 @@ class InformationScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.only(left: 10),
-                    child: Column(children: [
-                      Expanded(
-                          child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: state.casts[index].profilePath != null
-                            ? Image.network(
-                                Global.imageURL +
-                                    state.casts[index].profilePath.toString(),
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Image.asset(
-                                    'assets/images/loading_dark.gif',
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  if (stackTrace != null) {
-                                    return const Center(
-                                        child: Icon(Icons.error));
-                                  }
-                                  return const Center(child: Icon(Icons.error));
-                                },
-                              )
-                            : Image.asset('assets/images/no_avatar.png'),
-                      )),
-                      Container(
+                    width: 80,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppColors.dartBackground2,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: state.casts[index].profilePath != null
+                                  ? Image.network(
+                                      Global.imageURL +
+                                          state.casts[index].profilePath
+                                              .toString(),
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Center(
+                                            child: Icon(Icons.error));
+                                      },
+                                    )
+                                  : Image.asset('assets/images/no_avatar.png'),
+                            ),
+                          ),
+                        ),
+                        Container(
                           margin: const EdgeInsets.only(top: 10),
                           child: Text(
                             state.casts[index].originalName,
                             style: AppTextStyles.h7,
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                          ))
-                    ]),
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 }),
           ),
@@ -295,86 +350,63 @@ class InformationScreen extends StatelessWidget {
             child: const Text('Trailer and song',
                 style: AppTextStyles.h2Bold, textAlign: TextAlign.start),
           ),
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                  context: context, builder: (_) => _builDialog(context));
-            },
-            child: SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.20,
-              child: Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: state.similarMovies.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        child: Stack(children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: state.similarMovies[index].backdropPath !=
-                                      null
-                                  ? Image.network(
-                                      Global.imageURL +
-                                          state.similarMovies[index]
-                                              .backdropPath!
-                                              .toString(),
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return Image.asset(
-                                          'assets/images/loading_dark.gif',
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        if (stackTrace != null) {
-                                          return const Center(
-                                              child: Icon(Icons.error));
-                                        }
-                                        return const Center(
-                                            child: Icon(Icons.error));
-                                      },
+          SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.20,
+            child: Expanded(
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.similarMovies.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<InformationBloc>(context).add(
+                          GetTrailerVideoInforEvent(
+                              id: state.similarMovies[index].id),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Container(
+                          width: 299,
+                          height: 225,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.dartBackground2,
+                          ),
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  Global.imageURL +
+                                      state.similarMovies[index].backdropPath!
+                                          .toString(),
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Center(
+                                        child: Icon(Icons.error));
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.play_arrow,
+                                      size: 50,
                                     )
-                                  : Image.network(
-                                      Global.imageURL +
-                                          state.similarMovies[index].posterPath
-                                              .toString(),
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return Image.asset(
-                                          'assets/images/loading_dark.gif',
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        if (stackTrace != null) {
-                                          return const Center(
-                                              child: Icon(Icons.error));
-                                        }
-                                        return const Center(
-                                            child: Icon(Icons.error));
-                                      },
-                                    )),
-                          const Positioned.fill(
-                              child: Icon(
-                            Icons.play_arrow,
-                            size: 50,
-                          ))
-                        ]),
-                      );
-                    }),
-              ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
             ),
           )
         ],
@@ -413,31 +445,28 @@ class InformationScreen extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      overview,
-                      style: AppTextStyles.h3,
-                    ),
-                    state.detail != null
-                        ? state.detail!.overview.length > maxLength
-                            ? GestureDetector(
-                                onTap: () {
-                                  BlocProvider.of<InformationBloc>(context).add(
-                                      ReadMoreOfSynopsisInforEvent(
-                                          isReadMore: !state.isReadMore));
-                                },
-                                child: Text(
-                                    state.isReadMore
-                                        ? 'Show more'
-                                        : 'Show less',
-                                    style: AppTextStyles.h6BlueBold),
-                              )
-                            : const Text('',
-                                style: AppTextStyles.h6BlueBold)
-                        : const Text('', style: AppTextStyles.h6BlueBold)
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    BlocProvider.of<InformationBloc>(context).add(
+                        ReadMoreOfSynopsisInforEvent(
+                            isReadMore: !state.isReadMore));
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        overview,
+                        style: AppTextStyles.h3,
+                      ),
+                      state.detail != null
+                          ? state.detail!.overview.length > maxLength
+                              ? Text(
+                                  state.isReadMore ? 'Show more' : 'Show less',
+                                  style: AppTextStyles.h6BlueBold)
+                              : const Text('', style: AppTextStyles.h6BlueBold)
+                          : const Text('', style: AppTextStyles.h6BlueBold)
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -526,8 +555,7 @@ class InformationScreen extends StatelessWidget {
                                   Icons.star,
                                   color: Colors.amber,
                                 ),
-                            onRatingUpdate: (rating) {
-                            }),
+                            onRatingUpdate: (rating) {}),
                         Text(
                           '(${reviewImp.authorDetails.rating != null ? reviewImp.authorDetails.rating! / 2.0 : 5})',
                         )
@@ -561,9 +589,9 @@ class InformationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadImage({required String url}) {
+  Widget _buildLoadImage({String? url}) {
     return Image.network(
-      url,
+      url!,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return Image.asset(
@@ -577,8 +605,9 @@ class InformationScreen extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       errorBuilder: (context, error, stackTrace) {
-        if (stackTrace != null) return const Center(child: Icon(Icons.error));
-        return const Center(child: Icon(Icons.error));
+        return const Center(
+          child: Icon(Icons.error),
+        );
       },
     );
   }

@@ -91,25 +91,26 @@ class HomeScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(120),
           color: AppColors.dartBackground2),
       child: GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => SearchScreen()));
-          },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            child: Row(
-              children: const [
-                Icon(Icons.search),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Search Movie',
-                  style: AppTextStyles.h2,
-                )
-              ],
-            ),
-          )),
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => SearchScreen()));
+        },
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          child: Row(
+            children: const [
+              Icon(Icons.search),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Search Movie',
+                style: AppTextStyles.h2,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -145,22 +146,22 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-
         // List now playing
         SizedBox(
           height: 200,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: homeState.listTopRated.length,
-              itemBuilder: (context, index) {
-                return _buildItemNowPlaying(
-                    context,
-                    isTopRated
-                        ? homeState.listTopRated[index]
-                        : homeState.listNowPlaying[index]);
-              }),
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: homeState.listTopRated.length,
+            itemBuilder: (context, index) {
+              return _buildItemNowPlaying(
+                  context,
+                  isTopRated
+                      ? homeState.listTopRated[index]
+                      : homeState.listNowPlaying[index]);
+            },
+          ),
         ),
       ],
     );
@@ -169,49 +170,38 @@ class HomeScreen extends StatelessWidget {
   Widget _buildItemNowPlaying(BuildContext context, FilmData filmData) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return InformationScreen(
-            filmData: filmData,
-          );
-        }));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return InformationScreen(
+                filmData: filmData,
+              );
+            },
+          ),
+        );
       },
       child: Container(
         width: 299,
         height: 225,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.dartBackground2,
+        ),
         margin: const EdgeInsets.all(5),
         child: Stack(
           children: [
             ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: filmData.backdropPath != null
-                    ? Image.network(
-                        Global.imageURL + filmData.backdropPath!,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Image.asset(
-                            'assets/images/loading_dark.gif',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          if (stackTrace != null) {
-                            return const Center(child: Icon(Icons.error));
-                          }
-                          return const Center(child: Icon(Icons.error));
-                        },
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      )
-                    : Image.asset(
-                        'assets/images/loading_dark.gif',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      )),
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                Global.imageURL + filmData.backdropPath!,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Icon(Icons.error));
+                },
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
             Positioned(
               bottom: 10,
               left: 10,
@@ -279,23 +269,24 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-
         // List now playing
         SizedBox(
-            height: 200,
-            width: double.infinity,
-            child: GridView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: homeState.listComingSoon.length,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 100,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemBuilder: (context, index) {
-                  return _buildItemComingSoon(
-                      context, homeState.listComingSoon[index]);
-                })),
+          height: 200,
+          width: double.infinity,
+          child: GridView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: homeState.listComingSoon.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 100,
+                childAspectRatio: 1,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10),
+            itemBuilder: (context, index) {
+              return _buildItemComingSoon(
+                  context, homeState.listComingSoon[index]);
+            },
+          ),
+        ),
       ],
     );
   }
@@ -316,39 +307,23 @@ class HomeScreen extends StatelessWidget {
       child: Container(
         height: 100,
         width: 150,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.dartBackground2,
+        ),
         margin: const EdgeInsets.all(5),
         child: Stack(children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: filmData.backdropPath == null
-                ? Image.asset(
-                    'assets/images/loading_dark.gif',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  )
-                : Image.network(
-                    Global.imageURL + filmData.backdropPath!,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Image.asset(
-                        'assets/images/loading_dark.gif',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      );
-                    },
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (context, error, stackTrace) {
-                      if (stackTrace != null) {
-                        return const Center(child: Icon(Icons.error));
-                      }
-                      return const Center(child: Icon(Icons.error));
-                    },
-                  ),
+            child: Image.network(
+              Global.imageURL + filmData.backdropPath!,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+              errorBuilder: (context, error, stackTrace) {
+                return const Center(child: Icon(Icons.error));
+              },
+            ),
           ),
         ]),
       ),
