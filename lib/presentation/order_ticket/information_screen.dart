@@ -12,6 +12,7 @@ import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
 import 'package:movie_ticket/presentation/order_ticket/trailer_screen.dart';
+import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class InformationScreen extends StatelessWidget {
   final FilmData filmData;
@@ -25,19 +26,26 @@ class InformationScreen extends StatelessWidget {
       child: BlocConsumer<InformationBloc, InformationState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isFailure) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000),
-                  ))
-                : null;
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: false,
+                  milliseconds: 1000,
+                ),
+              );
+            }
           }
           if (state.viewState == ViewState.isSuccess) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000)))
-                : null;
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: true,
+                  milliseconds: 1000,
+                ),
+              );
+            }
           }
           if (state.trailerVideo != null) {
             Navigator.of(context).push(
@@ -149,28 +157,29 @@ class InformationScreen extends StatelessWidget {
                           style: AppTextStyles.h2Bold,
                         ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          RatingBar.builder(
-                              initialRating: state.detail != null
-                                  ? state.detail!.voteAverage / 2.0
-                                  : 0,
-                              minRating: 1,
-                              itemCount: 5,
-                              itemSize: 15,
-                              tapOnlyMode: true,
-                              allowHalfRating: true,
-                              itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                              onRatingUpdate: (rating) {}),
-                          Text(
-                            '(${state.detail != null ? state.detail!.voteAverage / 2.0 : 5})',
-                          )
-                        ],
-                      ),
+                      if (state.detail != null)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RatingBar.builder(
+                                initialRating: state.detail != null
+                                    ? state.detail!.voteAverage / 2.0
+                                    : 0,
+                                minRating: 1,
+                                itemCount: 5,
+                                itemSize: 15,
+                                tapOnlyMode: true,
+                                allowHalfRating: true,
+                                itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                onRatingUpdate: (rating) {}),
+                            Text(
+                              '(${state.detail != null ? state.detail!.voteAverage / 2.0 : 5})',
+                            )
+                          ],
+                        ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
@@ -638,44 +647,6 @@ class InformationScreen extends StatelessWidget {
             'Add to cart',
             style: AppTextStyles.h2Bold,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _builDialog(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(15.0),
-              child: const Center(
-                child: Text(
-                  'The skill are improving',
-                  style: AppTextStyles.h2BoldDark,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Positioned(
-                top: 10,
-                right: 0,
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                      size: 30,
-                    )))
-          ],
         ),
       ),
     );

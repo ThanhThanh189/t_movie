@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/presentation/cart/check_out_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({
@@ -61,7 +59,7 @@ class CartScreen extends StatelessWidget {
               ],
               title: const Text('Cart Screen'),
             ),
-            body: _buildListSearch(context, state),
+            body: _buildListCart(context, state),
             floatingActionButton: state.listFilmDataSelected.isNotEmpty
                 ? FloatingActionButton(
                     backgroundColor: Colors.blue,
@@ -90,7 +88,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListSearch(BuildContext context, CartState state) {
+  Widget _buildListCart(BuildContext context, CartState state) {
     return ListView.builder(
         itemCount: state.listFilmData.length,
         itemBuilder: (context, index) {
@@ -112,102 +110,27 @@ class CartScreen extends StatelessWidget {
                     builder: (_) => InformationScreen(
                         filmData: state.listFilmData[index])));
               },
-              child: Container(
-                margin: EdgeInsets.only(
-                    right: 10,
-                    // left: 10,
-                    top: 10,
-                    bottom: index == state.listFilmData.length - 1 ? 10 : 0),
-                width: double.infinity,
-                height: 100,
-                child: Row(
-                  children: [
-                    Checkbox(
-                        checkColor: Colors.white,
-                        hoverColor: Colors.blue,
-                        activeColor: Colors.blue,
-                        value: state.listFilmDataSelected
-                            .contains(state.listFilmData[index]),
-                        onChanged: (value) {
-                          BlocProvider.of<CartBloc>(context).add(
-                              SelectCartEvent(
-                                  filmData: state.listFilmData[index],
-                                  isSelected: value ?? false));
-                        }),
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: state.listFilmData[index].backdropPath != null
-                              ? _buildLoadImage(
-                                  url: Global.imageURL +
-                                      state.listFilmData[index].backdropPath!)
-                              : Image.asset(
-                                  'assets/images/auto2.jpg',
-                                ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.listFilmData[index].title,
-                              maxLines: 2,
-                            ),
-                            Row(
-                              children: [
-                                RatingBar.builder(
-                                    initialRating:
-                                        state.listFilmData[index].voteAverage /
-                                            2,
-                                    minRating: 1,
-                                    itemCount: 5,
-                                    itemSize: 20,
-                                    tapOnlyMode: true,
-                                    allowHalfRating: true,
-                                    itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                    onRatingUpdate: (rating) {}),
-                                Text(
-                                  '(${state.listFilmData[index].voteAverage / 2})',
-                                )
-                              ],
-                            ),
-                            Text(DateFormat('dd-MM-yyyy')
-                                .format(state.listFilmData[index].releaseDate)),
-                          ]),
-                    ),
-                  ],
-                ),
+              child: Row(
+                children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      hoverColor: Colors.blue,
+                      activeColor: Colors.blue,
+                      value: state.listFilmDataSelected
+                          .contains(state.listFilmData[index]),
+                      onChanged: (value) {
+                        BlocProvider.of<CartBloc>(context).add(
+                            SelectCartEvent(
+                                filmData: state.listFilmData[index],
+                                isSelected: value ?? false));
+                      }),
+                  Expanded(
+                      child: CardView(filmData: state.listFilmData[index]))
+                ],
               ),
             ),
           );
         });
-  }
-
-  Widget _buildLoadImage({required String url}) {
-    return Image.network(
-      url,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Image.asset(
-          'assets/images/loading_dark.gif',
-          fit: BoxFit.cover,
-        );
-      },
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        if (stackTrace != null) return const Center(child: Icon(Icons.error));
-        return const Center(child: Icon(Icons.error));
-      },
-    );
   }
 
   Widget _builDialog(BuildContext context, CartState state, int index) {
