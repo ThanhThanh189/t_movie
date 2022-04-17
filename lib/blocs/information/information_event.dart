@@ -47,3 +47,13 @@ class ReadMoreOfSynopsisInforEvent extends InformationEvent {
   @override
   List<Object?> get props => [isReadMore];
 }
+
+class GetTrailerVideoInforEvent extends InformationEvent {
+  final int id;
+
+  GetTrailerVideoInforEvent({required this.id});
+
+  @override
+  List<Object?> get props => [id];
+}
+

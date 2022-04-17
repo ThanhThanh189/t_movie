@@ -1,4 +1,7 @@
 class AppStrings {
+  //firebase storage
+  static String collectionFilmFavorite = 'film_favorite';
+
   //State
   static String isLoading = 'Waiting a second...';
 

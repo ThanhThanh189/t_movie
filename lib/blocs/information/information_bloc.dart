@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/information/information_event.dart';
 import 'package:movie_ticket/blocs/information/information_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/database/film_database.dart';
+import 'package:movie_ticket/data/database/film_databases.dart';
 import 'package:movie_ticket/data/models/actor.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
@@ -10,15 +10,15 @@ import 'package:movie_ticket/data/repositories/film_repository.dart';
 
 class InformationBloc extends Bloc<InformationEvent, InformationState> {
   FilmRepository filmRepository = FilmRepositoryImp();
-  FilmDatabase filmDatabase = FilmDatabase.instance;
-  InformationBloc()
-      : super(InformationState.initial()) {
+  FilmDatabases filmDatabase = FilmDatabases.instance;
+  InformationBloc() : super(InformationState.initial()) {
     on<InformationEvent>((event, emit) async {
       if (event is StartedInforEvent) {
         emit.call(state.update(viewState: ViewState.isLoading));
         try {
           var detail = await filmRepository.getDetail(event.id);
           var review = await filmRepository.getReview(event.id, 1);
+          var listVideo = await filmRepository.getListVideo(event.id);
           List<ReviewImp> reviews = [];
           if (review != null) {
             reviews = review.results;
@@ -45,6 +45,7 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
               reviews: reviews,
               casts: castAndCrew,
               similarMovies: similars,
+              infoVideo: listVideo?.first.key,
               isFavorite: checkIsFavorite,
               isInCart: checkIsInCart,
               viewState: ViewState.isSuccess));
@@ -123,6 +124,17 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
       }
       if (event is ReadMoreOfSynopsisInforEvent) {
         emit.call(state.update(isReadMore: event.isReadMore));
+      }
+      if (event is GetTrailerVideoInforEvent) {
+        try {
+          final trailerVideo = await filmRepository.getListVideo(event.id);
+          emit.call(
+            state.update(trailerVideo: trailerVideo?.first.key),
+          );
+          emit.call(
+            state.update(trailerVideo: null),
+          );
+        } catch (_) {}
       }
     });
   }

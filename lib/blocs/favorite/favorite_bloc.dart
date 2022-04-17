@@ -2,17 +2,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/data/database/film_database.dart';
+import 'package:movie_ticket/data/database/film_databases.dart';
+import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
-  FilmDatabase filmDatabase = FilmDatabase.instance;
+  FilmDatabases filmDatabases = FilmDatabases.instance;
+  UserRepository userRepository = UserRepository();
 
   FavoriteBloc() : super(FavoriteState.init()) {
     on<FavoriteEvent>((event, emit) async {
       if (event is StartedFavoriteEvent) {
         emit.call(state.update(viewState: ViewState.isLoading));
         try {
-          var listFilmData = await filmDatabase.readAllFilmsFavorite();
+          var listFilmData = await filmDatabases.readAllFilmsFavorite();
           if (listFilmData!.isNotEmpty) {
             emit.call(state.update(
                 viewState: ViewState.isSuccess, listFilmData: listFilmData));
@@ -31,9 +33,9 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       if (event is DeleteFavoriteEvent) {
         try {
           bool checkDelete =
-              await filmDatabase.deleteFilmsFavoriteByID(event.id);
+              await filmDatabases.deleteFilmsFavoriteByID(event.id);
           if (checkDelete) {
-            var listFilmData = await filmDatabase.readAllFilmsFavorite();
+            var listFilmData = await filmDatabases.readAllFilmsFavorite();
             if (listFilmData!.isNotEmpty) {
               emit.call(state.update(
                   viewState: ViewState.isSuccess,

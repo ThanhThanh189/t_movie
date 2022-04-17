@@ -2,8 +2,8 @@ import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class FilmDatabase {
-  static final FilmDatabase instance = FilmDatabase.init();
+class FilmDatabases {
+  static final FilmDatabases instance = FilmDatabases.init();
 
   static Database? _database;
 
@@ -12,7 +12,7 @@ class FilmDatabase {
   final boolType = 'BOOLEAN';
   final doubleType = 'DOUBLE';
 
-  FilmDatabase.init();
+  FilmDatabases.init();
 
   Future<Database?> get database async {
     if (_database != null) return _database;

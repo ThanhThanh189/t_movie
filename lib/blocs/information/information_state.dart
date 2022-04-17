@@ -9,6 +9,8 @@ class InformationState {
   List<ReviewImp> reviews;
   List<Cast> casts;
   List<FilmData> similarMovies;
+  String? infoVideo;
+  String? trailerVideo;
   bool isReadMore;
   bool isReview;
   bool isFavorite;
@@ -20,6 +22,8 @@ class InformationState {
       required this.reviews,
       required this.casts,
       required this.similarMovies,
+      this.infoVideo,
+      this.trailerVideo,
       required this.isReadMore,
       required this.isReview,
       required this.isFavorite,
@@ -44,6 +48,8 @@ class InformationState {
     List<ReviewImp>? reviews,
     List<Cast>? casts,
     List<FilmData>? similarMovies,
+    String? infoVideo,
+    String? trailerVideo,
     bool? isReadMore,
     bool? isReview,
     bool? isFavorite,
@@ -56,6 +62,8 @@ class InformationState {
         reviews: reviews ?? this.reviews,
         casts: casts ?? this.casts,
         similarMovies: similarMovies ?? this.similarMovies,
+        infoVideo: infoVideo ?? this.infoVideo,
+        trailerVideo: trailerVideo,
         isReadMore: isReadMore ?? this.isReadMore,
         isReview: isReview ?? this.isReview,
         isFavorite: isFavorite ?? this.isFavorite,
