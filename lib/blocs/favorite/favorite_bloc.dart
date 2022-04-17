@@ -3,12 +3,10 @@ import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/database/film_databases.dart';
-import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   FilmDatabases filmDatabases = FilmDatabases.instance;
-  FilmDatabase filmDatabase = FilmDatabase();
   UserRepository userRepository = UserRepository();
 
   FavoriteBloc() : super(FavoriteState.init()) {
@@ -17,9 +15,6 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
         emit.call(state.update(viewState: ViewState.isLoading));
         try {
           var listFilmData = await filmDatabases.readAllFilmsFavorite();
-          final user = await userRepository.getCurrentUser();
-          await filmDatabase.addFilm();
-
           if (listFilmData!.isNotEmpty) {
             emit.call(state.update(
                 viewState: ViewState.isSuccess, listFilmData: listFilmData));
