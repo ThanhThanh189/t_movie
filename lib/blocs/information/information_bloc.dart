@@ -6,16 +6,23 @@ import 'package:movie_ticket/data/database/film_databases.dart';
 import 'package:movie_ticket/data/models/actor.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
+import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
+import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class InformationBloc extends Bloc<InformationEvent, InformationState> {
   FilmRepository filmRepository = FilmRepositoryImp();
-  FilmDatabases filmDatabase = FilmDatabases.instance;
+  FilmDatabases filmDatabases = FilmDatabases.instance;
+  UserRepository userRepository = UserRepository();
+  FilmDatabase filmDatabase = FilmDatabase();
   InformationBloc() : super(InformationState.initial()) {
     on<InformationEvent>((event, emit) async {
       if (event is StartedInforEvent) {
-        emit.call(state.update(viewState: ViewState.isLoading));
+        emit.call(
+          state.update(viewState: ViewState.isLoading),
+        );
         try {
+          var user = await userRepository.getCurrentUser();
           var detail = await filmRepository.getDetail(event.id);
           var review = await filmRepository.getReview(event.id, 1);
           var listVideo = await filmRepository.getListVideo(event.id);
@@ -36,19 +43,30 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
             similars = similar.results;
           }
 
-          bool checkIsFavorite = await filmDatabase.checkFavorite(event.id);
+          //Check has data in firestore
+          final listFilmFavorite =
+              await filmDatabase.getFilmFavorite(uid: user!.uid);
+          for (var item in listFilmFavorite) {
+            if (item.id == event.id) {
+              emit.call(
+                state.update(isFavorite: true),
+              );
+            }
+          }
 
-          bool checkIsInCart = await filmDatabase.checkCart(event.id);
+          bool checkIsInCart = await filmDatabases.checkCart(event.id);
 
-          emit.call(state.update(
-              detail: detail,
-              reviews: reviews,
-              casts: castAndCrew,
-              similarMovies: similars,
-              infoVideo: listVideo?.first.key,
-              isFavorite: checkIsFavorite,
-              isInCart: checkIsInCart,
-              viewState: ViewState.isSuccess));
+          emit.call(
+            state.update(
+                uid: user.uid,
+                detail: detail,
+                reviews: reviews,
+                casts: castAndCrew,
+                similarMovies: similars,
+                infoVideo: listVideo?.first.key,
+                isInCart: checkIsInCart,
+                viewState: ViewState.isSuccess),
+          );
         } catch (e) {
           emit.call(state.update(
               viewState: ViewState.isFailure, message: 'Don\'t has data'));
@@ -59,31 +77,33 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
         if (state.isFavorite == false) {
           try {
             emit.call(state.update(viewState: ViewState.isLoading));
-
-            int id = await filmDatabase.addFilmsFavorite(event.filmData);
-            if (id != 0) {
-              emit.call(state.update(
-                  viewState: ViewState.isSuccess,
-                  message: 'Add favorite success',
-                  isFavorite: true));
+            bool result = await filmDatabase.addFilmFavorite(
+                filmData: event.filmData, uid: state.uid!);
+            if (result) {
               emit.call(
-                  state.update(viewState: ViewState.isNormal, message: ''));
+                state.update(
+                    viewState: ViewState.isSuccess,
+                    message: 'Add favorite success',
+                    isFavorite: true),
+              );
+              emit.call(
+                  state.update(viewState: ViewState.isNormal));
             } else {
               emit.call(state.update(
                   viewState: ViewState.isFailure,
                   message: 'Add favorite failure'));
               emit.call(
-                  state.update(viewState: ViewState.isNormal, message: ''));
+                  state.update(viewState: ViewState.isNormal));
             }
           } catch (e) {
             emit.call(
                 state.update(viewState: ViewState.isFailure, message: 'Error'));
-            emit.call(state.update(viewState: ViewState.isNormal, message: ''));
+            emit.call(state.update(viewState: ViewState.isNormal));
           }
         } else {
           emit.call(state.update(
-              viewState: ViewState.isSuccess, message: 'Added to favorites'));
-          emit.call(state.update(viewState: ViewState.isNormal, message: ''));
+              viewState: ViewState.isFailure, message: 'Added to favorites'));
+          emit.call(state.update(viewState: ViewState.isNormal));
         }
       }
 
@@ -92,7 +112,7 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
           try {
             emit.call(state.update(viewState: ViewState.isLoading));
 
-            int id = await filmDatabase.addFilmsCart(event.filmData);
+            int id = await filmDatabases.addFilmsCart(event.filmData);
             if (id != 0) {
               emit.call(state.update(
                 viewState: ViewState.isSuccess,
@@ -100,23 +120,23 @@ class InformationBloc extends Bloc<InformationEvent, InformationState> {
                 message: 'Add in cart success',
               ));
               emit.call(
-                  state.update(viewState: ViewState.isNormal, message: ''));
+                  state.update(viewState: ViewState.isNormal));
             } else {
               emit.call(state.update(
                   viewState: ViewState.isFailure,
                   message: 'Add in cart failure'));
               emit.call(
-                  state.update(viewState: ViewState.isNormal, message: ''));
+                  state.update(viewState: ViewState.isNormal));
             }
           } catch (e) {
             emit.call(
                 state.update(viewState: ViewState.isFailure, message: 'Error'));
-            emit.call(state.update(viewState: ViewState.isNormal, message: ''));
+            emit.call(state.update(viewState: ViewState.isNormal));
           }
         } else {
           emit.call(state.update(
-              viewState: ViewState.isSuccess, message: 'Added to cart'));
-          emit.call(state.update(viewState: ViewState.isNormal, message: ''));
+              viewState: ViewState.isFailure, message: 'Added to cart'));
+          emit.call(state.update(viewState: ViewState.isNormal));
         }
       }
       if (event is IsReviewInforEvent) {

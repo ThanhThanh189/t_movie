@@ -3,10 +3,13 @@ import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/database/film_databases.dart';
+import 'package:movie_ticket/data/models/film_data.dart';
+import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   FilmDatabases filmDatabases = FilmDatabases.instance;
+  FilmDatabase filmDatabase = FilmDatabase();
   UserRepository userRepository = UserRepository();
 
   FavoriteBloc() : super(FavoriteState.init()) {
@@ -14,10 +17,17 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       if (event is StartedFavoriteEvent) {
         emit.call(state.update(viewState: ViewState.isLoading));
         try {
-          var listFilmData = await filmDatabases.readAllFilmsFavorite();
-          if (listFilmData!.isNotEmpty) {
+          final user = await userRepository.getCurrentUser();
+          emit.call(
+            state.update(uid: user!.uid),
+          );
+          final listFilmFavorite =
+              await filmDatabase.getFilmFavorite(uid: user.uid);
+
+          if (listFilmFavorite.isNotEmpty) {
             emit.call(state.update(
-                viewState: ViewState.isSuccess, listFilmData: listFilmData));
+                viewState: ViewState.isSuccess,
+                listFilmFavorite: listFilmFavorite));
           } else {
             emit.call(state.update(
                 viewState: ViewState.isFailure, message: 'Don\t has data'));
@@ -32,23 +42,23 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       }
       if (event is DeleteFavoriteEvent) {
         try {
-          bool checkDelete =
-              await filmDatabases.deleteFilmsFavoriteByID(event.id);
-          if (checkDelete) {
-            var listFilmData = await filmDatabases.readAllFilmsFavorite();
-            if (listFilmData!.isNotEmpty) {
-              emit.call(state.update(
-                  viewState: ViewState.isSuccess,
-                  listFilmData: listFilmData,
-                  message: 'Delete success'));
-              emit.call(
-                  state.update(viewState: ViewState.isNormal, message: null));
-            } else {
-              emit.call(state.update(
-                  viewState: ViewState.isFailure, message: 'Don\t has data'));
-              emit.call(
-                  state.update(viewState: ViewState.isNormal, message: null));
+          List<FilmData> listFilmFavoriteNew = [];
+          for (var item in state.listFilmFavorite) {
+            if (item.id != event.id) {
+              listFilmFavoriteNew.add(item);
             }
+          }
+          await filmDatabase.addListFilmFavorite(listFilmFavorite: listFilmFavoriteNew, uid: state.uid!);
+
+          if (state.listFilmFavorite.length != listFilmFavoriteNew.length) {
+            emit.call(
+              state.update(
+                  viewState: ViewState.isSuccess,
+                  listFilmFavorite: listFilmFavoriteNew,
+                  message: 'Delete success'),
+            );
+            emit.call(
+                state.update(viewState: ViewState.isNormal, message: null));
           } else {
             emit.call(state.update(
                 viewState: ViewState.isFailure, message: 'Can\t be deleted'));
@@ -57,7 +67,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
           }
         } catch (e) {
           emit.call(
-              state.update(viewState: ViewState.isFailure, message: 'Error'));
+              state.update(viewState: ViewState.isFailure, message: 'Can\t be deleted'));
           emit.call(state.update(viewState: ViewState.isNormal, message: null));
         }
       }
@@ -65,7 +75,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
         emit.call(state.update(viewState: ViewState.isLoading));
         emit.call(state.update(
             viewState: ViewState.isSuccess,
-            listFilmData: state.listFilmData,
+            listFilmFavorite: state.listFilmFavorite,
             message: null));
       }
     });

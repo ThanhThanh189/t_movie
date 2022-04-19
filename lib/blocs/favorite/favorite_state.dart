@@ -2,25 +2,29 @@ import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 
 class FavoriteState {
-  List<FilmData> listFilmData;
+  String? uid;
+  List<FilmData> listFilmFavorite;
   ViewState viewState;
   String? message;
   FavoriteState({
-    required this.listFilmData,
+    this.uid,
+    required this.listFilmFavorite,
     required this.viewState,
     this.message,
   });
 
   factory FavoriteState.init() => FavoriteState(
-      listFilmData: [], viewState: ViewState.isNormal, message: null);
+      listFilmFavorite: [], viewState: ViewState.isNormal, message: null);
 
   FavoriteState update({
-    List<FilmData>? listFilmData,
+    String? uid,
+    List<FilmData>? listFilmFavorite,
     ViewState? viewState,
     String? message,
   }) {
     return FavoriteState(
-      listFilmData: listFilmData ?? this.listFilmData,
+      uid: uid ?? this.uid,
+      listFilmFavorite: listFilmFavorite ?? this.listFilmFavorite,
       viewState: viewState ?? this.viewState,
       message: message ?? this.message,
     );

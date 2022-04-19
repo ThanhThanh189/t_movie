@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
+import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({
@@ -30,31 +29,39 @@ class FavoriteScreen extends StatelessWidget {
         child: BlocConsumer<FavoriteBloc, FavoriteState>(
           listener: (context, state) {
             if (state.viewState == ViewState.isFailure) {
-              state.message != '' && state.message != null
-                  ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(state.message.toString()),
-                      duration: const Duration(milliseconds: 1000)))
-                  : null;
+              if (state.message != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  CustomSnackBar(
+                    message: state.message.toString(),
+                    isSuccess: false,
+                    milliseconds: 1000,
+                  ),
+                );
+              }
             }
             if (state.viewState == ViewState.isSuccess) {
-              state.message != '' && state.message != null
-                  ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(state.message.toString()),
-                      duration: const Duration(milliseconds: 1000)))
-                  : null;
+              if (state.message != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  CustomSnackBar(
+                    message: state.message.toString(),
+                    isSuccess: true,
+                    milliseconds: 1000,
+                  ),
+                );
+              }
             }
           },
           builder: (context, state) {
-            return _buildListSearch(context, state);
+            return _buildListFilmFavorite(context, state);
           },
         ),
       ),
     );
   }
 
-  Widget _buildListSearch(BuildContext context, FavoriteState state) {
+  Widget _buildListFilmFavorite(BuildContext context, FavoriteState state) {
     return ListView.builder(
-        itemCount: state.listFilmData.length,
+        itemCount: state.listFilmFavorite.length,
         itemBuilder: (context, index) {
           return Dismissible(
             background: Container(
@@ -66,97 +73,17 @@ class FavoriteScreen extends StatelessWidget {
                   builder: (_) => _builDialog(context, state, index));
               return result['confirm'];
             },
-            key: Key(state.listFilmData[index].id.toString()),
+            key: Key(state.listFilmFavorite[index].id.toString()),
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => InformationScreen(
-                        filmData: state.listFilmData[index])));
+                        filmData: state.listFilmFavorite[index])));
               },
-              child: Container(
-                margin: EdgeInsets.only(
-                    right: 10,
-                    left: 10,
-                    top: 10,
-                    bottom: index == state.listFilmData.length - 1 ? 10 : 0),
-                width: double.infinity,
-                height: 100,
-                child: Row(
-                  children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: state.listFilmData[index].backdropPath != null
-                              ? _buildLoadImage(
-                                  url: Global.imageURL +
-                                      state.listFilmData[index].backdropPath!)
-                              : Image.asset(
-                                  'assets/images/auto2.jpg',
-                                ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.listFilmData[index].title,
-                              maxLines: 2,
-                            ),
-                            Row(
-                              children: [
-                                RatingBar.builder(
-                                    initialRating:
-                                        state.listFilmData[index].voteAverage /
-                                            2,
-                                    minRating: 1,
-                                    itemCount: 5,
-                                    itemSize: 20,
-                                    tapOnlyMode: true,
-                                    allowHalfRating: true,
-                                    itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                    onRatingUpdate: (rating) {}),
-                                Text(
-                                  '(${state.listFilmData[index].voteAverage / 2})',
-                                )
-                              ],
-                            ),
-                            Text(DateFormat('dd-MM-yyyy').format(
-                                state.listFilmData[index].releaseDate)),
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
+              child: CardView(filmData: state.listFilmFavorite[index]),
             ),
           );
         });
-  }
-
-  Widget _buildLoadImage({required String url}) {
-    return Image.network(
-      url,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Image.asset(
-          'assets/images/loading_dark.gif',
-          fit: BoxFit.cover,
-        );
-      },
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        if (stackTrace != null) return const Center(child: Icon(Icons.error));
-        return const Center(child: Icon(Icons.error));
-      },
-    );
   }
 
   Widget _builDialog(BuildContext context, FavoriteState state, int index) {
@@ -194,7 +121,7 @@ class FavoriteScreen extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<FavoriteBloc>(context).add(
                               DeleteFavoriteEvent(
-                                  id: state.listFilmData[index].id));
+                                  id: state.listFilmFavorite[index].id));
                           Navigator.of(context).pop({'confirm': true});
                         },
                         child: const Text(

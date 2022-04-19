@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_ticket/blocs/search/search_bloc.dart';
 import 'package:movie_ticket/blocs/search/search_event.dart';
 import 'package:movie_ticket/blocs/search/search_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({
@@ -93,90 +91,12 @@ class SearchScreen extends StatelessWidget {
         itemCount: state.listFilmData.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) =>
-                      InformationScreen(filmData: state.listFilmData[index])));
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
-              width: double.infinity,
-              height: 100,
-              // MediaQuery.of(context).size.height * 0.1,
-              child: Row(
-                children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: state.listFilmData[index].backdropPath != null
-                            ? _buildLoadImage(
-                                url: Global.imageURL +
-                                    state.listFilmData[index].backdropPath!)
-                            : Image.asset(
-                                'assets/images/loading_dark.gif',
-                              ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.listFilmData[index].originalTitle,
-                            maxLines: 2,
-                          ),
-                          Row(
-                            children: [
-                              RatingBar.builder(
-                                  initialRating:
-                                      state.listFilmData[index].voteAverage / 2,
-                                  minRating: 1,
-                                  itemCount: 5,
-                                  itemSize: 20,
-                                  tapOnlyMode: true,
-                                  allowHalfRating: true,
-                                  itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                  onRatingUpdate: (rating) {}),
-                              Text(
-                                '(${state.listFilmData[index].voteAverage / 2})',
-                              )
-                            ],
-                          ),
-                          Text(DateFormat('dd-MM-yyyy')
-                              .format(state.listFilmData[index].releaseDate)),
-                        ]),
-                  ),
-                  const Icon(Icons.arrow_circle_up_outlined, size: 30),
-                ],
-              ),
-            ),
-          );
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => InformationScreen(
+                        filmData: state.listFilmData[index])));
+              },
+              child: CardView(filmData: state.listFilmData[index]));
         });
-  }
-
-  Widget _buildLoadImage({required String url}) {
-    return Image.network(
-      url,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Image.asset(
-          'assets/images/loading_dark.gif',
-          fit: BoxFit.cover,
-        );
-      },
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        if (stackTrace != null) return const Center(child: Icon(Icons.error));
-        return const Center(child: Icon(Icons.error));
-      },
-    );
   }
 }

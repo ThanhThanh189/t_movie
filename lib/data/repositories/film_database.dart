@@ -11,35 +11,68 @@ class FilmDatabase {
   Future<bool> addFilmFavorite(
       {required FilmData filmData, required String uid}) async {
     try {
+      final listFilmFavoriteOld = await getFilmFavorite(uid: uid);
+      final listFilmFavoriteNew = [filmData];
+      if (listFilmFavoriteOld.isNotEmpty) {
+        listFilmFavoriteNew.addAll(listFilmFavoriteOld);
+      }
+
       await firestoreInstance
           ?.collection(AppStrings.collectionFilmFavorite)
           .doc(uid)
           .set(
-            filmData.toJson(),
-            SetOptions(merge: true),
-          );
+        {
+          AppStrings.fieldFilmFavorite:
+              listFilmFavoriteNew.map((e) => e.toJson()).toList(),
+        },
+        SetOptions(merge: true),
+      ).then(
+        (value) {
+          return true;
+        },
+      );
+    } catch (_) {
+      return false;
+    }
+    return true;
+  }
+  Future<bool> addListFilmFavorite(
+      {required List<FilmData> listFilmFavorite, required String uid}) async {
+    try {
+      await firestoreInstance
+          ?.collection(AppStrings.collectionFilmFavorite)
+          .doc(uid)
+          .set(
+        {
+          AppStrings.fieldFilmFavorite:
+              listFilmFavorite.map((e) => e.toJson()).toList(),
+        },
+        SetOptions(merge: true),
+      ).then(
+        (value) {
+          return true;
+        },
+      );
     } catch (_) {
       return false;
     }
     return true;
   }
 
-  Future<void> addFilm() async {
+  Future<List<FilmData>> getFilmFavorite({required String uid}) async {
     try {
-      firestoreInstance = FirebaseFirestore.instance;
-      await firestoreInstance
-          ?.collection("user2")
-          .doc('1NZxBPI665YzPRMesMIgqy9hona2')
-          .set(
-        {
-          "name": "john",
-          "age": 50,
-          "email": "example@example.com",
-          "address": {"street": "street 24", "city": "new york"}
-        },
-      ).then((value) {
-        print('success');
-      });
-    } catch (_) {}
+      final result = await firestoreInstance
+          ?.collection(AppStrings.collectionFilmFavorite)
+          .doc(uid)
+          .get();
+      final listFilmFavorite = List<FilmData>.from(
+        result?.data()![AppStrings.fieldFilmFavorite].map(
+              (x) => FilmData.fromJson(x),
+            ),
+      );
+      return listFilmFavorite;
+    } catch (_) {
+      return [];
+    }
   }
 }
