@@ -36,6 +36,7 @@ class FilmDatabase {
     }
     return true;
   }
+
   Future<bool> addListFilmFavorite(
       {required List<FilmData> listFilmFavorite, required String uid}) async {
     try {

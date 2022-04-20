@@ -11,6 +11,7 @@ import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
+import 'package:movie_ticket/presentation/order_ticket/cinema_and_date.dart';
 import 'package:movie_ticket/presentation/order_ticket/trailer_screen.dart';
 import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
@@ -640,8 +641,15 @@ class InformationScreen extends StatelessWidget {
         width: double.infinity,
         child: TextButton(
           onPressed: () {
-            BlocProvider.of<InformationBloc>(context)
-                .add(AddCartInforEvent(filmData: filmData));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CinemaAndDateView(
+                  filmData: filmData,
+                ),
+              ),
+            );
+            // BlocProvider.of<InformationBloc>(context)
+            //     .add(AddCartInforEvent(filmData: filmData));
           },
           child: const Text(
             'Add to cart',

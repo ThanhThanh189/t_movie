@@ -6,25 +6,27 @@ class BaseButton extends StatelessWidget {
   const BaseButton({
     Key? key,
     required this.text,
-     this.onPressed,
+    this.onPressed,
     required this.isVisible,
+    this.isExpanded = true,
   }) : super(key: key);
 
   final String text;
   final Function()? onPressed;
   final bool isVisible;
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      width: isExpanded ? double.infinity : null,
+      padding: const EdgeInsets.symmetric(vertical: 3,horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: isVisible ? AppColors.mainColor : AppColors.dartBackground2,
       ),
       child: TextButton(
-        onPressed:isVisible ? onPressed : null,
+        onPressed: isVisible ? onPressed : null,
         child: Text(
           text,
           style: AppTextStyle.medium18.copyWith(

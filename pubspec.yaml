@@ -96,6 +96,7 @@ flutter:
     - assets/images/loading_dark.gif
     - assets/images/no_avatar.png
     - assets/images/photoProfile.png
+    - assets/images/seatScreen.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
