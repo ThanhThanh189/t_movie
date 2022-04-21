@@ -5,7 +5,16 @@ import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/presentation/widgets/contants/contants.dart';
 
 class Seat extends StatelessWidget {
-  const Seat({Key? key}) : super(key: key);
+  const Seat({
+    required this.onPressed,
+    required this.listSeatBooked,
+    required this.listSeatSelected,
+    Key? key,
+  }) : super(key: key);
+
+  final List<String> listSeatSelected;
+  final List<String> listSeatBooked;
+  final Function(String) onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +51,14 @@ class Seat extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildGridView(context,
-                          crossAxisCount: 4, seats: SeatA6.values.map((e) => e.title).toList()),
+                          crossAxisCount: 4,
+                          seats: SeatA6.values.map((e) => e.title).toList()),
                       _buildGridView(context,
-                          crossAxisCount: 4, seats: SeatA12.values.map((e) => e.title).toList()),
+                          crossAxisCount: 4,
+                          seats: SeatA12.values.map((e) => e.title).toList()),
                       _buildGridView(context,
-                          crossAxisCount: 4, seats: SeatA18.values.map((e) => e.title).toList()),
+                          crossAxisCount: 4,
+                          seats: SeatA18.values.map((e) => e.title).toList()),
                     ],
                   ),
                 ),
@@ -58,11 +70,14 @@ class Seat extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildGridView(context,
-                          crossAxisCount: 6, seats: SeatE4.values.map((e) => e.title).toList()),
+                          crossAxisCount: 6,
+                          seats: SeatE4.values.map((e) => e.title).toList()),
                       _buildGridView(context,
-                          crossAxisCount: 6, seats: SeatE10.values.map((e) => e.title).toList()),
+                          crossAxisCount: 6,
+                          seats: SeatE10.values.map((e) => e.title).toList()),
                       _buildGridView(context,
-                          crossAxisCount: 6, seats: SeatE14.values.map((e) => e.title).toList()),
+                          crossAxisCount: 6,
+                          seats: SeatE14.values.map((e) => e.title).toList()),
                     ],
                   ),
                 ),
@@ -71,7 +86,9 @@ class Seat extends StatelessWidget {
           )),
     );
   }
+}
 
+extension SeatBasicComponents on Seat {
   Widget _buildGridView(BuildContext context,
       {required int crossAxisCount, required List<String> seats}) {
     return Container(
@@ -87,15 +104,23 @@ class Seat extends StatelessWidget {
             mainAxisSpacing: 20.0),
         itemCount: seats.length,
         itemBuilder: (context, index) {
-          return Container(
-            width: 26.0,
-            height: 26.0,
-            decoration: BoxDecoration(
-                color: AppColors.dartBackground2,
-                borderRadius: BorderRadius.circular(10)),
-            child: Center(
-              child: GestureDetector(
-                onTap: () {},
+          return GestureDetector(
+            onTap: listSeatBooked.contains(seats[index])
+                ? null
+                : () {
+                    onPressed(seats[index]);
+                  },
+            child: Container(
+              width: 26.0,
+              height: 26.0,
+              decoration: BoxDecoration(
+                  color: listSeatBooked.contains(seats[index])
+                      ? AppColors.greyBackground1
+                      : listSeatSelected.contains(seats[index])
+                          ? AppColors.mainColor
+                          : AppColors.dartBackground2,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
                 child: Text(
                   seats[index],
                   style: AppTextStyle.medium14,

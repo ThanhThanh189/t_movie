@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_ticket/blocs/choose_seat/choose_seat_bloc.dart';
+import 'package:movie_ticket/blocs/choose_seat/choose_seat_event.dart';
+import 'package:movie_ticket/blocs/choose_seat/choose_seat_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/global.dart';
@@ -22,21 +26,30 @@ class ChooseSeatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(
-    //     'value: ${filmData.id},${chooseTime.title},${chooseDate.dateToString()}');
-    return Scaffold(
-        backgroundColor: AppColors.dartBackground1,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 10),
-              Expanded(child: _buildSeat(context)),
-              _buildBookTicket(context),
-            ],
-          ),
-        ));
+    return BlocProvider<ChooseSeatBloc>(
+      create: (context) => ChooseSeatBloc()
+        ..add(
+          StartedChooseSeatEvent(),
+        ),
+      child: BlocConsumer<ChooseSeatBloc, ChooseSeatState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+              backgroundColor: AppColors.dartBackground1,
+              body: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(context),
+                    const SizedBox(height: 10),
+                    Expanded(child: _buildSeat(context, state: state)),
+                    _buildBookTicket(context, state: state),
+                  ],
+                ),
+              ));
+        },
+      ),
+    );
   }
 }
 
@@ -130,11 +143,25 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
     );
   }
 
-  Widget _buildSeat(BuildContext context) {
-    return const Seat();
+  Widget _buildSeat(
+    BuildContext context, {
+    required ChooseSeatState state,
+  }) {
+    return Seat(
+      listSeatBooked: state.listSeatBooked,
+      onPressed: (value) {
+        BlocProvider.of<ChooseSeatBloc>(context).add(
+          SetSeatChooseSeatEvent(seat: value),
+        );
+      },
+      listSeatSelected: state.listSeatSelected,
+    );
   }
 
-  Widget _buildBookTicket(BuildContext context) {
+  Widget _buildBookTicket(
+    BuildContext context, {
+    required ChooseSeatState state,
+  }) {
     return Container(
       padding: const EdgeInsets.only(top: 22, bottom: 22),
       width: double.infinity,
@@ -147,12 +174,12 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Total Price ( 3 Ticket)',
+                'Total Price ( ${state.listSeatSelected.length} Ticket)',
                 style:
                     AppTextStyle.regular14.copyWith(color: AppColors.mainText),
               ),
               Text(
-                'Rp 150.000',
+                'Rp ${state.listSeatSelected.length * 150000}',
                 style:
                     AppTextStyle.semiBold20.copyWith(color: AppColors.mainText),
               ),
