@@ -1,7 +1,9 @@
 class AppStrings {
   //firebase storage
   static String collectionFilmFavorite = 'favorite';
+  static String collectionTicket = 'ticket';
   static String fieldFilmFavorite = 'film_favorite';
+  static String fieldTicket = 'ticket';
 
   //State
   static String isLoading = 'Waiting a second...';
@@ -54,4 +56,9 @@ class AppStrings {
   //Dialog
   static String dialogCancel = 'Cancel';
   static String dialogOK = 'OK';
+
+  //Checkout success
+  static String happyWatching = 'Happy Watching!';
+  static String successfuly = 'You have successfully\nbought the ticket';
+  static String myHome = 'My Home';
 }

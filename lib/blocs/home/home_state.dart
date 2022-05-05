@@ -23,7 +23,7 @@ class HomeState {
         listTopRated: [],
         listNowPlaying: [],
         listComingSoon: [],
-        viewState: ViewState.isNormal,
+        viewState: ViewState.isLoading,
       );
 
   HomeState update({
@@ -40,7 +40,7 @@ class HomeState {
       listComingSoon: listComingSoon ?? this.listComingSoon,
       user: user ?? this.user,
       viewState: viewState ?? this.viewState,
-      message: message ?? this.message,
+      message: message,
     );
   }
 

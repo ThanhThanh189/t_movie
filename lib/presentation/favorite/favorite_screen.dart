@@ -4,10 +4,11 @@ import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
-import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
+import 'package:movie_ticket/presentation/widgets/card/film_card_view.dart';
 import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -17,44 +18,59 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.dartBackground1,
-      appBar: AppBar(
-        title: const Text('Favorite'),
-        backgroundColor: AppColors.dartBackground1,
-        centerTitle: true,
-      ),
-      body: BlocProvider<FavoriteBloc>(
-        create: (context) => FavoriteBloc()..add(StartedFavoriteEvent()),
-        child: BlocConsumer<FavoriteBloc, FavoriteState>(
-          listener: (context, state) {
-            if (state.viewState == ViewState.isFailure) {
-              if (state.message != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  CustomSnackBar(
-                    message: state.message.toString(),
-                    isSuccess: false,
-                    milliseconds: 1000,
-                  ),
-                );
-              }
+    return BlocProvider<FavoriteBloc>(
+      create: (context) => FavoriteBloc()..add(StartedFavoriteEvent()),
+      child: BlocConsumer<FavoriteBloc, FavoriteState>(
+        listener: (context, state) {
+          if (state.viewState == ViewState.isFailure) {
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: false,
+                  milliseconds: 1000,
+                ),
+              );
             }
-            if (state.viewState == ViewState.isSuccess) {
-              if (state.message != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  CustomSnackBar(
-                    message: state.message.toString(),
-                    isSuccess: true,
-                    milliseconds: 1000,
-                  ),
-                );
-              }
+          }
+          if (state.viewState == ViewState.isSuccess) {
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: true,
+                  milliseconds: 1000,
+                ),
+              );
             }
-          },
-          builder: (context, state) {
-            return _buildListFilmFavorite(context, state);
-          },
-        ),
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: AppColors.dartBackground1,
+            appBar: AppBar(
+              title: const Text(
+                'Favorite',
+                style: AppTextStyle.semiBold24,
+              ),
+              backgroundColor: AppColors.dartBackground1,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+            ),
+            body: state.viewState == ViewState.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : state.listFilmFavorite.isNotEmpty
+                    ? _buildListFilmFavorite(context, state)
+                    : const Center(
+                        child: Text(
+                          'Don\'t has data',
+                          style: AppTextStyle.medium14,
+                        ),
+                      ),
+          );
+        },
       ),
     );
   }
@@ -80,7 +96,7 @@ class FavoriteScreen extends StatelessWidget {
                     builder: (_) => InformationScreen(
                         filmData: state.listFilmFavorite[index])));
               },
-              child: CardView(filmData: state.listFilmFavorite[index]),
+              child: FilmCardView(filmData: state.listFilmFavorite[index]),
             ),
           );
         });

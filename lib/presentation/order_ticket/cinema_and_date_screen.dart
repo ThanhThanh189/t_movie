@@ -181,6 +181,7 @@ extension CinemaAndDateBasicComponents on CinemaAndDateView {
                     filmData: filmData,
                     chooseTime: state.time ?? CinemaTime.t1,
                     chooseDate: state.day ?? DateTime.now(),
+                    cinemaName: state.cinemaName,
                   ),
                 ),
               );

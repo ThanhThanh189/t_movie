@@ -4,11 +4,13 @@ import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
 import 'package:movie_ticket/blocs/cart/cart_event.dart';
 import 'package:movie_ticket/blocs/cart/cart_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/common/date_contants.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/presentation/cart/check_out_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
-import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
+import 'package:movie_ticket/presentation/widgets/card/ticket_card_view.dart';
+import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({
@@ -22,66 +24,52 @@ class CartScreen extends StatelessWidget {
       child: BlocConsumer<CartBloc, CartState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isFailure) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000)))
-                : null;
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: false,
+                  milliseconds: 1000,
+                ),
+              );
+            }
           }
           if (state.viewState == ViewState.isSuccess) {
-            state.message != '' && state.message != null
-                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(state.message.toString()),
-                    duration: const Duration(milliseconds: 1000)))
-                : null;
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                CustomSnackBar(
+                  message: state.message.toString(),
+                  isSuccess: true,
+                  milliseconds: 1000,
+                ),
+              );
+            }
           }
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.dartBackground1,
             appBar: AppBar(
+              title: const Text(
+                'My Ticket',
+                style: AppTextStyle.semiBold24,
+              ),
               backgroundColor: AppColors.dartBackground1,
-              actions: [
-                Visibility(
-                  visible: state.listFilmData.isNotEmpty,
-                  child: GestureDetector(
-                      onTap: () {
-                        BlocProvider.of<CartBloc>(context).add(
-                            SelectAllCartEvent(
-                                isSelected: !state.isSelectedAll));
-                      },
-                      child: Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          child: state.isSelectedAll
-                              ? const Icon(Icons.select_all, color: Colors.blue)
-                              : const Icon(Icons.select_all))),
-                )
-              ],
-              title: const Text('Cart Screen'),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
             ),
-            body: _buildListCart(context, state),
-            floatingActionButton: state.listFilmDataSelected.isNotEmpty
-                ? FloatingActionButton(
-                    backgroundColor: Colors.blue,
-                    onPressed: () async {
-                      var result =
-                          await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => CheckOutScreen(
-                                    listFilmData: state.listFilmDataSelected,
-                                  )));
-
-                      if (result['payment']) {
-                        BlocProvider.of<CartBloc>(context).add(PaymentCartEvent(
-                            listFilmData: state.listFilmDataSelected));
-                      } else {}
-                    },
-                    child: const Icon(
-                      Icons.card_membership,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+            backgroundColor: AppColors.dartBackground1,
+            body: state.viewState == ViewState.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
                   )
-                : null,
+                : state.listMyTicket.isNotEmpty
+                    ? _buildListCart(context, state)
+                    : const Center(
+                        child: Text(
+                          'Don\'t has data',
+                          style: AppTextStyle.medium14,
+                        ),
+                      ),
           );
         },
       ),
@@ -90,7 +78,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildListCart(BuildContext context, CartState state) {
     return ListView.builder(
-        itemCount: state.listFilmData.length,
+        itemCount: state.listMyTicket.length,
         itemBuilder: (context, index) {
           return Dismissible(
             background: Container(
@@ -102,32 +90,18 @@ class CartScreen extends StatelessWidget {
                   builder: (_) => _builDialog(context, state, index));
               return result['confirm'];
             },
-            onDismissed: (value) {},
-            key: Key(state.listFilmData[index].id.toString()),
+            key: Key(state.listMyTicket[index].id.toString()),
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => InformationScreen(
-                        filmData: state.listFilmData[index])));
+                        filmData: state.listMyTicket[index].filmData)));
               },
-              child: Row(
-                children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      hoverColor: Colors.blue,
-                      activeColor: Colors.blue,
-                      value: state.listFilmDataSelected
-                          .contains(state.listFilmData[index]),
-                      onChanged: (value) {
-                        BlocProvider.of<CartBloc>(context).add(
-                            SelectCartEvent(
-                                filmData: state.listFilmData[index],
-                                isSelected: value ?? false));
-                      }),
-                  Expanded(
-                      child: CardView(filmData: state.listFilmData[index]))
-                ],
-              ),
+              child: TicketCardView(
+                  filmData: state.listMyTicket[index].filmData,
+                  time: state.listMyTicket[index].cinemaTime,
+                  date: state.listMyTicket[index].dateTime.dateToDateTicket(),
+                  cinemaName: state.listMyTicket[index].cinemaName),
             ),
           );
         });
@@ -168,7 +142,7 @@ class CartScreen extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<CartBloc>(context).add(
                               DeleteCartEvent(
-                                  id: state.listFilmData[index].id));
+                                  id: state.listMyTicket[index].id));
                           Navigator.of(context).pop({'confirm': true});
                         },
                         child: const Text(

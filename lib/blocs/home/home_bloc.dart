@@ -14,7 +14,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>(
       (event, emit) async {
         if (event is StartedHomeEvent) {
-          emit.call(state.update(viewState: ViewState.isLoading));
+          emit.call(
+            state.update(viewState: ViewState.isLoading),
+          );
+          await Future.delayed(const Duration(milliseconds: 500));
+          emit.call(
+            state.update(viewState: ViewState.isNormal),
+          );
           try {
             final user = await userRepository.getCurrentUser();
             List<FilmData>? listTopRated =
@@ -37,7 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               state.update(viewState: ViewState.isFailure, message: 'Error'),
             );
             emit.call(
-              state.update(viewState: ViewState.isNormal, message: ''),
+              state.update(viewState: ViewState.isNormal),
             );
           }
         }

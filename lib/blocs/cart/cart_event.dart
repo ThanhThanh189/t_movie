@@ -32,7 +32,7 @@ class SelectAllCartEvent extends CartEvent {
 }
 
 class DeleteCartEvent extends CartEvent {
-  final int id;
+  final String id;
   DeleteCartEvent({
     required this.id,
   });

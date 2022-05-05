@@ -28,15 +28,11 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
             emit.call(state.update(
                 viewState: ViewState.isSuccess,
                 listFilmFavorite: listFilmFavorite));
-          } else {
-            emit.call(state.update(
-                viewState: ViewState.isFailure, message: 'Don\t has data'));
-            emit.call(
-                state.update(viewState: ViewState.isNormal, message: null));
-          }
+          } 
+          emit.call(state.update(viewState: ViewState.isNormal, message: null));
         } catch (e) {
           emit.call(
-              state.update(viewState: ViewState.isFailure, message: 'Error'));
+              state.update(viewState: ViewState.isFailure, message: 'Don\'t has data'));
           emit.call(state.update(viewState: ViewState.isNormal, message: null));
         }
       }
@@ -48,9 +44,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
               listFilmFavoriteNew.add(item);
             }
           }
-          await filmDatabase.addListFilmFavorite(listFilmFavorite: listFilmFavoriteNew, uid: state.uid!);
 
           if (state.listFilmFavorite.length != listFilmFavoriteNew.length) {
+            await filmDatabase.deleteFilmFavorite(
+                listFilmFavorite: listFilmFavoriteNew, uid: state.uid!);
             emit.call(
               state.update(
                   viewState: ViewState.isSuccess,
@@ -61,13 +58,13 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
                 state.update(viewState: ViewState.isNormal, message: null));
           } else {
             emit.call(state.update(
-                viewState: ViewState.isFailure, message: 'Can\t be deleted'));
+                viewState: ViewState.isFailure, message: 'Can\'t be deleted'));
             emit.call(
                 state.update(viewState: ViewState.isNormal, message: null));
           }
         } catch (e) {
-          emit.call(
-              state.update(viewState: ViewState.isFailure, message: 'Can\t be deleted'));
+          emit.call(state.update(
+              viewState: ViewState.isFailure, message: 'Can\'t be deleted'));
           emit.call(state.update(viewState: ViewState.isNormal, message: null));
         }
       }

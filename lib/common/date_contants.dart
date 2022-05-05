@@ -22,4 +22,8 @@ extension DateContants on DateTime {
   String dateToString(){
     return DateFormat('dd-MM-yyyy').format(this);
   }
+
+  String dateToDateTicket(){
+    return DateFormat('E dd/MM').format(this).toUpperCase();
+  }
 }

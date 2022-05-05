@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movie_ticket/common/app_strings.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
+import 'package:movie_ticket/data/models/ticket.dart';
 
 class FilmDatabase {
   FirebaseFirestore? firestoreInstance;
@@ -37,7 +38,7 @@ class FilmDatabase {
     return true;
   }
 
-  Future<bool> addListFilmFavorite(
+  Future<bool> deleteFilmFavorite(
       {required List<FilmData> listFilmFavorite, required String uid}) async {
     try {
       await firestoreInstance
@@ -71,9 +72,80 @@ class FilmDatabase {
               (x) => FilmData.fromJson(x),
             ),
       );
+
       return listFilmFavorite;
     } catch (_) {
       return [];
     }
+  }
+
+  //Ticket
+  Future<bool> addMyTicket({
+    required Ticket ticket,
+    required String uid,
+  }) async {
+    try {
+      final listMyTicketOld = await getMyTicket(uid: uid);
+      final listMyTicketNew = [ticket];
+      if (listMyTicketOld.isNotEmpty) {
+        listMyTicketNew.addAll(listMyTicketOld);
+      }
+      await firestoreInstance
+          ?.collection(AppStrings.collectionTicket)
+          .doc(uid)
+          .set(
+        {
+          AppStrings.fieldTicket:
+              listMyTicketNew.map((e) => e.toJson()).toList(),
+        },
+        SetOptions(merge: true),
+      ).then(
+        (value) {
+          return true;
+        },
+      );
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<List<Ticket>> getMyTicket({required String uid}) async {
+    try {
+      final result = await firestoreInstance
+          ?.collection(AppStrings.collectionTicket)
+          .doc(uid)
+          .get();
+      List<Ticket> listMyTicket = List<Ticket>.from(
+        result?.data()![AppStrings.collectionTicket].map(
+              (x) => Ticket.fromJson(x),
+            ),
+      );
+      return listMyTicket;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<bool> deleteMyTicket({required String uid, required List<Ticket> listTicket}) async{
+    try {
+      await firestoreInstance
+          ?.collection(AppStrings.collectionTicket)
+          .doc(uid)
+          .set(
+        {
+          AppStrings.fieldTicket:
+              listTicket.map((e) => e.toJson()).toList(),
+        },
+        SetOptions(merge: true),
+      ).then(
+        (value) {
+          return true;
+        },
+      );
+    } catch (_) {
+      return false;
+    }
+    return true;
   }
 }

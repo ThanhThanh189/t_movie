@@ -73,7 +73,7 @@ class InformationScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              floatingActionButton: _buildAddToCart(context, state),
+              floatingActionButton: _buildBuyTicketMovie(context, state),
             ),
           );
         },
@@ -115,6 +115,7 @@ class InformationScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios, size: 30),
             ),
           ),
+          if(state.detail != null)
           Positioned(
             right: 10,
             top: 10,
@@ -202,6 +203,7 @@ class InformationScreen extends StatelessWidget {
               ],
             ),
           ),
+          if(state.detail != null)
           SizedBox(
             width: double.infinity,
             child: Column(
@@ -631,7 +633,7 @@ class InformationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddToCart(BuildContext context, InformationState state) {
+  Widget _buildBuyTicketMovie(BuildContext context, InformationState state) {
     return Container(
       margin: const EdgeInsets.only(left: 30),
       decoration: BoxDecoration(
@@ -648,11 +650,9 @@ class InformationScreen extends StatelessWidget {
                 ),
               ),
             );
-            // BlocProvider.of<InformationBloc>(context)
-            //     .add(AddCartInforEvent(filmData: filmData));
           },
           child: const Text(
-            'Add to cart',
+            'Book Ticket',
             style: AppTextStyles.h2Bold,
           ),
         ),

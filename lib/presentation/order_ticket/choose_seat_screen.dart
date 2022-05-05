@@ -5,9 +5,8 @@ import 'package:movie_ticket/blocs/choose_seat/choose_seat_event.dart';
 import 'package:movie_ticket/blocs/choose_seat/choose_seat_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
-import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
-import 'package:movie_ticket/presentation/cart/check_out_screen.dart';
+import 'package:movie_ticket/presentation/order_ticket/check_out_screen.dart';
 import 'package:movie_ticket/presentation/widgets/base_appbar/base_appbar_view.dart';
 import 'package:movie_ticket/presentation/widgets/base_button/base_button.dart';
 import 'package:movie_ticket/presentation/widgets/contants/contants.dart';
@@ -18,11 +17,13 @@ class ChooseSeatScreen extends StatelessWidget {
     required this.filmData,
     required this.chooseTime,
     required this.chooseDate,
+    required this.cinemaName,
     Key? key,
   }) : super(key: key);
   final FilmData filmData;
   final CinemaTime chooseTime;
   final DateTime chooseDate;
+  final CinemaName cinemaName;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
 
   Widget _buildCinemaName(BuildContext context) {
     return Text(
-      'FX Sudirman XXI',
+      cinemaName.title,
       style: AppTextStyle.light12.copyWith(color: AppColors.mainText),
     );
   }
@@ -179,7 +180,7 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
                     AppTextStyle.regular14.copyWith(color: AppColors.mainText),
               ),
               Text(
-                'Rp ${state.listSeatSelected.length * 150000}',
+                'Rp ${state.listSeatSelected.length * 50000}',
                 style:
                     AppTextStyle.semiBold20.copyWith(color: AppColors.mainText),
               ),
@@ -190,26 +191,17 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
             isVisible: true,
             isExpanded: false,
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   builder: (context) => CheckOutScreen(
-                        listFilmData: [
-                          FilmData(
-                              adult: false,
-                              id: 1,
-                              backdropPath: Global.imageURL +
-                                  "/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
-                              originalLanguage: 'originalLanguage',
-                              originalTitle: 'originalTitle',
-                              overview: 'overview',
-                              popularity: 2022,
-                              posterPath: 'posterPath',
-                              releaseDate: DateTime(2022, 03, 19),
-                              title: 'title',
-                              video: false,
-                              voteAverage: 8,
-                              voteCount: 10)
-                        ],
-                      )));
+                    filmData: filmData,
+                    chooseTime: chooseTime,
+                    chooseDate: chooseDate,
+                    cinemaName: cinemaName,
+                    listSeatSelected: state.listSeatSelected,
+                  ),
+                ),
+              );
             },
           )
         ],

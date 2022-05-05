@@ -1,5 +1,3 @@
-
-
 class Contants {
   // static final seatA6 = [
   //   'A1',
@@ -170,6 +168,18 @@ class Contants {
   //   'I14',
   //   'J14',
   // ];
+}
+
+extension ListToString on List<String> {
+  String get title {
+    var value = '';
+    forEach(
+      (element) {
+        value += element + ',';
+      },
+    );
+    return value.substring(0, value.length - 1);
+  }
 }
 
 enum CinemaTime { t1, t2, t3, t4, t5, t6 }

@@ -8,6 +8,7 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/global.dart';
+import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/search_screen.dart';
@@ -29,20 +30,27 @@ class HomeScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColors.dartBackground1,
             body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    //Find your best movie
-                    _buildAvatar(context, state: homeState),
-                    // search movie
-                    _buildSearchMovie(context),
-                    //Now playing
-                    _buildListNowPlaying(context, true, homeState),
-                    _buildListNowPlaying(context, false, homeState),
-                    //Coming soon
-                    _buildListComingSoon(context, homeState),
-                  ],
-                ),
+              child: RefreshIndicator(
+                onRefresh: () => _refreshLocalGallery(context),
+                child: homeState.viewState == ViewState.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            //Find your best movie
+                            _buildAvatar(context, state: homeState),
+                            // search movie
+                            _buildSearchMovie(context),
+                            //Now playing
+                            _buildListNowPlaying(context, true, homeState),
+                            _buildListNowPlaying(context, false, homeState),
+                            //Coming soon
+                            _buildListComingSoon(context, homeState),
+                          ],
+                        ),
+                      ),
               ),
             ),
           );
@@ -193,7 +201,9 @@ class HomeScreen extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
-                Global.imageURL + filmData.backdropPath!,
+                filmData.backdropPath != null
+                    ? Global.imageURL + filmData.backdropPath!
+                    : Global.urlError,
                 errorBuilder: (context, error, stackTrace) {
                   return const Center(child: Icon(Icons.error));
                 },
@@ -316,7 +326,9 @@ class HomeScreen extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              Global.imageURL + filmData.backdropPath!,
+              filmData.backdropPath != null
+                  ? Global.imageURL + filmData.backdropPath!
+                  : Global.urlError,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
@@ -329,4 +341,8 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _refreshLocalGallery(BuildContext context) async {
+  BlocProvider.of<HomeBloc>(context).add(StartedHomeEvent());
 }

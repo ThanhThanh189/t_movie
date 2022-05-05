@@ -14,4 +14,7 @@ class Global {
 
   static const String urlAvatar =
       'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__480.jpg';
+
+  static const String urlError =
+      'https://img5.thuthuatphanmem.vn/uploads/2021/11/20/anh-nen-mau-xanh-dam-don-gian_014246497.jpg';
 }

@@ -5,8 +5,8 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 
-class CardView extends StatelessWidget {
-  const CardView({
+class FilmCardView extends StatelessWidget {
+  const FilmCardView({
     required this.filmData,
     Key? key,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class CardView extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 343 / 100,
       child: Container(
-        margin: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
+        margin: const EdgeInsets.only(right: 10, left: 10, top: 5,bottom: 5),
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

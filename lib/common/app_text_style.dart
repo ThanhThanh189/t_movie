@@ -11,6 +11,16 @@ class AppTextStyle {
     fontFamily: 'montserrat',
     fontWeight: FontWeight.w500,
   );
+  static const TextStyle medium16 = TextStyle(
+    fontSize: 16,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle light18 = TextStyle(
+    fontSize: 18,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w300,
+  );
   static const TextStyle medium18 = TextStyle(
     fontSize: 18,
     fontFamily: 'montserrat',
@@ -48,6 +58,11 @@ class AppTextStyle {
   );
   static const TextStyle regular14 = TextStyle(
     fontSize: 14,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle regular12 = TextStyle(
+    fontSize: 12,
     fontFamily: 'montserrat',
     fontWeight: FontWeight.w400,
   );
