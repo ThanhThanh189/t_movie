@@ -5,8 +5,8 @@ import 'package:movie_ticket/blocs/router/router_bloc.dart';
 import 'package:movie_ticket/blocs/router/router_event.dart';
 import 'package:movie_ticket/blocs/router/router_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/presentation/cart/cart_screen.dart';
 import 'package:movie_ticket/presentation/favorite/favorite_screen.dart';
+import 'package:movie_ticket/presentation/my_ticket/my_ticket.dart';
 import 'package:movie_ticket/presentation/order_ticket/home_screen.dart';
 import 'package:movie_ticket/presentation/setting/setting_screen.dart';
 
@@ -21,7 +21,7 @@ class RouterScreen extends StatelessWidget {
   List<Widget> _widgetOptions() => <Widget>[
         const HomeScreen(),
         const FavoriteScreen(),
-        const CartScreen(),
+        const MyTicket(),
         SettingScreen(
           user: user,
         ),

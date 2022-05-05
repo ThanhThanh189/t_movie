@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_ticket/blocs/cart/cart_bloc.dart';
-import 'package:movie_ticket/blocs/cart/cart_event.dart';
-import 'package:movie_ticket/blocs/cart/cart_state.dart';
+import 'package:movie_ticket/blocs/my_ticket/my_ticket_bloc.dart';
+import 'package:movie_ticket/blocs/my_ticket/my_ticket_event.dart';
+import 'package:movie_ticket/blocs/my_ticket/my_ticket_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
-import 'package:movie_ticket/common/date_contants.dart';
 import 'package:movie_ticket/common/view_state.dart';
-import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/my_ticket/ticket_details.dart';
 import 'package:movie_ticket/presentation/widgets/card/ticket_card_view.dart';
 import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({
+class MyTicket extends StatelessWidget {
+  const MyTicket({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CartBloc>(
-      create: (context) => CartBloc()..add(StartedCartEvent()),
-      child: BlocConsumer<CartBloc, CartState>(
+    return BlocProvider<MyTicketBloc>(
+      create: (context) => MyTicketBloc()..add(StartedMyTicketEvent()),
+      child: BlocConsumer<MyTicketBloc, MyTicketState>(
         listener: (context, state) {
           if (state.viewState == ViewState.isFailure) {
             if (state.message != null) {
@@ -58,25 +57,28 @@ class CartScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
             ),
             backgroundColor: AppColors.dartBackground1,
-            body: state.viewState == ViewState.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : state.listMyTicket.isNotEmpty
-                    ? _buildListCart(context, state)
-                    : const Center(
-                        child: Text(
-                          'Don\'t has data',
-                          style: AppTextStyle.medium14,
+            body: RefreshIndicator(
+              onRefresh: () => _refreshLocalGallery(context),
+              child: state.viewState == ViewState.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : state.listMyTicket.isNotEmpty
+                      ? _buildListCart(context, state)
+                      : const Center(
+                          child: Text(
+                            'Don\'t has data',
+                            style: AppTextStyle.medium14,
+                          ),
                         ),
-                      ),
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildListCart(BuildContext context, CartState state) {
+  Widget _buildListCart(BuildContext context, MyTicketState state) {
     return ListView.builder(
         itemCount: state.listMyTicket.length,
         itemBuilder: (context, index) {
@@ -93,21 +95,27 @@ class CartScreen extends StatelessWidget {
             key: Key(state.listMyTicket[index].id.toString()),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => InformationScreen(
-                        filmData: state.listMyTicket[index].filmData)));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => TicketDetails(
+                      ticket: state.listMyTicket[index],
+                    ),
+                  ),
+                );
               },
               child: TicketCardView(
-                  filmData: state.listMyTicket[index].filmData,
-                  time: state.listMyTicket[index].cinemaTime,
-                  date: state.listMyTicket[index].dateTime.dateToDateTicket(),
-                  cinemaName: state.listMyTicket[index].cinemaName),
+                filmData: state.listMyTicket[index].filmData,
+                time: state.listMyTicket[index].cinemaTime,
+                date: state.listMyTicket[index].dateTime,
+                cinemaName: state.listMyTicket[index].cinemaName,
+                listSeat: state.listMyTicket[index].listSeat,
+              ),
             ),
           );
         });
   }
 
-  Widget _builDialog(BuildContext context, CartState state, int index) {
+  Widget _builDialog(BuildContext context, MyTicketState state, int index) {
     return Dialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -140,8 +148,8 @@ class CartScreen extends StatelessWidget {
                             top: BorderSide(width: 1, color: Colors.black))),
                     child: TextButton(
                         onPressed: () {
-                          BlocProvider.of<CartBloc>(context).add(
-                              DeleteCartEvent(
+                          BlocProvider.of<MyTicketBloc>(context).add(
+                              DeleteMyTicketEvent(
                                   id: state.listMyTicket[index].id));
                           Navigator.of(context).pop({'confirm': true});
                         },
@@ -174,4 +182,8 @@ class CartScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _refreshLocalGallery(BuildContext context) async {
+  BlocProvider.of<MyTicketBloc>(context).add(StartedMyTicketEvent());
 }

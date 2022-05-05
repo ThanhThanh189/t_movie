@@ -22,21 +22,15 @@ class Seat extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildSeat(context),
-        Container(
-          margin: const EdgeInsets.only(top: 12),
-          child: const Text(
-            'Screen',
-            style: AppTextStyle.light12,
-          ),
-        ),
-        Image.asset(
-          AppImages.seatScreen,
-          width: double.infinity,
-        ),
+        Expanded(
+          child: _buildScreen(context),
+        )
       ],
     );
   }
+}
 
+extension SeatBasicComponents on Seat {
   Widget _buildSeat(BuildContext context) {
     return SizedBox(
       height: 420,
@@ -86,9 +80,7 @@ class Seat extends StatelessWidget {
           )),
     );
   }
-}
 
-extension SeatBasicComponents on Seat {
   Widget _buildGridView(BuildContext context,
       {required int crossAxisCount, required List<String> seats}) {
     return Container(
@@ -130,6 +122,22 @@ extension SeatBasicComponents on Seat {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildScreen(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Screen',
+          style: AppTextStyle.light12,
+        ),
+        Image.asset(
+          AppImages.seatScreen,
+          width: double.infinity,
+        ),
+      ],
     );
   }
 }

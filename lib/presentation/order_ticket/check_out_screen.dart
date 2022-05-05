@@ -12,7 +12,6 @@ import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/ticket.dart';
-import 'package:movie_ticket/presentation/new_user/splash_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/success_checkout.dart';
 import 'package:movie_ticket/presentation/widgets/base_appbar/base_appbar_view.dart';
@@ -73,7 +72,11 @@ class CheckOutScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 24),
-                    BaseAppBarView(title: 'Checkout \nMovie', onBackTap: () {}),
+                    BaseAppBarView(
+                        title: 'Checkout \nMovie',
+                        onBackTap: () {
+                          Navigator.of(context).pop();
+                        }),
                     const SizedBox(height: 40),
                     _buildTicketInfo(context),
                     const SizedBox(height: 58),
@@ -91,7 +94,9 @@ class CheckOutScreen extends StatelessWidget {
                                   BlocProvider.of<CheckoutBloc>(context).add(
                                     SelectCheckoutEvent(
                                       ticket: Ticket(
-                                          id: DateTime.now().microsecondsSinceEpoch.toString(),
+                                          id: DateTime.now()
+                                              .microsecondsSinceEpoch
+                                              .toString(),
                                           cinemaName: cinemaName.title,
                                           dateTime: chooseDate,
                                           cinemaTime: chooseTime.title,

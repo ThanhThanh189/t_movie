@@ -2,7 +2,7 @@ import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/ticket.dart';
 
-class CartState {
+class MyTicketState {
   List<FilmData> listFilmDataSelected;
   List<Ticket> listMyTicket;
   bool isSelectedAll;
@@ -10,7 +10,7 @@ class CartState {
   ViewState viewState;
   String? message;
 
-  CartState({
+  MyTicketState({
     required this.listFilmDataSelected,
     required this.viewState,
     required this.isSelectedAll,
@@ -19,14 +19,14 @@ class CartState {
     this.message,
   });
 
-  factory CartState.initial() => CartState(
+  factory MyTicketState.initial() => MyTicketState(
       listFilmDataSelected: [],
       listMyTicket: [],
       viewState: ViewState.isLoading,
       isSelectedAll: false,
       message: null);
 
-  CartState update({
+  MyTicketState update({
     List<FilmData>? listFilmData,
     List<FilmData>? listFilmDataSelected,
     List<Ticket>? listMyTicket,
@@ -35,7 +35,7 @@ class CartState {
     String? uid,
     String? message,
   }) {
-    return CartState(
+    return MyTicketState(
       listFilmDataSelected: listFilmDataSelected ?? this.listFilmDataSelected,
       listMyTicket: listMyTicket ?? this.listMyTicket,
       viewState: viewState ?? this.viewState,

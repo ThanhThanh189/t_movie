@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Contants {
   // static final seatA6 = [
   //   'A1',
@@ -750,5 +752,23 @@ extension SeatE14ToString on SeatE14 {
       case SeatE14.j14:
         return 'J14';
     }
+  }
+}
+
+extension SeatToString on List<String> {
+  String seatToString() {
+    String listSeat = '';
+    for (var item in this) {
+      listSeat += item + ', ';
+    }
+    return listSeat.substring(0, listSeat.length - 2);
+  }
+}
+
+extension ChooseTime on String {
+  TimeOfDay get stringToTimeChoose {
+    int hourChoose = int.parse(substring(0, 2));
+    int minuteChoose = int.parse(substring(3));
+    return TimeOfDay(hour: hourChoose, minute: minuteChoose);
   }
 }

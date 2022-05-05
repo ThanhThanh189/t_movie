@@ -1,18 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_ticket/blocs/cart/cart_event.dart';
-import 'package:movie_ticket/blocs/cart/cart_state.dart';
+import 'package:movie_ticket/blocs/my_ticket/my_ticket_event.dart';
+import 'package:movie_ticket/blocs/my_ticket/my_ticket_state.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/ticket.dart';
 import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
-class CartBloc extends Bloc<CartEvent, CartState> {
+class MyTicketBloc extends Bloc<MyTicketEvent, MyTicketState> {
   FilmDatabase filmDatabase = FilmDatabase();
   UserRepository userRepository = UserRepository();
-  CartBloc() : super(CartState.initial()) {
-    on<CartEvent>(
+  MyTicketBloc() : super(MyTicketState.initial()) {
+    on<MyTicketEvent>(
       (event, emit) async {
-        if (event is StartedCartEvent) {
+        if (event is StartedMyTicketEvent) {
           emit.call(state.update(viewState: ViewState.isLoading));
           try {
             final user = await userRepository.getCurrentUser();
@@ -26,15 +26,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 emit.call(state.update(viewState: ViewState.isNormal));
               }
             }
-            emit.call(
-                state.update(viewState: ViewState.isNormal, message: null));
+            emit.call(state.update(viewState: ViewState.isNormal));
           } catch (e) {
             emit.call(state.update(
                 viewState: ViewState.isFailure, message: 'Don\'t has data'));
             state.update(viewState: ViewState.isNormal, message: null);
           }
         }
-        if (event is DeleteCartEvent) {
+        if (event is DeleteMyTicketEvent) {
           try {
             List<Ticket> listMyTicket = [];
             for (var item in state.listMyTicket) {

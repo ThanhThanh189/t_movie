@@ -30,7 +30,11 @@ class ChooseSeatScreen extends StatelessWidget {
     return BlocProvider<ChooseSeatBloc>(
       create: (context) => ChooseSeatBloc()
         ..add(
-          StartedChooseSeatEvent(),
+          StartedChooseSeatEvent(
+              id: filmData.id,
+              chooseTime: chooseTime,
+              chooseDate: chooseDate,
+              cinemaName: cinemaName),
         ),
       child: BlocConsumer<ChooseSeatBloc, ChooseSeatState>(
         listener: (context, state) {},
@@ -188,7 +192,7 @@ extension ChooseSeatScreenBasicComponent on ChooseSeatScreen {
           ),
           BaseButton(
             text: 'Book Ticket',
-            isVisible: true,
+            isVisible: state.listSeatSelected.isNotEmpty,
             isExpanded: false,
             onPressed: () {
               Navigator.of(context).push(

@@ -29,7 +29,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
                 viewState: ViewState.isSuccess,
                 listFilmFavorite: listFilmFavorite));
           } 
-          emit.call(state.update(viewState: ViewState.isNormal, message: null));
+          emit.call(state.update(viewState: ViewState.isNormal));
         } catch (e) {
           emit.call(
               state.update(viewState: ViewState.isFailure, message: 'Don\'t has data'));

@@ -117,7 +117,7 @@ class FilmDatabase {
           .doc(uid)
           .get();
       List<Ticket> listMyTicket = List<Ticket>.from(
-        result?.data()![AppStrings.collectionTicket].map(
+        result?.data()![AppStrings.fieldTicket].map(
               (x) => Ticket.fromJson(x),
             ),
       );
@@ -127,15 +127,15 @@ class FilmDatabase {
     }
   }
 
-  Future<bool> deleteMyTicket({required String uid, required List<Ticket> listTicket}) async{
+  Future<bool> deleteMyTicket(
+      {required String uid, required List<Ticket> listTicket}) async {
     try {
       await firestoreInstance
           ?.collection(AppStrings.collectionTicket)
           .doc(uid)
           .set(
         {
-          AppStrings.fieldTicket:
-              listTicket.map((e) => e.toJson()).toList(),
+          AppStrings.fieldTicket: listTicket.map((e) => e.toJson()).toList(),
         },
         SetOptions(merge: true),
       ).then(
@@ -147,5 +147,31 @@ class FilmDatabase {
       return false;
     }
     return true;
+  }
+
+  Future<List<Ticket>> getAllTicket() async {
+    try {
+      final querySnapshow = await firestoreInstance
+          ?.collection(AppStrings.collectionTicket)
+          .get();
+      final allData = querySnapshow?.docs
+          .map(
+            (data) => List<Ticket>.from(
+              data[AppStrings.fieldTicket].map(
+                (x) => Ticket.fromJson(x),
+              ),
+            ),
+          )
+          .toList();
+      List<Ticket> listTicketBooked = [];
+      if (allData != null) {
+        for (var item in allData) {
+          listTicketBooked.addAll(item);
+        }
+      }
+      return listTicketBooked;
+    } catch (_) {
+      return [];
+    }
   }
 }

@@ -98,6 +98,7 @@ flutter:
     - assets/images/photoProfile.png
     - assets/images/seatScreen.png
     - assets/images/checkoutSuccess.png
+    - assets/images/barcode.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

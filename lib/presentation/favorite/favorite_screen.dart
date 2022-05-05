@@ -57,18 +57,21 @@ class FavoriteScreen extends StatelessWidget {
               centerTitle: true,
               automaticallyImplyLeading: false,
             ),
-            body: state.viewState == ViewState.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : state.listFilmFavorite.isNotEmpty
-                    ? _buildListFilmFavorite(context, state)
-                    : const Center(
-                        child: Text(
-                          'Don\'t has data',
-                          style: AppTextStyle.medium14,
+            body: RefreshIndicator(
+              onRefresh: () => _refreshLocalGallery(context),
+              child: state.viewState == ViewState.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : state.listFilmFavorite.isNotEmpty
+                      ? _buildListFilmFavorite(context, state)
+                      : const Center(
+                          child: Text(
+                            'Don\'t has data',
+                            style: AppTextStyle.medium14,
+                          ),
                         ),
-                      ),
+            ),
           );
         },
       ),
@@ -169,4 +172,8 @@ class FavoriteScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _refreshLocalGallery(BuildContext context) async {
+  BlocProvider.of<FavoriteBloc>(context).add(StartedFavoriteEvent());
 }
