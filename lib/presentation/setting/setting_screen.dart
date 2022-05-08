@@ -6,6 +6,7 @@ import 'package:movie_ticket/blocs/setting/setting_event.dart';
 import 'package:movie_ticket/blocs/setting/setting_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
+import 'package:movie_ticket/presentation/my_wallet/my_wallet_screen.dart';
 import 'package:movie_ticket/presentation/new_user/signin_screen.dart';
 import 'package:movie_ticket/presentation/setting/edit_profile_screen.dart';
 import 'package:movie_ticket/presentation/widgets/dialog/dialog_improving.dart';
@@ -37,14 +38,14 @@ class SettingScreen extends StatelessWidget {
                     Profile(
                       sizeAvatar: 132,
                       isEdit: false,
-                      image: state.user?.photoURL,
+                      image: state.account?.photo,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
-                      child: Text(state.user?.displayName ?? '',
+                      child: Text(state.account?.displayName ?? '',
                           style: AppTextStyles.h2Bold),
                     ),
                     Text(
@@ -56,9 +57,14 @@ class SettingScreen extends StatelessWidget {
                       margin:
                           const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => EditProfileScreen()));
+                        onTap: () async {
+                          final result = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => EditProfileScreen()));
+                          if (result == true) {
+                            BlocProvider.of<SettingBloc>(context)
+                                .add(StartedSettingEvent());
+                          }
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,9 +89,11 @@ class SettingScreen extends StatelessWidget {
                           const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: GestureDetector(
                         onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => const DialogImproving());
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => MyWalletScreen(),
+                            ),
+                          );
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,33 +103,6 @@ class SettingScreen extends StatelessWidget {
                               width: 10,
                             ),
                             Text('My Wallet', style: AppTextStyles.h8)
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        width: double.infinity,
-                        height: 1,
-                        color: Colors.grey),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      margin:
-                          const EdgeInsets.only(left: 10, right: 10, top: 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => const DialogImproving());
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.language, color: Colors.blue),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Change Language', style: AppTextStyles.h8)
                           ],
                         ),
                       ),

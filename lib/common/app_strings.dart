@@ -4,6 +4,8 @@ class AppStrings {
   static String collectionTicket = 'ticket';
   static String fieldFilmFavorite = 'film_favorite';
   static String fieldTicket = 'ticket';
+  static String collectionAccount = 'account';
+  static String fieldAccount = 'account_info';
 
   //State
   static String isLoading = 'Waiting a second...';
@@ -61,4 +63,12 @@ class AppStrings {
   static String happyWatching = 'Happy Watching!';
   static String successfuly = 'You have successfully\nbought the ticket';
   static String myHome = 'My Home';
+
+  //Card
+  static String myWallet = 'My Wallet';
+  static String cardName = 'Card Name';
+  static String topUp = 'Top Up';
+  static String ammount = 'Ammount';
+  static String topUpNow = 'Top Up Now';
+  static String iDR = 'IDR';
 }

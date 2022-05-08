@@ -5,13 +5,15 @@ import 'package:movie_ticket/blocs/register/register_event.dart';
 import 'package:movie_ticket/blocs/register/register_state.dart';
 import 'package:movie_ticket/common/app_strings.dart';
 import 'package:movie_ticket/common/view_state.dart';
+import 'package:movie_ticket/data/models/account.dart';
+import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   UserRepository userRepository = UserRepository();
+  FilmDatabase filmDatabase = FilmDatabase();
   ImagePicker imagePicker = ImagePicker();
-  RegisterBloc()
-      : super(RegisterState.initial()) {
+  RegisterBloc() : super(RegisterState.initial()) {
     on<RegisterEvent>(
       (event, emit) async {
         if (event is GetAvatarRegisterEvent) {
@@ -76,12 +78,26 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
                   .fetchSignInMethodsForEmail(email: event.email);
               if (!emailIsExists) {
                 var user = await userRepository.createUserWithEmailPassword(
-                    email: event.email,
-                    password: event.password,
-                    displayName: event.displayName,
-                    photoURL: state.imageAvatar);
+                  email: event.email,
+                  password: event.password,
+                  displayName: event.displayName,
+                  photoURL: state.imageAvatar,
+                );
                 debugPrint('USER: $user');
                 if (user != null) {
+                  final userNew = await userRepository.getCurrentUser();
+                  if (userNew != null) {
+                    await filmDatabase.addAndUpdateAccount(
+                      uid: userNew.uid,
+                      account: Account(
+                        id: userNew.uid,
+                        displayName: userNew.displayName,
+                        photo: state.imageAvatar,
+                        email: userNew.email,
+                        wallet: 0,
+                      ),
+                    );
+                  }
                   emit.call(
                     state.update(
                       user: user,

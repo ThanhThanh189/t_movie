@@ -495,7 +495,6 @@ class InformationScreen extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.25,
       child: ListView.builder(
           shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(),
           itemCount: state.reviews.length,
           itemBuilder: (context, index) {
             return _buildItemReview(context, state.reviews[index]);

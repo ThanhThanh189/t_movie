@@ -54,25 +54,32 @@ class EditProfileScreen extends StatelessWidget {
                 isSuccess: true,
               ),
             );
+            Navigator.of(context).pop(true);
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: AppColors.dartBackground1,
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        _buildBackButton(context),
-                        _buildTitle(context),
-                        const SizedBox(height: 40),
-                        _buildAvatar(context, state),
-                        const SizedBox(height: 24),
-                        _buildFormRegister(context, state)
-                      ],
-                    )),
+          return WillPopScope(
+            onWillPop: () async {
+              Navigator.of(context).pop(true);
+              return false;
+            },
+            child: Scaffold(
+              backgroundColor: AppColors.dartBackground1,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          _buildBackButton(context),
+                          _buildTitle(context),
+                          const SizedBox(height: 40),
+                          _buildAvatar(context, state),
+                          const SizedBox(height: 24),
+                          _buildFormRegister(context, state)
+                        ],
+                      )),
+                ),
               ),
             ),
           );
@@ -86,7 +93,7 @@ class EditProfileScreen extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
           child: const Icon(
             Icons.arrow_back,
@@ -134,7 +141,7 @@ class EditProfileScreen extends StatelessWidget {
               context,
               labelText: AppStrings.editProfileFullName,
               controller: _fullNameController,
-              hintText: state.fullNameOld,
+              hintText: state.fullName,
               onChange: (value) {
                 BlocProvider.of<ProfileBloc>(context).add(
                   SetFullNameProfileEvent(fullName: value),
@@ -151,33 +158,33 @@ class EditProfileScreen extends StatelessWidget {
               hintText: state.email,
               onChange: (value) {},
             ),
-            //Password old
-            const SizedBox(height: 24),
-            _buildFormInput(
-              context,
-              labelText: AppStrings.editProfilePassword,
-              obscureText: true,
-              controller: _passwordController,
-              onChange: (value) {
-                BlocProvider.of<ProfileBloc>(context).add(
-                  SetPasswordProfileEvent(password: value),
-                );
-              },
-            ),
+            // //Password old
+            // const SizedBox(height: 24),
+            // _buildFormInput(
+            //   context,
+            //   labelText: AppStrings.editProfilePassword,
+            //   obscureText: true,
+            //   controller: _passwordController,
+            //   onChange: (value) {
+            //     BlocProvider.of<ProfileBloc>(context).add(
+            //       SetPasswordProfileEvent(password: value),
+            //     );
+            //   },
+            // ),
 
-            //Confirm password
-            const SizedBox(height: 24),
-            _buildFormInput(
-              context,
-              labelText: AppStrings.editProfileConfirmPassword,
-              obscureText: true,
-              controller: _confirmPasswordController,
-              onChange: (value) {
-                BlocProvider.of<ProfileBloc>(context).add(
-                  SetConfirmPasswordProfileEvent(confirmPassword: value),
-                );
-              },
-            ),
+            // //Confirm password
+            // const SizedBox(height: 24),
+            // _buildFormInput(
+            //   context,
+            //   labelText: AppStrings.editProfileConfirmPassword,
+            //   obscureText: true,
+            //   controller: _confirmPasswordController,
+            //   onChange: (value) {
+            //     BlocProvider.of<ProfileBloc>(context).add(
+            //       SetConfirmPasswordProfileEvent(confirmPassword: value),
+            //     );
+            //   },
+            // ),
 
             //Button Register
             const SizedBox(height: 24),
@@ -236,7 +243,6 @@ class EditProfileScreen extends StatelessWidget {
         onPressed: ((state.isValidatePassword &&
                         state.isValidateConfirmPassword) ||
                     state.isValidateFullName ||
-
                     state.photoURLNew != null) &&
                 state.viewState != ViewState.isLoading
             ? () {
@@ -245,18 +251,15 @@ class EditProfileScreen extends StatelessWidget {
                   builder: (_) => DialogConfirm(
                     title: AppStrings.editProfileDialog,
                     onTap: (value) {
-                      value == true
-                          ? BlocProvider.of<ProfileBloc>(context).add(
-                              EditUserProfileEvent(
-                                  photoURL: state.photoURLNew,
-                                  displayName:
-                                      _fullNameController.text,
-                                  newPassword:
-                                      _passwordController.text,
-                                  confirmPassword:
-                                      _confirmPasswordController.text),
-                            )
-                          : null;
+                      if (value == true) {
+                        BlocProvider.of<ProfileBloc>(context).add(
+                          EditUserProfileEvent(
+                              photoURL: state.photoURLNew,
+                              displayName: _fullNameController.text,
+                              newPassword: _passwordController.text,
+                              confirmPassword: _confirmPasswordController.text),
+                        );
+                      }
                     },
                   ),
                 );

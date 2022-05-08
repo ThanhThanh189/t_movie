@@ -63,7 +63,6 @@ class HomeScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(10),
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
@@ -80,7 +79,7 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Profile(
-              image: state.user?.photoURL,
+              image: state.avatar,
               sizeAvatar: 48,
               isEdit: false,
               onTap: () {},
@@ -139,12 +138,15 @@ class HomeScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
                       builder: (context) => ViewAllScreen(
-                            namePage: isTopRated
-                                ? Global.listTopRated
-                                : Global.listNowPlaying,
-                          )));
+                        namePage: isTopRated
+                            ? Global.listTopRated
+                            : Global.listNowPlaying,
+                      ),
+                    ),
+                  );
                 },
                 child: const Text(
                   'View all',
@@ -160,7 +162,6 @@ class HomeScreen extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: homeState.listTopRated.length,
             itemBuilder: (context, index) {
               return _buildItemNowPlaying(

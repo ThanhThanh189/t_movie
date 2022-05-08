@@ -88,7 +88,6 @@ extension SeatBasicComponents on Seat {
       height: double.infinity,
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,

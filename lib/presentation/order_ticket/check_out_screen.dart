@@ -78,7 +78,7 @@ class CheckOutScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                         }),
                     const SizedBox(height: 40),
-                    _buildTicketInfo(context),
+                    _buildTicketInfo(context, state: state),
                     const SizedBox(height: 58),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 60),
@@ -88,9 +88,16 @@ class CheckOutScreen extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (_) => DialogConfirm(
-                              title: 'Do you want to checkout?',
+                              title: state.wallet <
+                                      50000 * listSeatSelected.length
+                                  ? 'Wallet does not have enough money, please top up'
+                                  : 'Do you want to checkout?',
+                              isNotification: state.wallet <
+                                  50000 * listSeatSelected.length,
                               onTap: (value) {
-                                if (value) {
+                                if (value &&
+                                    state.wallet >=
+                                        50000 * listSeatSelected.length) {
                                   BlocProvider.of<CheckoutBloc>(context).add(
                                     SelectCheckoutEvent(
                                       ticket: Ticket(
@@ -111,7 +118,7 @@ class CheckOutScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        isVisible: true,
+                        isVisible: state.viewState != ViewState.isLoading,
                       ),
                     ),
                   ],
@@ -126,7 +133,10 @@ class CheckOutScreen extends StatelessWidget {
 }
 
 extension CheckOutScreenBasicComponents on CheckOutScreen {
-  Widget _buildTicketInfo(BuildContext context) {
+  Widget _buildTicketInfo(
+    BuildContext context, {
+    required CheckoutState state,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24),
       child: Column(
@@ -138,7 +148,7 @@ extension CheckOutScreenBasicComponents on CheckOutScreen {
           _buildLabelTicketInfo(
             context,
             title: 'Your Wallet',
-            value: 'IDR 200.000',
+            value: 'IDR ${state.wallet}',
             isYourWallet: true,
           ),
         ],

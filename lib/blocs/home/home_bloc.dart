@@ -4,10 +4,12 @@ import 'package:movie_ticket/blocs/home/home_state.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
+import 'package:movie_ticket/data/repositories/film_database.dart';
 import 'package:movie_ticket/data/repositories/film_repository.dart';
 import 'package:movie_ticket/data/repositories/user_repository.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  FilmDatabase filmDatabase = FilmDatabase();
   FilmRepository filmRepository = FilmRepositoryImp();
   UserRepository userRepository = UserRepository();
   HomeBloc() : super(HomeState.initial()) {
@@ -23,6 +25,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
           try {
             final user = await userRepository.getCurrentUser();
+            if (user != null) {
+              final account = await filmDatabase.getAccount(uid: user.uid);
+              emit.call(state.update(avatar: account?.photo));
+            }
             List<FilmData>? listTopRated =
                 await filmRepository.getListFilm(Global.listTopRated, 1);
             List<FilmData>? listNowPlaying =

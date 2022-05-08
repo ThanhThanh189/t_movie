@@ -6,12 +6,15 @@ class InputTextField extends StatelessWidget {
   const InputTextField({
     Key? key,
     required this.controller,
+    this.textInputType,
     this.obscureText,
     this.errorText,
     this.onTapEyes,
     this.visibility,
     required this.onChange,
     required this.isPassword,
+    this.maxLength,
+    this.hintStyle,
     this.labelText,
     this.hintText,
     this.readOnly,
@@ -25,6 +28,9 @@ class InputTextField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final bool? readOnly;
+  final TextStyle? hintStyle;
+  final TextInputType? textInputType;
+  final int? maxLength;
   final Function(String) onChange;
 
   @override
@@ -33,6 +39,8 @@ class InputTextField extends StatelessWidget {
       width: double.infinity,
       child: TextFormField(
         controller: controller,
+        maxLength: maxLength,
+        keyboardType: textInputType,
         style: AppTextStyle.regular14.copyWith(
           color: AppColors.mainText,
         ),
@@ -53,9 +61,10 @@ class InputTextField extends StatelessWidget {
               : null,
           labelText: labelText,
           hintText: hintText,
-          hintStyle: AppTextStyle.regular14.copyWith(
-            color: AppColors.mainText,
-          ),
+          hintStyle: hintStyle ??
+              AppTextStyle.regular14.copyWith(
+                color: AppColors.mainText,
+              ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

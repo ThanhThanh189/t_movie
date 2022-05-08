@@ -81,4 +81,9 @@ class AppTextStyle {
     fontFamily: 'montserrat',
     fontWeight: FontWeight.w600,
   );
+  static const TextStyle semiBold28 = TextStyle(
+    fontSize: 28,
+    fontFamily: 'montserrat',
+    fontWeight: FontWeight.w600,
+  );
 }

@@ -7,9 +7,11 @@ class DialogConfirm extends StatelessWidget {
     Key? key,
     required this.title,
     required this.onTap,
+    this.isNotification,
   }) : super(key: key);
   final String title;
   final Function(bool val) onTap;
+  final bool? isNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class DialogConfirm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                if(isNotification != true)
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(

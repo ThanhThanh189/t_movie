@@ -772,3 +772,58 @@ extension ChooseTime on String {
     return TimeOfDay(hour: hourChoose, minute: minuteChoose);
   }
 }
+
+enum TopUpOption {
+  topUp50000,
+  topUp100000,
+  topUp150000,
+  topUp200000,
+  topUp250000,
+  topUp500000,
+  topUp750000,
+  topUp1000000,
+}
+
+extension TopUpBase on TopUpOption {
+  String get topUpToString{
+    switch (this) {
+      case TopUpOption.topUp50000:
+        return '50.000';
+      case TopUpOption.topUp100000:
+        return '100.000';
+      case TopUpOption.topUp150000:
+        return '150.000';
+      case TopUpOption.topUp200000:
+        return '200.000';
+      case TopUpOption.topUp250000:
+        return '250.000';
+      case TopUpOption.topUp500000:
+        return '500.000';
+      case TopUpOption.topUp750000:
+        return '750.000';
+      case TopUpOption.topUp1000000:
+        return '1.000.000';
+    }
+  }
+
+  int get topUpToInt{
+    switch (this) {
+      case TopUpOption.topUp50000:
+        return 50000;
+      case TopUpOption.topUp100000:
+        return 100000;
+      case TopUpOption.topUp150000:
+        return 150000;
+      case TopUpOption.topUp200000:
+        return 200000;
+      case TopUpOption.topUp250000:
+        return 250000;
+      case TopUpOption.topUp500000:
+        return 500000;
+      case TopUpOption.topUp750000:
+        return 750000;
+      case TopUpOption.topUp1000000:
+        return 1000000;
+    }
+  }
+}

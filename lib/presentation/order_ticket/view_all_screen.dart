@@ -7,6 +7,7 @@ import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
+import 'package:movie_ticket/presentation/widgets/base_button/base_button.dart';
 
 class ViewAllScreen extends StatelessWidget {
   final String namePage;
@@ -21,8 +22,10 @@ class ViewAllScreen extends StatelessWidget {
         title: const Text('View All'),
       ),
       body: BlocProvider<ViewAllBloc>(
-        create: (context) =>
-            ViewAllBloc()..add(StartedViewAllEvent(namePage: namePage)),
+        create: (context) => ViewAllBloc()
+          ..add(
+            StartedViewAllEvent(namePage: namePage),
+          ),
         child: BlocBuilder<ViewAllBloc, ViewAllState>(
           builder: (context, state) {
             return state.viewState == ViewState.isLoading
@@ -41,120 +44,103 @@ class ViewAllScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent:
-                                          MediaQuery.of(context).size.width *
-                                              0.5,
-                                      childAspectRatio: 1,
-                                      crossAxisSpacing: 10.0),
-                              itemCount: state.listFilmData.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return InformationScreen(
-                                          filmData: state.listFilmData[index]);
-                                    }));
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    childAspectRatio: 1,
+                                    crossAxisSpacing: 10.0),
+                            itemCount: state.listFilmData.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return InformationScreen(
+                                            filmData:
+                                                state.listFilmData[index]);
+                                      },
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: state.listFilmData[index]
-                                                      .backdropPath !=
-                                                  null
-                                              ? Image.network(
-                                                  Global.imageURL +
-                                                      state.listFilmData[index]
-                                                          .backdropPath!,
-                                                  loadingBuilder: (context,
-                                                      child, loadingProgress) {
-                                                    if (loadingProgress ==
-                                                        null) {
-                                                      return child;
-                                                    }
-                                                    return Image.asset(
-                                                      'assets/images/loading_dark.gif',
-                                                      fit: BoxFit.cover,
-                                                      width: double.infinity,
-                                                      height: double.infinity,
-                                                    );
-                                                  },
-                                                  errorBuilder: (context, error,
-                                                      stackTrace) {
-                                                    if (stackTrace != null) {
-                                                      return const Center(
-                                                          child: Icon(
-                                                              Icons.error));
-                                                    }
-                                                    return const Center(
-                                                        child:
-                                                            Icon(Icons.error));
-                                                  },
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                )
-                                              : Image.asset(
-                                                  'assets/images/loading_dark.gif',
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                ),
-                                        )
-                                      ],
-                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.dartBackground2,
                                   ),
-                                );
-                              }),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: state.listFilmData[index]
+                                                    .backdropPath !=
+                                                null
+                                            ? Image.network(
+                                                Global.imageURL +
+                                                    state.listFilmData[index]
+                                                        .backdropPath!,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return const Center(
+                                                      child: Icon(Icons.error));
+                                                },
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              )
+                                            : Image.asset(
+                                                'assets/images/loading_dark.gif',
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                           state.isSelectLoadMore
                               ? Visibility(
                                   child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.all(20),
-                                        child:
-                                            const CircularProgressIndicator())
-                                  ],
-                                ))
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: const EdgeInsets.all(20),
+                                          child:
+                                              const CircularProgressIndicator())
+                                    ],
+                                  ),
+                                )
                               : Visibility(
                                   visible: !state.isLastPage,
                                   child: Container(
                                     margin: const EdgeInsets.all(20),
-                                    child: Center(
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            BlocProvider.of<ViewAllBloc>(
-                                                    context)
-                                                .add(LoadMoreViewAllEvent(
-                                                    namePage: namePage,
-                                                    numberPage:
-                                                        state.pageCurrent + 1));
-                                          },
-                                          child: const Text('Xem thêm ...'),
-                                        ),
-                                      ),
+                                    child: BaseButton(
+                                      text: 'Xem thêm...',
+                                      isVisible: true,
+                                      isExpanded: false,
+                                      onPressed: () {
+                                        BlocProvider.of<ViewAllBloc>(context)
+                                            .add(
+                                          LoadMoreViewAllEvent(
+                                              namePage: namePage,
+                                              numberPage:
+                                                  state.pageCurrent + 1),
+                                        );
+                                      },
                                     ),
                                   ),
                                 )
                         ],
                       ),
-                    ));
+                    ),
+                  );
           },
         ),
       ),

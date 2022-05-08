@@ -132,7 +132,7 @@ extension TicketCardViewBasicComponents on TicketCardView {
           child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: Colors.red, borderRadius: BorderRadius.circular(8)),
+                color: Colors.red.withOpacity(0.5), borderRadius: BorderRadius.circular(8)),
             child: Text(
               'Expire',
               style: AppTextStyle.medium12.copyWith(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movie_ticket/common/app_strings.dart';
+import 'package:movie_ticket/data/models/account.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/ticket.dart';
 
@@ -172,6 +173,47 @@ class FilmDatabase {
       return listTicketBooked;
     } catch (_) {
       return [];
+    }
+  }
+
+  //Account
+  Future<bool> addAndUpdateAccount({
+    required String uid,
+    required Account account,
+  }) async {
+    try {
+      await firestoreInstance
+          ?.collection(AppStrings.collectionAccount)
+          .doc(uid)
+          .set(
+        {
+          AppStrings.fieldAccount: account.toJson(),
+        },
+        SetOptions(merge: true),
+      ).then(
+        (value) {
+          return true;
+        },
+      );
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<Account?> getAccount({
+    required String uid,
+  }) async {
+    try {
+      final result = await firestoreInstance
+          ?.collection(AppStrings.collectionAccount)
+          .doc(uid)
+          .get();
+      final account =
+          Account.fromJson(result?.data()![AppStrings.fieldAccount]);
+      return account;
+    } catch (_) {
+      return null;
     }
   }
 }
