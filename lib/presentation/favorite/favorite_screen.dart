@@ -4,7 +4,6 @@ import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
-import 'package:movie_ticket/common/app_images.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
