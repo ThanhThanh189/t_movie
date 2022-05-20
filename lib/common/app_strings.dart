@@ -1,11 +1,17 @@
 class AppStrings {
+  //Admin
+  static String userNameAdmin = 'admin';
+  static String passwordAdmin = 'admin';
+
   //firebase storage
   static String collectionFilmFavorite = 'favorite';
   static String collectionTicket = 'ticket';
+  static String collectionRevenue = 'revenue_collection';
   static String fieldFilmFavorite = 'film_favorite';
   static String fieldTicket = 'ticket';
   static String collectionAccount = 'account';
   static String fieldAccount = 'account_info';
+  static String fieldRevenue = 'revenue_field';
 
   //State
   static String isLoading = 'Waiting a second...';

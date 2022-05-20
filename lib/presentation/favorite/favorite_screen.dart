@@ -4,6 +4,7 @@ import 'package:movie_ticket/blocs/favorite/favorite_bloc.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_event.dart';
 import 'package:movie_ticket/blocs/favorite/favorite_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
+import 'package:movie_ticket/common/app_images.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/app_text_styles.dart';
 import 'package:movie_ticket/common/view_state.dart';
@@ -85,7 +86,19 @@ class FavoriteScreen extends StatelessWidget {
           return Dismissible(
             background: Container(
               color: Colors.red,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Icon(
+                      Icons.delete,
+                      size: 30,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    )
+                  ]),
             ),
+            direction: DismissDirection.endToStart,
             confirmDismiss: (directory) async {
               var result = await showDialog(
                   context: context,

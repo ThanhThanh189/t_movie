@@ -7,6 +7,7 @@ class Ticket {
   DateTime dateTime;
   String cinemaTime;
   List<String> listSeat;
+  DateTime dateCreate;
   int total;
   FilmData filmData;
 
@@ -17,6 +18,7 @@ class Ticket {
     required this.cinemaTime,
     required this.listSeat,
     required this.total,
+    required this.dateCreate,
     required this.filmData,
   });
 
@@ -27,6 +29,7 @@ class Ticket {
       'dateTime': DateFormat('yyyy-MM-dd').format(dateTime),
       'cinemaTime': cinemaTime,
       'listSeat': listSeat,
+      'dateCreate': DateFormat('yyyy-MM-dd').format(dateCreate),
       'total': total,
       'filmData': filmData.toJson(),
     };
@@ -39,6 +42,7 @@ class Ticket {
       dateTime: DateFormat('yyyy-MM-dd').parse(json["dateTime"]),
       cinemaTime: json['cinemaTime'] ?? '',
       listSeat: List<String>.from(json['listSeat']),
+      dateCreate: DateFormat('yyyy-MM-dd').parse(json["dateCreate"]),
       total: json['total']?.toInt() ?? 0,
       filmData: FilmData.fromJson(json['filmData']),
     );

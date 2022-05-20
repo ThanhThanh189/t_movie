@@ -85,6 +85,17 @@ class MyTicket extends StatelessWidget {
           return Dismissible(
             background: Container(
               color: Colors.red,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Icon(
+                      Icons.delete,
+                      size: 30,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    )
+                  ]),
             ),
             confirmDismiss: (directory) async {
               var result = await showDialog(
@@ -92,6 +103,7 @@ class MyTicket extends StatelessWidget {
                   builder: (_) => _builDialog(context, state, index));
               return result['confirm'];
             },
+            direction: DismissDirection.endToStart,
             key: Key(state.listMyTicket[index].id.toString()),
             child: GestureDetector(
               onTap: () {

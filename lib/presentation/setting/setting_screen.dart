@@ -119,8 +119,9 @@ class SettingScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           showDialog(
-                              context: context,
-                              builder: (_) => const DialogImproving());
+                            context: context,
+                            builder: (_) => const DialogImproving(),
+                          );
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

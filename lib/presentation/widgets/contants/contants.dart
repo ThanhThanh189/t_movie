@@ -1,176 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Contants {
-  // static final seatA6 = [
-  //   'A1',
-  //   'B1',
-  //   'C1',
-  //   'D1',
-  //   'A2',
-  //   'B2',
-  //   'C2',
-  //   'D2',
-  //   'A3',
-  //   'B3',
-  //   'C3',
-  //   'D3',
-  //   'A4',
-  //   'B4',
-  //   'C4',
-  //   'D4',
-  //   'A5',
-  //   'B5',
-  //   'C5',
-  //   'D5',
-  //   'A6',
-  //   'B6',
-  //   'C6',
-  //   'D6',
-  // ];
-
-  // static final seatA12 = [
-  //   'A7',
-  //   'B7',
-  //   'C7',
-  //   'D7',
-  //   'A8',
-  //   'B8',
-  //   'C8',
-  //   'D8',
-  //   'A9',
-  //   'B9',
-  //   'C9',
-  //   'D9',
-  //   'A10',
-  //   'B10',
-  //   'C10',
-  //   'D10',
-  //   'A11',
-  //   'B11',
-  //   'C11',
-  //   'D11',
-  //   'A12',
-  //   'B12',
-  //   'C12',
-  //   'D12',
-  // ];
-  // static final seatA18 = [
-  //   'A13',
-  //   'B13',
-  //   'C13',
-  //   'D13',
-  //   'A14',
-  //   'B14',
-  //   'C14',
-  //   'D14',
-  //   'A15',
-  //   'B15',
-  //   'C15',
-  //   'D15',
-  //   'A16',
-  //   'B16',
-  //   'C16',
-  //   'D16',
-  //   'A17',
-  //   'B17',
-  //   'C17',
-  //   'D17',
-  //   'A18',
-  //   'B18',
-  //   'C18',
-  //   'D18',
-  // ];
-  // static final seatE4 = [
-  //   'E1',
-  //   'F1',
-  //   'G1',
-  //   'H1',
-  //   'I1',
-  //   'J1',
-  //   'E2',
-  //   'F2',
-  //   'G2',
-  //   'H2',
-  //   'I2',
-  //   'J2',
-  //   'E3',
-  //   'F3',
-  //   'G3',
-  //   'H3',
-  //   'I3',
-  //   'J3',
-  //   'E4',
-  //   'F4',
-  //   'G4',
-  //   'H4',
-  //   'I4',
-  //   'J4',
-  // ];
-  // static final seatE10 = [
-  //   'E5',
-  //   'F5',
-  //   'G5',
-  //   'H5',
-  //   'I5',
-  //   'J5',
-  //   'E6',
-  //   'F6',
-  //   'G6',
-  //   'H6',
-  //   'I6',
-  //   'J6',
-  //   'E7',
-  //   'F7',
-  //   'G7',
-  //   'H7',
-  //   'I7',
-  //   'J7',
-  //   'E8',
-  //   'F8',
-  //   'G8',
-  //   'H8',
-  //   'I8',
-  //   'J8',
-  //   'E9',
-  //   'F9',
-  //   'G9',
-  //   'H9',
-  //   'I9',
-  //   'J9',
-  //   'E10',
-  //   'F10',
-  //   'G10',
-  //   'H10',
-  //   'I10',
-  //   'J10',
-  // ];
-  // static final seatE14 = [
-  //   'E11',
-  //   'F11',
-  //   'G11',
-  //   'H11',
-  //   'I11',
-  //   'J11',
-  //   'E12',
-  //   'F12',
-  //   'G12',
-  //   'H12',
-  //   'I12',
-  //   'J12',
-  //   'E13',
-  //   'F13',
-  //   'G13',
-  //   'H13',
-  //   'I13',
-  //   'J13',
-  //   'E14',
-  //   'F14',
-  //   'G14',
-  //   'H14',
-  //   'I14',
-  //   'J14',
-  // ];
-}
+class Contants {}
 
 extension ListToString on List<String> {
   String get title {
@@ -185,6 +15,7 @@ extension ListToString on List<String> {
 }
 
 enum CinemaTime { t1, t2, t3, t4, t5, t6 }
+enum CinemaTimeBox { t0, t1, t2, t3, t4, t5, t6 }
 
 extension CinemaTimeToString on CinemaTime {
   String get title {
@@ -205,7 +36,35 @@ extension CinemaTimeToString on CinemaTime {
   }
 }
 
+extension CinemaTimeBoxToString on CinemaTimeBox {
+  String get title {
+    switch (this) {
+      case CinemaTimeBox.t1:
+        return '12:20';
+      case CinemaTimeBox.t2:
+        return '14:30';
+      case CinemaTimeBox.t3:
+        return '16:30';
+      case CinemaTimeBox.t4:
+        return '19:20';
+      case CinemaTimeBox.t5:
+        return '21:30';
+      case CinemaTimeBox.t6:
+        return '23:40';
+      case CinemaTimeBox.t0:
+        return 'All';
+    }
+  }
+}
+
 enum CinemaName {
+  centralParkCGV,
+  fxSudirmanXXI,
+  keapaGadingIMAX,
+  vincomPlazaCGV,
+}
+enum CinemaNameBox {
+  all,
   centralParkCGV,
   fxSudirmanXXI,
   keapaGadingIMAX,
@@ -223,6 +82,23 @@ extension CinemaNameToString on CinemaName {
         return 'Keapa Gading IMAX';
       case CinemaName.vincomPlazaCGV:
         return 'Vincom Plaza CGV';
+    }
+  }
+}
+
+extension CinemaNameBoxToString on CinemaNameBox {
+  String get title {
+    switch (this) {
+      case CinemaNameBox.centralParkCGV:
+        return 'Central Park CGV';
+      case CinemaNameBox.fxSudirmanXXI:
+        return 'FX Sudirman XXI';
+      case CinemaNameBox.keapaGadingIMAX:
+        return 'Keapa Gading IMAX';
+      case CinemaNameBox.vincomPlazaCGV:
+        return 'Vincom Plaza CGV';
+      case CinemaNameBox.all:
+        return 'All';
     }
   }
 }
@@ -785,7 +661,7 @@ enum TopUpOption {
 }
 
 extension TopUpBase on TopUpOption {
-  String get topUpToString{
+  String get topUpToString {
     switch (this) {
       case TopUpOption.topUp50000:
         return '50.000';
@@ -806,7 +682,7 @@ extension TopUpBase on TopUpOption {
     }
   }
 
-  int get topUpToInt{
+  int get topUpToInt {
     switch (this) {
       case TopUpOption.topUp50000:
         return 50000;

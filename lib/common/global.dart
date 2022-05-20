@@ -16,5 +16,5 @@ class Global {
       'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__480.jpg';
 
   static const String urlError =
-      'https://img5.thuthuatphanmem.vn/uploads/2021/11/20/anh-nen-mau-xanh-dam-don-gian_014246497.jpg';
+      'https://c4.wallpaperflare.com/wallpaper/317/630/437/artwork-simple-background-blue-stars-wallpaper-thumb.jpg';
 }

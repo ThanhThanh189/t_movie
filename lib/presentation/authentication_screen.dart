@@ -38,22 +38,6 @@ class AuthenticationScreen extends StatelessWidget {
           );
         },
       ),
-      //     BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      //   builder: (context, authState) {
-      //     if (authState is AuthStateSuccess) {
-      //       print('AuthStateSuccess');
-      //       return RouterScreen(
-      //         user: authState.user,
-      //       );
-      //     }
-      //     if (authState is AuthStateFailure) {
-      //       return SignInScreen(userRepository: userRepository);
-      //     }
-      //     return const Center(
-      //       child: CircularProgressIndicator(),
-      //     );
-      //   },
-      // ),
     );
   }
 }

@@ -62,7 +62,6 @@ class MyWalletScreen extends StatelessWidget {
               ),
               backgroundColor: AppColors.dartBackground1,
               centerTitle: true,
-              automaticallyImplyLeading: false,
             ),
             body: SafeArea(
               child: SingleChildScrollView(

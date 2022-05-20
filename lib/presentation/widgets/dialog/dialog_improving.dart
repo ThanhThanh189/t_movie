@@ -19,7 +19,7 @@ class DialogImproving extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               child: const Center(
                 child: Text(
-                  'The skill are improving',
+                  'The feature will be update',
                   style: AppTextStyles.h2BoldDark,
                   textAlign: TextAlign.center,
                 ),

@@ -9,6 +9,7 @@ import 'package:movie_ticket/common/app_strings.dart';
 import 'package:movie_ticket/common/app_text_style.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/presentation/new_user/signup_screen.dart';
+import 'package:movie_ticket/presentation/revenue.dart/revenue_screen.dart';
 import 'package:movie_ticket/presentation/router/router_screen.dart';
 import 'package:movie_ticket/presentation/widgets/base_button/base_button.dart';
 import 'package:movie_ticket/presentation/widgets/input_text_field/input_text_field.dart';
@@ -56,6 +57,9 @@ class SignInScreen extends StatelessWidget {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) {
+                  if (state.isAdmin == true) {
+                    return const RevenueScreen();
+                  }
                   return RouterScreen(user: state.user!);
                 },
               ),

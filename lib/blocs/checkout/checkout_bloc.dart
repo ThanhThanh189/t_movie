@@ -27,7 +27,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           }
         }
         if (event is SelectCheckoutEvent) {
-          emit.call(state.copyWith(viewState: ViewState.isLoading,message: 'is checking out...'));
+          emit.call(state.copyWith(
+              viewState: ViewState.isLoading, message: 'is checking out...'));
           final listTicketBooked = await filmDatabase.getAllTicket();
           List<String> listSeatBooked = [];
           for (var item in listTicketBooked) {
@@ -48,6 +49,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           } else {
             if (state.uid != null) {
               final result = await filmDatabase.addMyTicket(
+                  ticket: event.ticket, uid: state.uid!);
+              await filmDatabase.addRevenue(
                   ticket: event.ticket, uid: state.uid!);
               int walletOld = state.account?.wallet ?? 0;
 

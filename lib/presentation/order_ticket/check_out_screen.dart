@@ -106,6 +106,7 @@ class CheckOutScreen extends StatelessWidget {
                                               .toString(),
                                           cinemaName: cinemaName.title,
                                           dateTime: chooseDate,
+                                          dateCreate: DateTime.now(),
                                           cinemaTime: chooseTime.title,
                                           listSeat: listSeatSelected,
                                           total:
