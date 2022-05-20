@@ -18,19 +18,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
       if (event is LoginWithEmailAndPasswordEvent) {
         emit.call(LoginState.loading());
-        try {
-          var user = await userRepository.signInWithEmailAndPassword(
-              email: event.email, password: event.password);
-          if (user != null) {
-            emit.call(LoginState.success(user: user));
-          } else {
-            emit.call(
-                LoginState.failure(AppStrings.signinEmailAndPasswordError));
+        if (event.email == AppStrings.userNameAdmin &&
+            event.password == AppStrings.passwordAdmin) {
+          emit.call(LoginState.success(isAdmin: true));
+        } else {
+          try {
+            var user = await userRepository.signInWithEmailAndPassword(
+                email: event.email, password: event.password);
+            if (user != null) {
+              emit.call(LoginState.success(user: user, isAdmin: false));
+            } else {
+              emit.call(
+                  LoginState.failure(AppStrings.signinEmailAndPasswordError));
+              emit.call(LoginState.initial());
+            }
+          } catch (_) {
+            emit.call(LoginState.failure(AppStrings.signinIsFailure));
             emit.call(LoginState.initial());
           }
-        } catch (_) {
-          emit.call(LoginState.failure(AppStrings.signinIsFailure));
-          emit.call(LoginState.initial());
         }
       }
       if (event is ShowPasswordEvent) {

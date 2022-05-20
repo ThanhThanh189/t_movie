@@ -14,7 +14,10 @@ class FavoriteState {
   });
 
   factory FavoriteState.init() => FavoriteState(
-      listFilmFavorite: [], viewState: ViewState.isNormal, message: null);
+        listFilmFavorite: [],
+        viewState: ViewState.isLoading,
+        message: null,
+      );
 
   FavoriteState update({
     String? uid,

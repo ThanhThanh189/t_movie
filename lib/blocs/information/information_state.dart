@@ -47,7 +47,7 @@ class InformationState {
         isReview: false,
         isFavorite: false,
         isInCart: false,
-        viewState: ViewState.isNormal,
+        viewState: ViewState.isLoading,
       );
 
   InformationState update({

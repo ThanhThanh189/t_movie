@@ -1,7 +1,17 @@
 class AppStrings {
+  //Admin
+  static String userNameAdmin = 'admin';
+  static String passwordAdmin = 'admin';
+
   //firebase storage
   static String collectionFilmFavorite = 'favorite';
+  static String collectionTicket = 'ticket';
+  static String collectionRevenue = 'revenue_collection';
   static String fieldFilmFavorite = 'film_favorite';
+  static String fieldTicket = 'ticket';
+  static String collectionAccount = 'account';
+  static String fieldAccount = 'account_info';
+  static String fieldRevenue = 'revenue_field';
 
   //State
   static String isLoading = 'Waiting a second...';
@@ -54,4 +64,17 @@ class AppStrings {
   //Dialog
   static String dialogCancel = 'Cancel';
   static String dialogOK = 'OK';
+
+  //Checkout success
+  static String happyWatching = 'Happy Watching!';
+  static String successfuly = 'You have successfully\nbought the ticket';
+  static String myHome = 'My Home';
+
+  //Card
+  static String myWallet = 'My Wallet';
+  static String cardName = 'Card Name';
+  static String topUp = 'Top Up';
+  static String ammount = 'Ammount';
+  static String topUpNow = 'Top Up Now';
+  static String iDR = 'IDR';
 }

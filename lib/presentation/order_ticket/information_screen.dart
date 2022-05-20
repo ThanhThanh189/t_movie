@@ -11,6 +11,7 @@ import 'package:movie_ticket/common/global.dart';
 import 'package:movie_ticket/common/view_state.dart';
 import 'package:movie_ticket/data/models/film_data.dart';
 import 'package:movie_ticket/data/models/review.dart';
+import 'package:movie_ticket/presentation/order_ticket/cinema_and_date_screen.dart';
 import 'package:movie_ticket/presentation/order_ticket/trailer_screen.dart';
 import 'package:movie_ticket/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
@@ -72,7 +73,7 @@ class InformationScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              floatingActionButton: _buildAddToCart(context, state),
+              floatingActionButton: _buildBuyTicketMovie(context, state),
             ),
           );
         },
@@ -114,6 +115,7 @@ class InformationScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios, size: 30),
             ),
           ),
+          if(state.detail != null)
           Positioned(
             right: 10,
             top: 10,
@@ -201,6 +203,7 @@ class InformationScreen extends StatelessWidget {
               ],
             ),
           ),
+          if(state.detail != null)
           SizedBox(
             width: double.infinity,
             child: Column(
@@ -492,7 +495,6 @@ class InformationScreen extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.25,
       child: ListView.builder(
           shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(),
           itemCount: state.reviews.length,
           itemBuilder: (context, index) {
             return _buildItemReview(context, state.reviews[index]);
@@ -630,7 +632,7 @@ class InformationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddToCart(BuildContext context, InformationState state) {
+  Widget _buildBuyTicketMovie(BuildContext context, InformationState state) {
     return Container(
       margin: const EdgeInsets.only(left: 30),
       decoration: BoxDecoration(
@@ -640,11 +642,16 @@ class InformationScreen extends StatelessWidget {
         width: double.infinity,
         child: TextButton(
           onPressed: () {
-            BlocProvider.of<InformationBloc>(context)
-                .add(AddCartInforEvent(filmData: filmData));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CinemaAndDateView(
+                  filmData: filmData,
+                ),
+              ),
+            );
           },
           child: const Text(
-            'Add to cart',
+            'Book Ticket',
             style: AppTextStyles.h2Bold,
           ),
         ),

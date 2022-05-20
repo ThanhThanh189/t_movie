@@ -5,7 +5,7 @@ import 'package:movie_ticket/blocs/search/search_event.dart';
 import 'package:movie_ticket/blocs/search/search_state.dart';
 import 'package:movie_ticket/common/app_colors.dart';
 import 'package:movie_ticket/presentation/order_ticket/information_screen.dart';
-import 'package:movie_ticket/presentation/widgets/card/card_view.dart';
+import 'package:movie_ticket/presentation/widgets/card/film_card_view.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({
@@ -96,7 +96,7 @@ class SearchScreen extends StatelessWidget {
                     builder: (_) => InformationScreen(
                         filmData: state.listFilmData[index])));
               },
-              child: CardView(filmData: state.listFilmData[index]));
+              child: FilmCardView(filmData: state.listFilmData[index]));
         });
   }
 }

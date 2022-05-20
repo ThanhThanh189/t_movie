@@ -10,6 +10,7 @@ class LoginState {
   bool showPassword;
   User? user;
   String? message;
+  bool? isAdmin;
 
   LoginState({
     required this.isValidateEmail,
@@ -18,6 +19,7 @@ class LoginState {
     required this.showPassword,
     this.user,
     this.message,
+    this.isAdmin,
   });
 
   factory LoginState.initial() => LoginState(
@@ -32,25 +34,27 @@ class LoginState {
       isValidatePassword: true,
       viewState: ViewState.isLoading,
       showPassword: false,
-      message: AppStrings.signinIsLogin
-      );
+      message: AppStrings.signinIsLogin);
 
   factory LoginState.failure(String? message) => LoginState(
       isValidateEmail: true,
       isValidatePassword: true,
       viewState: ViewState.isFailure,
       message: message ?? AppStrings.signinIsFailure,
-      showPassword: false
-      );
+      showPassword: false);
 
-  factory LoginState.success({required User user}) => LoginState(
-      isValidateEmail: true,
-      isValidatePassword: true,
-      viewState: ViewState.isSuccess,
-      user: user,
-      showPassword: false,
-      message: AppStrings.signinIsSuccess
-      );
+  factory LoginState.success({
+    User? user,
+    bool? isAdmin,
+  }) =>
+      LoginState(
+          isValidateEmail: true,
+          isValidatePassword: true,
+          viewState: ViewState.isSuccess,
+          user: user,
+          showPassword: false,
+          message: AppStrings.signinIsSuccess,
+          isAdmin: isAdmin);
 
   LoginState update({
     bool? isValidateEmail,

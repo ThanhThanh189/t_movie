@@ -1,9 +1,10 @@
 import 'package:movie_ticket/common/view_state.dart';
 
 class ProfileState {
+  String? uid;
   String? photoURLOld;
   String? photoURLNew;
-  String? fullNameOld;
+  String? fullName;
   bool isValidateFullName;
   bool isValidatePassword;
   bool isValidateConfirmPassword;
@@ -12,9 +13,10 @@ class ProfileState {
   String? message;
   bool isValidatePasswordOld;
   ProfileState({
+    this.uid,
     this.photoURLOld,
     this.photoURLNew,
-    this.fullNameOld,
+    this.fullName,
     required this.isValidateFullName,
     required this.isValidatePassword,
     required this.isValidateConfirmPassword,
@@ -27,7 +29,7 @@ class ProfileState {
   factory ProfileState.initial() => ProfileState(
       photoURLOld: null,
       photoURLNew: null,
-      fullNameOld: null,
+      fullName: null,
       isValidateFullName: false,
       isValidatePassword: false,
       isValidateConfirmPassword: false,
@@ -37,9 +39,10 @@ class ProfileState {
       message: null);
 
   ProfileState update({
+    String? uid,
     String? photoURLOld,
     String? photoURLNew,
-    String? fullNameOld,
+    String? fullName,
     bool? isValidateFullName,
     bool? isValidatePassword,
     bool? isValidateConfirmPassword,
@@ -51,9 +54,10 @@ class ProfileState {
     String? message,
   }) {
     return ProfileState(
+      uid: uid ?? this.uid,
       photoURLOld: photoURLOld ?? this.photoURLOld,
       photoURLNew: photoURLNew ?? this.photoURLNew,
-      fullNameOld: fullNameOld ?? this.fullNameOld,
+      fullName: fullName ?? this.fullName,
       isValidateFullName: isValidateFullName ?? this.isValidateFullName,
       isValidatePassword: isValidatePassword ?? this.isValidatePassword,
       isValidateConfirmPassword:

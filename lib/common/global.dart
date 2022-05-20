@@ -14,4 +14,7 @@ class Global {
 
   static const String urlAvatar =
       'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__480.jpg';
+
+  static const String urlError =
+      'https://c4.wallpaperflare.com/wallpaper/317/630/437/artwork-simple-background-blue-stars-wallpaper-thumb.jpg';
 }
